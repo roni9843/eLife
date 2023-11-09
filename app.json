@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "eLife",
+    "slug": "eLife",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#040E29"
+    },"plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow eLife to use your location."
+        }
+      ]
+    ],
+    "update": {
+      "fallbackToCacheTimeout": 1
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "buildNumber": "1.0.0",
+      "supportsTablet": true
+    },
+    "android": {
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#040E29"
+      },
+      "package": "com.rony9843.eLife",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCx1ct_lUJJ0jFWKGyXiunFWaO_A8brIwo",
+          "apiOptions": {
+            "android": {
+              "package": "com.rony9843.eLife" 
+            }
+          }
+        }
+      }
+    },
+   
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1e7213af-99db-4655-b73e-ec8eddb39303"
+      }
+    }
+  }
+}
