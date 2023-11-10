@@ -7,6 +7,8 @@ import BottomTabs from "./bottomTabsNavi/BottomTabs";
 import { store } from "./redux/store";
 
 export default function App() {
+  console.log("this is new repo");
+
   return (
     <Provider store={store}>
       <View style={{ flex: 1 }}>
