@@ -7,7 +7,7 @@ import BottomTabs from "./bottomTabsNavi/BottomTabs";
 import { store } from "./redux/store";
 
 export default function App() {
-  console.log("this is new repo");
+  console.log("this is dev-roni");
 
   return (
     <Provider store={store}>
