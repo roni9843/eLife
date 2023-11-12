@@ -63,16 +63,28 @@ const StatusComponent = ({
 
   const [likeCount, setLikeCount] = useState(0);
 
+  const [likeData, setLikeData] = useState([]);
+
   useEffect(() => {
+    console.log("reaction 1", reaction);
+
     if (reaction[0].user[0]) {
       console.log(userId, "gg");
+
       isThisUserLikeThisPostLocalFunc().then((e) => {
-        userId && setReactionId(e._id);
+        console.log("this is inside  reaction", e);
+        {
+          userId && setReactionId(e._id);
+        }
 
         setLikeCount(reaction.length);
 
+        setLikeData(reaction);
+
         setIsThisUserLikeThisPost(Boolean(e));
       });
+
+      console.log(userId, "gg22");
     } else {
       setIsThisUserLikeThisPost(false);
       console.log("outside");
@@ -107,8 +119,9 @@ const StatusComponent = ({
 
   const isThisUserLikeThisPostLocalFunc = async () => {
     const isThisUserLikeThisPostLocalV = await reaction.find(
-      (dt) => dt.reactId === userId
+      (dt) => dt.reactId == userId
     );
+    console.log("result -> ", isThisUserLikeThisPostLocalV);
 
     return isThisUserLikeThisPostLocalV;
   };
@@ -143,6 +156,7 @@ const StatusComponent = ({
   const submitLike = async (isThisUserLikeThisPost) => {
     console.log("this is ", isThisUserLikeThisPost);
 
+    // ? add like
     if (isThisUserLikeThisPost === false) {
       console.log("this is create reaction ", likeCount + 1);
 
@@ -162,6 +176,9 @@ const StatusComponent = ({
 
         setReactionId(resReaction.data.posts._id);
 
+        console.log("this is reaction 1", resReaction.data.posts);
+        console.log("this is reaction 2", likeData);
+
         // getAllPostFunc && (await getAllPostFunc());
 
         // dispatch(addStatusPost(resReaction.data.posts));
@@ -170,6 +187,7 @@ const StatusComponent = ({
         console.log("this is error ,", error);
       }
     } else {
+      // ? delete like
       console.log("this is delete ", likeCount - 1);
       setLikeCount(likeCount - 1);
       //  setIsThisUserClickLike(!isThisUserClickLike);
@@ -183,6 +201,8 @@ const StatusComponent = ({
         console.log("this is delete reaction ", resReaction);
 
         setReactionId(resReaction.data.posts._id);
+
+        console.log("this is reaction 3", resReaction.data.posts);
 
         //  getAllPostFunc && (await getAllPostFunc());
         //  dispatch(addStatusPost(resReaction.data.posts));
@@ -407,7 +427,7 @@ const StatusComponent = ({
           marginLeft: 5,
         }}
       >
-        {statusText}
+        {statusText} likee {likeCount}
       </Text>
       <View
         style={{
@@ -417,6 +437,11 @@ const StatusComponent = ({
         }}
       >
         <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("LikesList", {
+              postId: postId,
+            })
+          }
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -506,7 +531,10 @@ const StatusComponent = ({
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => onShare()}
+          onPress={() => {
+            //onShare()
+            console.log(postId);
+          }}
           style={{ flexDirection: "row", alignItems: "center" }}
         >
           <View>

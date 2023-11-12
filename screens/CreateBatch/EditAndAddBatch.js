@@ -10,7 +10,10 @@ import { ActivityIndicator } from "react-native-paper";
 import Textarea from "react-native-textarea";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
-import { useUpdateTuitionBatchMutation } from "../../redux/apiSlice";
+import {
+  useCreateTuitionBatchMutation,
+  useUpdateTuitionBatchMutation,
+} from "../../redux/apiSlice";
 
 const EditAndAddBatch = ({ navigation, route }) => {
   // * redux store user
@@ -21,6 +24,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
   const [loadingDelete, setLoadingDelete] = useState(false);
 
   const [updateTuitionBatch] = useUpdateTuitionBatchMutation();
+  const [createTuitionBatch] = useCreateTuitionBatchMutation();
 
   const [batchDetails, setBatchDetails] = useState(
     route.params.status === "create" ? "" : route.params.data.bio
@@ -43,9 +47,11 @@ const EditAndAddBatch = ({ navigation, route }) => {
       route.params.status === "create" ? "" : route.params.data.totalSet,
     courseFee:
       route.params.status === "create" ? "" : route.params.data.courseFee,
-    feeType:
-      route.params.status === "create" ? "monthly" : route.params.data.feeType,
   });
+
+  const [feeType, setFeeType] = useState(
+    route.params.status === "create" ? "monthly" : route.params.data.feeType
+  );
 
   const handleInputChange = (name, value) => {
     setBatchData({
@@ -77,22 +83,50 @@ const EditAndAddBatch = ({ navigation, route }) => {
     } else {
       setLoading(true);
 
-      let payload = {
-        batchId: route.params.data._id,
-        batchTime: batchData.batchTime,
-        totalSet: batchData.totalSet,
-        bio: batchDetails,
-      };
+      if (route.params.status === "create") {
+        let payload = {
+          teacherId: userInfo.currentUser._id,
+          batchTitle: batchData.batchTime,
+          bio: batchDetails,
+          batchTime: batchData.batchTitle,
+          totalSet: batchData.totalSet,
+          courseFee: batchData.courseFee,
+          feeType: feeType,
+        };
 
-      try {
-        const data = await updateTuitionBatch(payload);
+        console.log(("this is id payload ", payload));
 
-        console.log("data ", data);
-        navigation.goBack();
-        setLoading(false);
-      } catch (error) {
-        console.log("this is error ,", error);
-        setLoading(false);
+        try {
+          const data = await createTuitionBatch(payload);
+
+          console.log("data ", data);
+          navigation.goBack();
+          setLoading(false);
+        } catch (error) {
+          console.log("this is error ,", error);
+          setLoading(false);
+        }
+      } else {
+        let payload = {
+          batchId: route.params.data._id,
+          batchTime: batchData.batchTime,
+          totalSet: batchData.totalSet,
+          bio: batchDetails,
+          feeType: feeType,
+        };
+
+        try {
+          console.log(("this is id payload ", payload));
+
+          const data = await updateTuitionBatch(payload);
+
+          console.log("data ", data);
+          navigation.goBack();
+          setLoading(false);
+        } catch (error) {
+          console.log("this is error ,", error);
+          setLoading(false);
+        }
       }
     }
   };
@@ -119,7 +153,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
               maxLength={14}
               value={batchData.batchTitle}
               onChangeText={(text) => handleInputChange("batchTitle", text)}
-              editable={false}
+              editable={route.params.status === "create" ? true : false}
             />
             <Text style={{ color: "red" }}>{inputErrors.batchTitle}</Text>
             {/* Display error message */}
@@ -201,7 +235,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
               onChangeText={(text) => handleInputChange("courseFee", text)}
               placeholder="1000"
               keyboardType="numeric"
-              editable={false}
+              editable={route.params.status === "create" ? true : false}
             />
 
             {console.log("this is batchData.courseFee", batchData.courseFee)}
@@ -219,9 +253,9 @@ const EditAndAddBatch = ({ navigation, route }) => {
             <Text style={{ fontWeight: "bold" }}>Fee type : </Text>
 
             <TouchableOpacity
-              disabled
+              disabled={route.params.status === "create" ? false : true}
               style={
-                batchData.feeType === "monthly"
+                feeType === "monthly"
                   ? {
                       backgroundColor: "#040E29",
                       borderWidth: 1,
@@ -238,11 +272,11 @@ const EditAndAddBatch = ({ navigation, route }) => {
                       borderRadius: 5,
                     }
               }
-              onPress={() => handleInputChange("feeType", "monthly")}
+              onPress={() => setFeeType("monthly")}
             >
               <Text
                 style={
-                  batchData.feeType === "monthly"
+                  feeType === "monthly"
                     ? {
                         color: "#fff",
                       }
@@ -256,9 +290,9 @@ const EditAndAddBatch = ({ navigation, route }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              disabled
+              disabled={route.params.status === "create" ? false : true}
               style={
-                batchData.feeType === "onetime"
+                feeType === "onetime"
                   ? {
                       backgroundColor: "#040E29",
                       borderWidth: 1,
@@ -275,11 +309,11 @@ const EditAndAddBatch = ({ navigation, route }) => {
                       borderRadius: 5,
                     }
               }
-              onPress={() => handleInputChange("feeType", "onetime")}
+              onPress={() => setFeeType("onetime")}
             >
               <Text
                 style={
-                  batchData.feeType === "onetime"
+                  feeType === "onetime"
                     ? {
                         color: "#fff",
                       }
@@ -349,7 +383,10 @@ const EditAndAddBatch = ({ navigation, route }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={handleSubmit}
+                onPress={() => {
+                  handleSubmit();
+                  console.log("this is click ", route.params);
+                }}
               >
                 {loading === true ? (
                   <View style={{ alignItems: "center" }}>

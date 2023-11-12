@@ -74,7 +74,7 @@ const AddPost = ({ navigation, route }) => {
 
         const data = await statusPost(payload);
 
-        console.log("this is post ", data.data);
+        console.log("this is post ", data.data.posts);
 
         dispatch(addStatusPost(data.data.posts));
 

@@ -80,6 +80,13 @@ export const usersApi = createApi({
         body: data,
       }),
     }),
+    getOnePostReaction: builder.mutation({
+      query: (data) => ({
+        url: "post/getTheReaction",
+        method: "POST",
+        body: data,
+      }),
+    }),
     deletePostReaction: builder.mutation({
       query: (data) => ({
         url: "post/deleteReaction",
@@ -113,8 +120,12 @@ export const usersApi = createApi({
     getAllBloodUser: builder.query({
       query: () => "user/GetAllBlood",
     }),
-    getAllBatch: builder.query({
-      query: () => "TuitionBatch/getAllBatch",
+    getAllBatch: builder.mutation({
+      query: (data) => ({
+        url: "TuitionBatch/getAllBatch",
+        method: "POST",
+        body: data,
+      }),
     }),
     createTuitionBatch: builder.mutation({
       query: (data) => ({
@@ -126,6 +137,20 @@ export const usersApi = createApi({
     updateTuitionBatch: builder.mutation({
       query: (data) => ({
         url: "TuitionBatch/updateBatch",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getStudentInBatch: builder.mutation({
+      query: (data) => ({
+        url: "TuitionBatch/getBatchDetails",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    addStudentInBatch: builder.mutation({
+      query: (data) => ({
+        url: "TuitionBatch/createBatchDetails",
         method: "POST",
         body: data,
       }),
@@ -149,8 +174,10 @@ export const {
   useDeletePostReactionMutation,
   useGetThisUserStatusPostMutation,
   useChangePasswordMutation,
-  useGetAllBloodUserQuery,
   useCreateTuitionBatchMutation,
   useUpdateTuitionBatchMutation,
-  useGetAllBatchQuery,
+  useAddStudentInBatchMutation,
+  useGetStudentInBatchMutation,
+  useGetAllBatchMutation,
+  useGetOnePostReactionMutation,
 } = usersApi;

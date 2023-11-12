@@ -3,22 +3,30 @@ import { Image, Pressable, StatusBar, Text, View } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import CreateBatchHeader from "../../components/HeaderBar/CreateBatchHeader";
-import { useGetAllBatchQuery } from "../../redux/apiSlice";
+import { useGetStudentInBatchMutation } from "../../redux/apiSlice";
 
 const CreateBatchScreen = ({ navigation }) => {
   // * redux store user
   const userInfo = useSelector((state) => state.userInfo);
 
-  const { data: getAllBatch } = useGetAllBatchQuery();
+  const [getAllBatch] = useGetStudentInBatchMutation();
 
   const [batchData, setBatchData] = useState([]);
 
   useEffect(() => {
-    if (getAllBatch?.tuitionBatches) {
-      setBatchData(getAllBatch.tuitionBatches);
-      console.log(getAllBatch.tuitionBatches);
+    getAllBatchFunc();
+  }, [navigation]);
+
+  const getAllBatchFunc = async () => {
+    const getAllBatchData = await getAllBatch();
+
+    console.log("55", getAllBatchData);
+
+    if (getAllBatchData?.tuitionBatches) {
+      setBatchData(getAllBatchData.tuitionBatches);
+      console.log("this is all batch", getAllBatchData);
     }
-  }, [getAllBatch]);
+  };
 
   return (
     <View>

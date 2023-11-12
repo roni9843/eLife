@@ -6,7 +6,7 @@ import { Circle } from "react-native-svg";
 import ViewTeacherBatchHeader from "../../components/HeaderBar/ViewTeacherBatchHeader";
 
 const ViewTeacherBatch = ({ navigation, route }) => {
-  console.log(route.params.data);
+  console.log("this is router ", route.params.data._id);
 
   return (
     <ScrollView>
@@ -228,7 +228,9 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                       mode="contained" // You can use "contained" or "outlined"
                       onPress={() => {
                         // Handle button press here
-                        navigation.navigate("AddStudent");
+                        navigation.navigate("AddStudent", {
+                          data: route.params.data,
+                        });
                       }}
                       style={{ borderRadius: 5, backgroundColor: "#040E29" }}
                     >
@@ -240,7 +242,10 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                       mode="contained" // You can use "contained" or "outlined"
                       onPress={() => {
                         // Handle button press here
-                        navigation.navigate("AddStudentFee");
+                        navigation.navigate("AddStudentFee", {
+                          state: "Null",
+                          id: route.params.data._id,
+                        });
                       }}
                       style={{ borderRadius: 5, backgroundColor: "#040E29" }}
                     >

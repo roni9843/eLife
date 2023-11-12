@@ -9,9 +9,11 @@ import AccountCreate from "../screens/AccountCreate/AccountCreate";
 import LandingScreen from "../screens/LandingScreen";
 import ViewProfile from "../screens/Profile/ViewProfile";
 
+import LikesList from "../components/StatusComponent/LikesList";
 import Blood from "../screens/Blood/Blood";
 import AddStudent from "../screens/CreateBatch/AddStudent/AddStudent";
 import AddStudentFee from "../screens/CreateBatch/AddStudentFee/AddStudentFee";
+import StudentListFee from "../screens/CreateBatch/AddStudentFee/StudentListFee";
 import CreateBatchScreen from "../screens/CreateBatch/CreateBatchScreen";
 import EditAndAddBatch from "../screens/CreateBatch/EditAndAddBatch";
 import ViewTeacherBatch from "../screens/CreateBatch/ViewTeacherBatch";
@@ -131,6 +133,19 @@ const StackNavi = ({ navigation }) => {
         }}
         name="LandingScreen"
         component={LandingScreen}
+      />
+      <Stack.Screen
+        options={{
+          gestureDirection: "vertical",
+          transitionSpec: {
+            open: config,
+            close: closeConfig,
+          },
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          headerTitle: "Likes",
+        }}
+        name="LikesList"
+        component={LikesList}
       />
       <Stack.Screen name="Profile" component={DetailsScreen} />
       <Stack.Screen
@@ -354,6 +369,19 @@ const StackNavi = ({ navigation }) => {
         }}
         name="AddStudent"
         component={AddStudent}
+      />
+      <Stack.Screen
+        options={{
+          gestureDirection: "vertical",
+          transitionSpec: {
+            open: config,
+            close: closeConfig,
+          },
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          headerTitle: "Select Student",
+        }}
+        name="StudentListFee"
+        component={StudentListFee}
       />
       <Stack.Screen
         options={{

@@ -445,7 +445,11 @@ const LandingScreen = ({ props, navigation }) => {
               <Text style={styles.buttonText}>Feed 📰</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => console.log(userInfo.currentUser)}
+              onPress={() =>
+                // clearUserInfo().then((e) => console.log("this is clear -> ", e))
+
+                console.log("ee", userInfo.allStatusPost)
+              }
               style={styles.button}
             >
               <Text style={styles.buttonText}>Tuition 👨‍🏫</Text>

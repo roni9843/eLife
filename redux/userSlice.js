@@ -28,6 +28,8 @@ export const usersSlice = createSlice({
     },
     addTeacherUser: (state, action) => {},
     addStatusPost: (state, action) => {
+      console.log(action.payload, "this is redux -> ", state.allStatusPost);
+
       state.allStatusPost = action.payload;
     },
     addPostReaction: (state, action) => {
