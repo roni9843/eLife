@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import HomePageCard from "../components/HomePageCard";
 import HomePageStatusLoading from "../components/HomePageLoading/HomePageStatusLoading";
 import { useGetAllStatusPostQuery } from "../redux/apiSlice";
+import clearUserInfo from "../services/clearUserInfo";
 import StatusComponent from "./../components/StatusComponent/StatusComponent ";
 
 const Category = [
@@ -89,6 +90,7 @@ const Item = ({ title, selectCategory, setSelectCategory }) => (
     </Text>
   </TouchableOpacity>
 );
+
 const LandingScreen = ({ props, navigation }) => {
   React.useLayoutEffect(() => {
     setTimeout(() => {
@@ -118,6 +120,8 @@ const LandingScreen = ({ props, navigation }) => {
     });
 
     setAllTeacher(filteredTeachers);
+
+    console.log("this is roni ", userInfo);
   }, [userInfo]);
 
   useEffect(() => {
@@ -445,10 +449,13 @@ const LandingScreen = ({ props, navigation }) => {
               <Text style={styles.buttonText}>Feed 📰</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() =>
-                // clearUserInfo().then((e) => console.log("this is clear -> ", e))
+              onPress={
+                () =>
+                  clearUserInfo().then((e) =>
+                    console.log("this is clear -> ", e)
+                  )
 
-                console.log("ee", userInfo.allStatusPost)
+                // console.log("ee", userInfo.allStatusPost)
               }
               style={styles.button}
             >

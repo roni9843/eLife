@@ -38,6 +38,10 @@ const StatusComponent = ({
   reDirect,
   getAllPostFunc,
 }) => {
+  useEffect(() => {
+    console.log(statusText, " 1 this is post reaction all   -> ", reaction);
+  }, [reaction]);
+
   const [timeAgo, setTimeAgo] = useState("");
 
   const sound = new Audio.Sound();
@@ -66,25 +70,24 @@ const StatusComponent = ({
   const [likeData, setLikeData] = useState([]);
 
   useEffect(() => {
-    console.log("reaction 1", reaction);
-
     if (reaction[0].user[0]) {
-      console.log(userId, "gg");
+      setLikeCount(reaction.length);
 
       isThisUserLikeThisPostLocalFunc().then((e) => {
-        console.log("this is inside  reaction", e);
-        {
-          userId && setReactionId(e._id);
-        }
-
-        setLikeCount(reaction.length);
+        // {
+        //   e === undefined
+        //     ? setLikeCount(reaction.length)
+        //     : setLikeCount(reaction[0].user.length);
+        // }
 
         setLikeData(reaction);
 
         setIsThisUserLikeThisPost(Boolean(e));
-      });
 
-      console.log(userId, "gg22");
+        if (userId) {
+          userId && setReactionId(e._id);
+        }
+      });
     } else {
       setIsThisUserLikeThisPost(false);
       console.log("outside");
@@ -121,8 +124,6 @@ const StatusComponent = ({
     const isThisUserLikeThisPostLocalV = await reaction.find(
       (dt) => dt.reactId == userId
     );
-    console.log("result -> ", isThisUserLikeThisPostLocalV);
-
     return isThisUserLikeThisPostLocalV;
   };
 
@@ -174,6 +175,8 @@ const StatusComponent = ({
         setIsThisUserLikeThisPost(true);
         let resReaction = await createPostReaction(payload);
 
+        console.log("add like  ", resReaction);
+
         setReactionId(resReaction.data.posts._id);
 
         console.log("this is reaction 1", resReaction.data.posts);
@@ -198,6 +201,7 @@ const StatusComponent = ({
       try {
         setIsThisUserLikeThisPost(false);
         let resReaction = await deletePostReaction(payload);
+        console.log("delete like  ", resReaction);
         console.log("this is delete reaction ", resReaction);
 
         setReactionId(resReaction.data.posts._id);

@@ -60,8 +60,6 @@ const AddPost = ({ navigation, route }) => {
 
         const data = await updateOnePost(payloadForUpdate);
 
-        console.log(data);
-
         dispatch(addStatusPost(data.data.post));
         setLoading(false);
         navigation.goBack();
@@ -74,12 +72,14 @@ const AddPost = ({ navigation, route }) => {
 
         const data = await statusPost(payload);
 
-        console.log("this is post ", data.data.posts);
+        console.log("this is post 9833 ->  ", data.data.posts);
 
         dispatch(addStatusPost(data.data.posts));
 
-        setLoading(false);
-        navigation.goBack();
+        setTimeout(() => {
+          navigation.goBack();
+          setLoading(false);
+        }, 1000);
       }
     } catch (error) {
       console.log(error);

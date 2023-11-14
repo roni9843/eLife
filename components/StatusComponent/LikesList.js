@@ -17,14 +17,19 @@ const LikesList = ({ navigation, route }) => {
     };
 
     const reactionData = await getOnePostReaction(payload);
-    setReactionListData(reactionData);
-    console.log("this is reactions ", reactionData);
+    setReactionListData(reactionData.data.reaction);
+    console.log("this is reactions ", reactionData.data.reaction);
   };
 
   return (
     <View>
       <View>
-        <Text>hlw</Text>
+        {reactionListData &&
+          reactionListData.map((dt) => (
+            <View>
+              <Text>{dt.reactId.name}</Text>
+            </View>
+          ))}
       </View>
     </View>
   );

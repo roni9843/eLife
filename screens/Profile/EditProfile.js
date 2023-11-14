@@ -293,10 +293,14 @@ const EditProfile = ({ navigation }) => {
 
             const newPost = await statusRefetch();
 
-            dispatch(addStatusPost(newPost.posts));
+            console.log("this is update post ", newPost.data.posts);
+
+            dispatch(addStatusPost(newPost.data.posts));
 
             setLoadingPage(false);
             navigation.navigate("LandingScreen");
+
+            console.log("confirm");
           }
         } catch (error) {
           console.log("this is error ,", error);
