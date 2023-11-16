@@ -1,4 +1,5 @@
-import React from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { Button } from "react-native-paper";
@@ -7,6 +8,13 @@ import ViewTeacherBatchHeader from "../../components/HeaderBar/ViewTeacherBatchH
 
 const ViewTeacherBatch = ({ navigation, route }) => {
   console.log("this is router ", route.params.data._id);
+  console.log("this is router ", route.params.data);
+
+  const [student, setStudent] = useState([]);
+
+  useEffect(() => {
+    setStudent(route.params.data.batchdetails);
+  }, [route]);
 
   return (
     <ScrollView>
@@ -140,14 +148,15 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                       fontSize: 18,
                     }}
                   >
-                    Total Set : 0/20
+                    Total Set : {route.params.data.batchdetails.length}/
+                    {route.params.data.totalSet}
                   </Text>
                 </View>
 
                 <AnimatedCircularProgress
                   size={100}
                   width={10}
-                  fill={50}
+                  fill={route.params.data.batchdetails.length}
                   tintColor="#040E29"
                   backgroundColor="gray"
                   padding={10}
@@ -170,7 +179,7 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                           color: "#040E29",
                         }}
                       >
-                        50
+                        {route.params.data.batchdetails.length}
                       </Text>
                       <Text
                         style={{
@@ -261,21 +270,59 @@ const ViewTeacherBatch = ({ navigation, route }) => {
               Student Details
             </Text>
           </View>
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 10,
-              borderRadius: 10,
-              borderLeftWidth: 3,
-              borderLeftColor: "#040E29",
-            }}
-          >
-            <View>
-              <View>
-                <View></View>
+          {student &&
+            student.map((s) => (
+              <View
+                style={{
+                  backgroundColor: "white",
+                  padding: 10,
+                  borderRadius: 10,
+                  borderLeftWidth: 3,
+                  borderLeftColor: "#040E29",
+                  marginVertical: 5,
+                }}
+              >
+                {console.log("this is student -> ", s)}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={{ fontWeight: "bold" }}>Name : </Text>
+                      <Text>{s.name}</Text>
+                    </View>
+                  </View>
+                  <View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={{ fontWeight: "bold" }}>Phone : </Text>
+                      <Text>{s.phone}</Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={{ fontWeight: "bold" }}>Gender : </Text>
+                      <Text>{s.gender}</Text>
+                    </View>
+                  </View>
+                  <View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={{ fontWeight: "bold" }}>Join : </Text>
+                      <Text>{moment(s.createdAt).fromNow()}</Text>
+                    </View>
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
+            ))}
         </View>
       </View>
     </ScrollView>

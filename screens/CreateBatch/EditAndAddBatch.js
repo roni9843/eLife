@@ -86,21 +86,22 @@ const EditAndAddBatch = ({ navigation, route }) => {
       if (route.params.status === "create") {
         let payload = {
           teacherId: userInfo.currentUser._id,
-          batchTitle: batchData.batchTime,
+          batchTitle: batchData.batchTitle,
           bio: batchDetails,
-          batchTime: batchData.batchTitle,
+          batchTime: batchData.batchTime,
           totalSet: batchData.totalSet,
           courseFee: batchData.courseFee,
           feeType: feeType,
         };
 
-        console.log(("this is id payload ", payload));
+        console.log("this is id payload ", payload);
 
         try {
           const data = await createTuitionBatch(payload);
 
-          console.log("data ", data);
-          navigation.goBack();
+          console.log("this is create 33 data ", data);
+          navigation.navigate("CreateBatchScreen");
+          //    navigation.goBack();
           setLoading(false);
         } catch (error) {
           console.log("this is error ,", error);

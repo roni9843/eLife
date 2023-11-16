@@ -83,8 +83,27 @@ const AddStudent = ({ navigation, route }) => {
         try {
           const data = await addStudentInBatch(payload);
 
-          console.log("data ", data);
-          navigation.goBack();
+          console.log("data add student -> ", data.data.savedBatchDetail);
+
+          let oldBatchData = { ...route.params.data };
+
+          delete oldBatchData.batchdetails;
+
+          console.log("this is delete oldBatch -> ", oldBatchData);
+
+          let newStudentBatch = [
+            ...route.params.data.batchdetails,
+            data.data.savedBatchDetail,
+          ];
+
+          let newBatchData = { ...oldBatchData, batchdetails: newStudentBatch };
+
+          console.log("this is final data -> ", newBatchData);
+
+          navigation.navigate("ViewTeacherBatch", {
+            data: newBatchData,
+          });
+          // navigation.goBack();
           setLoading(false);
         } catch (error) {
           console.log("this is error ,", error);

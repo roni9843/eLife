@@ -148,6 +148,13 @@ export const usersApi = createApi({
         body: data,
       }),
     }),
+    getTeacherAllBatch: builder.mutation({
+      query: (data) => ({
+        url: "TuitionBatch/getOneTeacherAllBatch",
+        method: "POST",
+        body: data,
+      }),
+    }),
     addStudentInBatch: builder.mutation({
       query: (data) => ({
         url: "TuitionBatch/createBatchDetails",
@@ -180,4 +187,5 @@ export const {
   useGetStudentInBatchMutation,
   useGetAllBatchMutation,
   useGetOnePostReactionMutation,
+  useGetTeacherAllBatchMutation,
 } = usersApi;

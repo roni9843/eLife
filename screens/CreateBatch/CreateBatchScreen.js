@@ -3,27 +3,33 @@ import { Image, Pressable, StatusBar, Text, View } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import CreateBatchHeader from "../../components/HeaderBar/CreateBatchHeader";
-import { useGetStudentInBatchMutation } from "../../redux/apiSlice";
+import { useGetTeacherAllBatchMutation } from "../../redux/apiSlice";
 
-const CreateBatchScreen = ({ navigation }) => {
+const CreateBatchScreen = ({ navigation, route }) => {
   // * redux store user
   const userInfo = useSelector((state) => state.userInfo);
 
-  const [getAllBatch] = useGetStudentInBatchMutation();
+  const [getTeacherAllBatch] = useGetTeacherAllBatchMutation();
 
   const [batchData, setBatchData] = useState([]);
 
   useEffect(() => {
     getAllBatchFunc();
-  }, [navigation]);
+
+    console.log("this is call for reDander");
+  }, [navigation, route]);
 
   const getAllBatchFunc = async () => {
-    const getAllBatchData = await getAllBatch();
+    const payload = {
+      teacherId: userInfo.currentUser._id,
+    };
 
-    console.log("55", getAllBatchData);
+    const getAllBatchData = await getTeacherAllBatch(payload);
 
-    if (getAllBatchData?.tuitionBatches) {
-      setBatchData(getAllBatchData.tuitionBatches);
+    console.log("55 tt", getAllBatchData);
+
+    if (getAllBatchData.data?.result) {
+      setBatchData(getAllBatchData.data.result);
       console.log("this is all batch", getAllBatchData);
     }
   };
@@ -180,7 +186,7 @@ const CreateBatchScreen = ({ navigation }) => {
                           </Text>
                           <Text style={{ fontWeight: "bold" }}>
                             {" "}
-                            {b?.bookedSet ? b.bookedSet : 0}/{b.totalSet}
+                            {b.batchdetails.length}/{b.totalSet}
                           </Text>
                         </View>
                         <View style={{ flexDirection: "row" }}>

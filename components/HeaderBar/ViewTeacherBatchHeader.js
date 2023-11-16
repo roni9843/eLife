@@ -37,7 +37,13 @@ const ViewTeacherBatchHeader = ({ navigation, submitBtn, id, data }) => {
           }}
         >
           <View>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("CreateBatchScreen", {
+                  data: Math.floor(10000 + Math.random() * 90000),
+                })
+              }
+            >
               <IonIcon
                 style={{
                   fontSize: 25,
@@ -51,7 +57,7 @@ const ViewTeacherBatchHeader = ({ navigation, submitBtn, id, data }) => {
           </View>
           <View>
             <Text style={{ fontSize: 16, color: "white" }}>
-              Edit Your Profile
+              View Your Batch
             </Text>
           </View>
           <View
