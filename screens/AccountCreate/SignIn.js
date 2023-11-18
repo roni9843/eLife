@@ -19,52 +19,56 @@ import { addCurrentUser } from "../../redux/userSlice";
 
 const SignIn = ({ setIsSignIn }) => {
   const navigation = useNavigation();
-
-  // ? redux dispatch
   const dispatch = useDispatch();
 
-  // ? is input valid
   const [isInputValid, setIsInputValid] = useState(0);
-
-  // ? state for user phone number
   const [userPhone, setUserPhone] = useState("");
-
-  // ? state for user name
   const [userName, setUserName] = useState("");
-
-  // ? state for user password
   const [userPassword, setUserPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
-
-  // ? state for error msg
+  const [phoneError, setPhoneError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState({
     msg: "",
     status: false,
   });
 
-  // * check is user valid
   useEffect(() => {
-    if (userPhone.length >= 9 && userName && userPassword.length >= 7) {
-      setIsInputValid(1);
-    } else {
-      setIsInputValid(0);
-    }
+    setIsInputValid(
+      userPhone.length >= 9 && userName.length >= 3 && userPassword.length >= 7
+        ? 1
+        : 0
+    );
   }, [userPhone, userName, userPassword]);
 
-  //! hide bottom tabs
   useEffect(() => {
-    navigation
-      .getParent()
-      ?.setOptions({ tabBarStyle: { display: "none" }, tabBarVisible: false });
+    navigation.getParent()?.setOptions({
+      tabBarStyle: { display: "none" },
+      tabBarVisible: false,
+    });
     return () =>
-      navigation
-        .getParent()
-        ?.setOptions({ tabBarStyle: undefined, tabBarVisible: undefined });
+      navigation.getParent()?.setOptions({
+        tabBarStyle: undefined,
+        tabBarVisible: undefined,
+      });
   }, [navigation]);
 
-  // ? post user
   const [postUser] = usePostUserMutation();
+
+  const validatePhone = (input) => {
+    setPhoneError(input.length < 9 ? "Please enter a valid phone number" : "");
+  };
+
+  const validateName = (input) => {
+    setNameError(input.length <= 3 ? "Please enter at lest 3 characters " : "");
+  };
+
+  const validatePassword = (input) => {
+    setPasswordError(
+      input.length < 7 ? "Please enter 8 or more characters" : ""
+    );
+  };
 
   const submitBtn = async () => {
     setLoading(true);
@@ -75,14 +79,12 @@ const SignIn = ({ setIsSignIn }) => {
         password: userPassword,
       });
 
-      console.log("tt 2 ewr", data);
-
       if (data?.error) {
         setLoading(false);
 
         setError({
           status: true,
-          msg: "This phone number already exist!!!",
+          msg: "This phone number already exists!!!",
         });
       } else {
         const payload = {
@@ -128,11 +130,12 @@ const SignIn = ({ setIsSignIn }) => {
                     <View style={Styles.inputBoxContainer}>
                       <TextInput
                         style={Styles.input}
-                        // onChangeText={onChangeText}
-                        // value={text}
                         placeholder="Phone"
                         placeholderTextColor="#96A2D5"
-                        onChangeText={(e) => setUserPhone(e)}
+                        onChangeText={(e) => {
+                          setUserPhone(e);
+                          validatePhone(e);
+                        }}
                         value={userPhone}
                         keyboardType="numeric"
                       />
@@ -148,15 +151,22 @@ const SignIn = ({ setIsSignIn }) => {
                       />
                     </View>
                   </View>
+                  {phoneError !== "" && (
+                    <Text style={{ color: "red", marginLeft: 10 }}>
+                      {phoneError}
+                    </Text>
+                  )}
+
                   <View style={Styles.inputContainer}>
                     <View style={Styles.inputBoxContainer}>
                       <TextInput
                         style={Styles.input}
-                        // onChangeText={onChangeText}
-                        // value={text}
                         placeholder="Name"
                         placeholderTextColor="#96A2D5"
-                        onChangeText={(e) => setUserName(e)}
+                        onChangeText={(e) => {
+                          setUserName(e);
+                          validateName(e);
+                        }}
                         value={userName}
                       />
                     </View>
@@ -171,15 +181,22 @@ const SignIn = ({ setIsSignIn }) => {
                       />
                     </View>
                   </View>
+                  {nameError !== "" && (
+                    <Text style={{ color: "red", marginLeft: 10 }}>
+                      {nameError}
+                    </Text>
+                  )}
+
                   <View style={Styles.inputContainer}>
                     <View style={Styles.inputBoxContainer}>
                       <TextInput
                         style={Styles.input}
-                        // onChangeText={onChangeText}
-                        // value={text}
                         placeholder="Password"
                         placeholderTextColor="#96A2D5"
-                        onChangeText={(e) => setUserPassword(e)}
+                        onChangeText={(e) => {
+                          setUserPassword(e);
+                          validatePassword(e);
+                        }}
                         value={userPassword}
                       />
                     </View>
@@ -194,6 +211,11 @@ const SignIn = ({ setIsSignIn }) => {
                       />
                     </View>
                   </View>
+                  {passwordError !== "" && (
+                    <Text style={{ color: "red", marginLeft: 10 }}>
+                      {passwordError}
+                    </Text>
+                  )}
                 </View>
                 {error.status && (
                   <View
@@ -217,30 +239,19 @@ const SignIn = ({ setIsSignIn }) => {
                     </Text>
                   </View>
                 )}
+
                 <View>
                   <TouchableOpacity
-                    // disabled={isInputValid ? false : true}
                     onPress={() => {
-                      if (userPhone.length < 9) {
-                        console.log(1);
-                        setError({
-                          msg: "Please enter your valid phone number",
-                          status: true,
-                        });
-                      } else if (userName.length <= 3) {
-                        console.log(2);
-                        setError({
-                          msg: "Please enter your name",
-                          status: true,
-                        });
-                      } else if (userPassword.length <= 7) {
-                        console.log(2);
-                        setError({
-                          msg: "Please enter your valid password",
-                          status: true,
-                        });
-                      } else {
-                        console.log(3);
+                      validatePhone(userPhone);
+                      validateName(userName);
+                      validatePassword(userPassword);
+
+                      if (
+                        userPhone.length >= 9 &&
+                        userName.length > 3 &&
+                        userPassword.length >= 7
+                      ) {
                         submitBtn();
                       }
                     }}
@@ -255,10 +266,11 @@ const SignIn = ({ setIsSignIn }) => {
                     </Text>
                   </TouchableOpacity>
                 </View>
+
                 <View style={Styles.desCon}>
                   <Text style={Styles.PageSwOr}>Or</Text>
                   <View>
-                    <Text style={Styles.PageSw}>If your have an account</Text>
+                    <Text style={Styles.PageSw}>If you have an account</Text>
                   </View>
                   <View style={Styles.PageSwCon}>
                     <Text style={Styles.PageSw}>Please</Text>
@@ -299,7 +311,6 @@ const Styles = StyleSheet.create({
   },
   title: {
     color: "#DBE7FF",
-
     fontSize: 40,
     marginTop: 30,
     marginBottom: 3,

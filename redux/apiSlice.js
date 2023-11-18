@@ -188,4 +188,5 @@ export const {
   useGetAllBatchMutation,
   useGetOnePostReactionMutation,
   useGetTeacherAllBatchMutation,
+  useGetAllBloodUserQuery,
 } = usersApi;

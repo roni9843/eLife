@@ -73,7 +73,7 @@ const ViewTeacherBatch = ({ navigation, route }) => {
               </Text>
               <Text style={{ fontSize: 17 }}>
                 {" "}
-                {route.params.data.batchTime}
+                {moment(route.params.data.batchTime).format("YYYY-MM-DD")}
               </Text>
             </View>
           </View>
@@ -317,7 +317,8 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                   <View>
                     <View style={{ flexDirection: "row" }}>
                       <Text style={{ fontWeight: "bold" }}>Join : </Text>
-                      <Text>{moment(s.createdAt).fromNow()}</Text>
+                      {console.log("this is student time :", s)}
+                      <Text>{moment(s.startDate).format("YYYY-MM-DD")}</Text>
                     </View>
                   </View>
                 </View>

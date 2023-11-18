@@ -6,11 +6,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 import BloodHeader from "../../components/HeaderBar/BloodHeader";
 import { useGetAllBloodUserQuery } from "../../redux/apiSlice";
 import StatusCard from "./StatusCard ";
 
 const Blood = ({ navigation }) => {
+  // * redux store user
+  const userInfo = useSelector((state) => state.userInfo);
+
   const bloodGroups = ["All", "A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 
   const { data: allBloodUserApi } = useGetAllBloodUserQuery();
@@ -53,56 +57,64 @@ const Blood = ({ navigation }) => {
       <ScrollView>
         <View style={{ marginTop: StatusBar.currentHeight + 50 }}>
           <View style={{}}>
-            <View
-              style={{
-                backgroundColor: "#ED1F4C",
-                padding: 20,
-                borderBottomRightRadius: 25,
-                borderBottomLeftRadius: 25,
-              }}
-            >
+            {userInfo.currentUser && (
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  padding: 10,
-                  alignItems: "center",
+                  backgroundColor: "#ED1F4C",
+                  padding: 20,
+                  borderBottomRightRadius: 25,
+                  borderBottomLeftRadius: 25,
                 }}
               >
-                <View>
-                  <Text style={{ color: "white", fontSize: 20 }}>Hello,</Text>
-                  <Text
-                    style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
-                  >
-                    Jubayth Hossen Roni
-                  </Text>
-                  <Text style={{ color: "white", fontSize: 14 }}>
-                    Hope you're well today
-                  </Text>
-                </View>
-
-                <View>
-                  <View
-                    style={{
-                      backgroundColor: "white",
-                      padding: 10,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                    }}
-                  >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    padding: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <View>
+                    <Text style={{ color: "white", fontSize: 20 }}>Hello,</Text>
                     <Text
                       style={{
-                        color: "#ED1F4C",
+                        color: "white",
                         fontSize: 20,
                         fontWeight: "bold",
                       }}
                     >
-                      A+
+                      {userInfo.currentUser.name}
+                    </Text>
+                    <Text style={{ color: "white", fontSize: 14 }}>
+                      Hope you're well today
                     </Text>
                   </View>
+
+                  {userInfo.currentUser.bloodGroup && (
+                    <View>
+                      <View
+                        style={{
+                          backgroundColor: "white",
+                          padding: 10,
+                          backgroundColor: "white",
+                          borderRadius: 10,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "#ED1F4C",
+                            fontSize: 20,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {userInfo.currentUser?.bloodGroup}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
                 </View>
               </View>
-            </View>
+            )}
 
             <View style={{ marginHorizontal: 10, marginTop: 10 }}>
               <View>

@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Image, Pressable, StatusBar, Text, View } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -171,7 +172,7 @@ const CreateBatchScreen = ({ navigation, route }) => {
                           </Text>
                           <Text style={{ fontWeight: "bold" }}>
                             {" "}
-                            {b.batchTime}
+                            {moment(b.batchTime).format("YYYY-MM-DD")}
                           </Text>
                         </View>
                         <View style={{ flexDirection: "row" }}>

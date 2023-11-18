@@ -1,6 +1,9 @@
+import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -18,10 +21,16 @@ const AddStudent = ({ navigation, route }) => {
   const [genderError, setGenderError] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [DateError, setDateError] = useState("");
+  const [startDate, setStartDate] = useState("");
 
   const [addStudentInBatch] = useAddStudentInBatchMutation();
 
   const handleValidation = () => {
+    //  console.log(isoString);
+
+    console.log(startDate, route.params);
+
     let isValid = true;
 
     if (studentName.trim() === "") {
@@ -29,6 +38,14 @@ const AddStudent = ({ navigation, route }) => {
       isValid = false;
     } else {
       setStudentNameError("");
+    }
+
+    // ? date input validation
+    if (startDate.trim() === "") {
+      setDateError("Student Start Date  cannot be empty");
+      isValid = false;
+    } else {
+      setDateError("");
     }
 
     if (phoneNumber.trim() === "") {
@@ -75,6 +92,7 @@ const AddStudent = ({ navigation, route }) => {
         phone: phoneNumber,
         gender: gender,
         name: studentName,
+        startDate: startDate,
       };
 
       console.log(payload);
@@ -116,6 +134,36 @@ const AddStudent = ({ navigation, route }) => {
     }
   };
 
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [formattedDate, setFormattedDate] = useState("");
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios"); // For iOS, set show to true only if the done button is pressed
+    setDate(currentDate);
+    setStartDate(currentDate.toString());
+    // Format the date to your desired string format
+
+    // const formatted = `${currentDate.getFullYear()}-${
+    //   currentDate.getMonth() + 1
+    // }-${currentDate.getDate()}`;
+
+    //  const formatted = currentDate;
+
+    console.log("data", selectedDate);
+
+    const formattedDate = moment(currentDate).format("YYYY-MM-DD");
+
+    console.log("this is formatted", formattedDate);
+
+    setFormattedDate(formattedDate);
+  };
+
+  const showDatepicker = () => {
+    setShow(true);
+  };
+
   return (
     <ScrollView>
       <View style={{ padding: 16 }}>
@@ -150,6 +198,46 @@ const AddStudent = ({ navigation, route }) => {
             keyboardType="numeric"
           />
           <Text style={{ color: "red" }}>{phoneNumberError}</Text>
+        </View>
+        <View style={{}}>
+          <Text style={{ padding: 5, fontWeight: "bold" }}>
+            Start Date : {formattedDate}
+          </Text>
+          <View>
+            <TouchableOpacity
+              style={{
+                borderRadius: 5,
+                backgroundColor: "#040E29",
+                padding: 10,
+
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={showDatepicker}
+            >
+              <Text style={{ color: "white" }}>Calender</Text>
+              <IonIcon
+                style={{
+                  fontSize: 16,
+                  color: "white",
+                  marginLeft: 14,
+                }}
+                name={"calendar-outline"}
+              />
+            </TouchableOpacity>
+          </View>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode="date" // Change this to 'time' for time picker
+              is24Hour={true}
+              //  display="default"
+              onChange={onChange}
+            />
+          )}
+          <Text style={{ color: "red" }}>{DateError}</Text>
         </View>
 
         <View style={{ marginTop: 10 }}>

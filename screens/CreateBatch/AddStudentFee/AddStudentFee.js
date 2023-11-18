@@ -1,15 +1,224 @@
-import React, { useEffect } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
+const moment = require("moment");
+
+const StudentCard = ({ route }) => {
+  console.log("this is data -> ", route);
+
+  function calculateMonthsDifference(endDate) {
+    const today = moment();
+    const end = moment(endDate);
+
+    const monthsDifference = end.diff(today, "months");
+
+    return monthsDifference;
+  }
+
+  // Example usage
+  const endDate = route.params.selectedStudentInfo.startDate;
+
+  const monthsDifference = calculateMonthsDifference(endDate);
+  console.log(monthsDifference);
+
+  return (
+    <View style={{ marginTop: 10 }}>
+      <View>
+        <View
+          style={{
+            padding: 10,
+            borderWidth: 1,
+            borderRadius: 5,
+            backgroundColor: "white",
+            marginHorizontal: 15,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Text>Batch Fee : </Text>
+              <Text>
+                {route.params.selectedStudentInfo.batchId.courseFee} TK
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <Text>Batch Start Date : </Text>
+              <Text>
+                {moment(
+                  route.params.selectedStudentInfo.batchId.batchTime
+                ).format("YYYY-MM-DD")}
+              </Text>
+            </View>
+          </View>
+          <View>
+            <View style={{ flexDirection: "row" }}>
+              <Text>Fee Type : </Text>
+              <Text>{route.params.selectedStudentInfo.batchId.feeType}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.label}>Name: </Text>
+        <Text style={styles.value}>
+          {route.params.selectedStudentInfo.name}
+        </Text>
+
+        <Text style={styles.label}>Gender:</Text>
+        <Text style={styles.value}>
+          {route.params.selectedStudentInfo.gender}
+        </Text>
+
+        <Text style={styles.label}>Phone:</Text>
+        <Text style={styles.value}>
+          {route.params.selectedStudentInfo.phone}
+        </Text>
+
+        <Text style={styles.label}>Start Date:</Text>
+        <Text style={styles.value}>
+          {moment(route.params.selectedStudentInfo.startDate).format(
+            "YYYY-MM-DD"
+          )}
+        </Text>
+
+        <Text style={styles.label}>Period:</Text>
+        <Text style={styles.value}>{Math.abs(monthsDifference)} Months</Text>
+
+        <Text style={styles.label}>Paid Amount:</Text>
+        <Text style={styles.value}>
+          {route.params.selectedStudentInfo.paidAmount}
+        </Text>
+
+        {route.params.selectedStudentInfo.batchId.feeType === "monthly" && (
+          <View>
+            <Text
+              style={{ fontSize: 16, fontWeight: "bold", marginVertical: 4 }}
+            >
+              Outstanding: {route.params.selectedStudentInfo.batchId.courseFee}{" "}
+              X {Math.abs(monthsDifference)}
+            </Text>
+            <Text
+              style={{
+                fontSize:
+                  route.params.selectedStudentInfo.batchId.courseFee *
+                    Math.abs(monthsDifference) -
+                    route.params.selectedStudentInfo.paidAmount >
+                  0
+                    ? 20
+                    : 16,
+                marginBottom: 16,
+                color:
+                  route.params.selectedStudentInfo.batchId.courseFee *
+                    Math.abs(monthsDifference) -
+                    route.params.selectedStudentInfo.paidAmount >
+                  0
+                    ? "red"
+                    : "black",
+              }}
+            >
+              {route.params.selectedStudentInfo.batchId.courseFee *
+                Math.abs(monthsDifference) -
+                route.params.selectedStudentInfo.paidAmount}{" "}
+              TK
+            </Text>
+          </View>
+        )}
+        {route.params.selectedStudentInfo.batchId.feeType !== "monthly" && (
+          <View>
+            <Text style={styles.label}>
+              Outstanding: {route.params.selectedStudentInfo.batchId.courseFee}
+            </Text>
+            <Text style={styles.value}>
+              {route.params.selectedStudentInfo.batchId.courseFee} TK
+            </Text>
+          </View>
+        )}
+      </View>
+    </View>
+  );
+};
+
+const FeeCollect = ({ route }) => {
+  const [inputValue, setInputValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handlePressSubmit = () => {
+    if (inputValue.trim() === "") {
+      setErrorMessage("Please enter a number");
+    } else {
+      setErrorMessage("");
+      // Perform your submit logic here
+      Alert.alert("Success", `Submitted value: ${inputValue}`);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 16,
+        }}
+      >
+        <Text style={{ fontSize: 18, marginBottom: 8 }}>Amount :</Text>
+        <TextInput
+          style={{
+            height: 40,
+            borderColor: "gray",
+            borderWidth: 1,
+            borderRadius: 5,
+            paddingHorizontal: 10,
+            marginBottom: 16,
+            width: "100%",
+          }}
+          placeholder="TAKA"
+          keyboardType="numeric"
+          value={inputValue}
+          onChangeText={(text) => setInputValue(text)}
+        />
+
+        {errorMessage ? (
+          <Text style={{ color: "red", marginBottom: 10 }}>{errorMessage}</Text>
+        ) : null}
+
+        <TouchableOpacity
+          style={{ backgroundColor: "blue", padding: 10, borderRadius: 5 }}
+          onPress={handlePressSubmit}
+        >
+          <Text style={{ color: "white", textAlign: "center", fontSize: 16 }}>
+            Submit
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const AddStudentFee = ({ navigation, route }) => {
+  const [isCollectFee, setIsCollectFee] = useState(false);
+
   useEffect(() => {
     console.log("fff 1", route.params.id);
     console.log("fff 2", route);
   }, [route]);
 
   return (
-    <View>
+    <ScrollView>
       <View style={{ padding: 10 }}>
         <View
           style={{
@@ -58,19 +267,83 @@ const AddStudentFee = ({ navigation, route }) => {
         </View>
         <View>
           {route.params.state === "View" && (
-            <View>
-              <View>
-                <View>
-                  <Text>Name : </Text>
-                  <Text>Name</Text>
-                </View>
-              </View>
-            </View>
+            <StudentCard route={route}></StudentCard>
           )}
         </View>
+        {isCollectFee && (
+          <View>
+            <FeeCollect></FeeCollect>
+          </View>
+        )}
+
+        {route.params.state === "View" && !isCollectFee && (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <View></View>
+            <View>
+              <TouchableOpacity
+                onPress={() => setIsCollectFee(true)}
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: "#040E29",
+                  padding: 10,
+                  width: 170,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ color: "white", fontSize: 16 }}>
+                  Collect Fee
+                </Text>
+
+                <IonIcon
+                  style={{
+                    fontSize: 26,
+                    color: "white",
+                    marginLeft: 14,
+                  }}
+                  name={"cash-outline"}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 export default AddStudentFee;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    margin: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginVertical: 4,
+  },
+  value: {
+    fontSize: 16,
+    marginBottom: 16,
+  },
+});

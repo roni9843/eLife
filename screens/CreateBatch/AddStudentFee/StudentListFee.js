@@ -29,7 +29,7 @@ const StudentListFee = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView style={{ padding: 10 }}>
+    <ScrollView style={{ padding: 10, flex: 1 }}>
       {allStudentInfo &&
         allStudentInfo.map((dt) => (
           <View>
@@ -48,7 +48,7 @@ const StudentListFee = ({ navigation, route }) => {
                 borderWidth: 1,
                 padding: 20,
                 borderRadius: 10,
-                marginVertical: 10,
+                marginVertical: 5,
                 backgroundColor: "white",
               }}
             >

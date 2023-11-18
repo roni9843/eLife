@@ -15,58 +15,51 @@ import {
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
 import { useLoginUserMutation } from "../../redux/apiSlice";
-import {
-  addCurrentUser,
-  addfetchForAllUserAndAllStatusData,
-} from "../../redux/userSlice";
+import { addCurrentUser } from "../../redux/userSlice";
 
 const Login = ({ setIsSignIn }) => {
   const navigation = useNavigation();
-
-  // ? redux dispatch
   const dispatch = useDispatch();
 
-  // ? is input valid
   const [isInputValid, setIsInputValid] = useState(0);
-
-  // ? for user phone number
   const [userPhone, setUserPhone] = useState("");
-
-  // ? for user password
   const [userPassword, setUserPassword] = useState("");
-
-  // ? for error state
+  const [phoneError, setPhoneError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState({
     status: false,
     msg: "",
   });
-
   const [loading, setLoading] = useState(false);
 
-  // * for check is valid for login
   useEffect(() => {
-    if (userPhone.length >= 9 && userPassword.length >= 7) {
-      setIsInputValid(1);
-    } else {
-      setIsInputValid(0);
-    }
+    setIsInputValid(userPhone.length >= 9 && userPassword.length >= 7 ? 1 : 0);
   }, [userPhone, userPassword]);
 
-  //! hide bottom tabs
   useEffect(() => {
-    navigation
-      .getParent()
-      ?.setOptions({ tabBarStyle: { display: "none" }, tabBarVisible: false });
+    navigation.getParent()?.setOptions({
+      tabBarStyle: { display: "none" },
+      tabBarVisible: false,
+    });
     return () =>
-      navigation
-        .getParent()
-        ?.setOptions({ tabBarStyle: undefined, tabBarVisible: undefined });
+      navigation.getParent()?.setOptions({
+        tabBarStyle: undefined,
+        tabBarVisible: undefined,
+      });
   }, [navigation]);
 
-  // ? post data
   const [loginUser] = useLoginUserMutation();
 
-  // ? submit btn
+  const validatePhone = (input) => {
+    setPhoneError(input.length < 9 ? "Please enter a valid phone number" : "");
+  };
+
+  const validatePassword = (input) => {
+    setPasswordError(
+      input.length < 7 ? "Please enter 8 or more characters" : ""
+    );
+  };
+
   const submitBtn = async () => {
     try {
       setLoading(true);
@@ -76,10 +69,6 @@ const Login = ({ setIsSignIn }) => {
       });
 
       if (resData.data?.message === "Login successful") {
-        //  navigation.navigate("LandingScreen");
-
-        console.log("this is login user -> ", resData.data);
-
         const payload = {
           user: resData.data.userInfo.user,
           token: resData.data.userInfo.token,
@@ -89,8 +78,6 @@ const Login = ({ setIsSignIn }) => {
 
         navigation.navigate("LandingScreen");
         setLoading(false);
-
-        // navigation.navigate("LandingScreen", { screen: "Details" });
       }
 
       if (resData.error?.status === 400) {
@@ -103,16 +90,6 @@ const Login = ({ setIsSignIn }) => {
     } catch (error) {
       console.log("this is error -> ", error);
     }
-  };
-
-  // ? set current user data on redux-store
-  const setCurrentUserDataOnReduxStore = (props) => {
-    dispatch(addCurrentUser(props));
-  };
-
-  // ? set screen name in redux-store
-  const setfetchForAllUserAndAllStatusData = () => {
-    dispatch(addfetchForAllUserAndAllStatusData("Login Screen"));
   };
 
   return (
@@ -143,12 +120,13 @@ const Login = ({ setIsSignIn }) => {
                     <View style={Styles.inputBoxContainer}>
                       <TextInput
                         style={Styles.input}
-                        // onChangeText={onChangeText}
-                        // value={text}
                         keyboardType="numeric"
                         placeholder="Phone"
                         placeholderTextColor="#96A2D5"
-                        onChangeText={(e) => setUserPhone(e)}
+                        onChangeText={(e) => {
+                          setUserPhone(e);
+                          validatePhone(e);
+                        }}
                         value={userPhone}
                       />
                     </View>
@@ -163,15 +141,22 @@ const Login = ({ setIsSignIn }) => {
                       />
                     </View>
                   </View>
+                  {phoneError !== "" && (
+                    <Text style={{ color: "red", marginLeft: 10 }}>
+                      {phoneError}
+                    </Text>
+                  )}
+
                   <View style={Styles.inputContainer}>
                     <View style={Styles.inputBoxContainer}>
                       <TextInput
                         style={Styles.input}
-                        // onChangeText={onChangeText}
-                        // value={text}
                         placeholder="Password"
                         placeholderTextColor="#96A2D5"
-                        onChangeText={(e) => setUserPassword(e)}
+                        onChangeText={(e) => {
+                          setUserPassword(e);
+                          validatePassword(e);
+                        }}
                         value={userPassword}
                       />
                     </View>
@@ -186,6 +171,11 @@ const Login = ({ setIsSignIn }) => {
                       />
                     </View>
                   </View>
+                  {passwordError !== "" && (
+                    <Text style={{ color: "red", marginLeft: 10 }}>
+                      {passwordError}
+                    </Text>
+                  )}
                 </View>
                 {error.status && (
                   <View
@@ -213,21 +203,11 @@ const Login = ({ setIsSignIn }) => {
                 <View>
                   <TouchableOpacity
                     onPress={() => {
-                      if (userPhone.length < 9) {
-                        console.log(1);
-                        setError({
-                          msg: "Please enter your valid phone number",
-                          status: true,
-                        });
-                      } else if (userPassword.length <= 7) {
-                        console.log(2);
-                        setError({
-                          msg: "Please enter your valid password",
-                          status: true,
-                        });
-                      } else {
-                        console.log(3);
-                        isInputValid && submitBtn();
+                      validatePhone(userPhone);
+                      validatePassword(userPassword);
+
+                      if (userPhone.length >= 9 && userPassword.length >= 7) {
+                        submitBtn();
                       }
                     }}
                     style={
@@ -246,7 +226,7 @@ const Login = ({ setIsSignIn }) => {
                   <Text style={Styles.PageSwOr}>Or</Text>
                   <View>
                     <Text style={Styles.PageSw}>
-                      If your don't have an account
+                      If you don't have an account
                     </Text>
                   </View>
                   <View style={Styles.PageSwCon}>

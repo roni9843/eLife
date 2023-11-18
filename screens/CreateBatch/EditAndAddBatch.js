@@ -1,5 +1,8 @@
+import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
 import React, { useState } from "react";
 import {
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -16,38 +19,50 @@ import {
 } from "../../redux/apiSlice";
 
 const EditAndAddBatch = ({ navigation, route }) => {
-  // * redux store user
   const userInfo = useSelector((state) => state.userInfo);
-
   const [loading, setLoading] = useState(false);
-
   const [loadingDelete, setLoadingDelete] = useState(false);
-
   const [updateTuitionBatch] = useUpdateTuitionBatchMutation();
   const [createTuitionBatch] = useCreateTuitionBatchMutation();
 
   const [batchDetails, setBatchDetails] = useState(
     route.params.status === "create" ? "" : route.params.data.bio
   );
+  const [customDetailsAddress, setCustomDetailsAddress] = useState(
+    route.params.status === "create"
+      ? ""
+      : route.params.data.customDetailsAddress
+  );
 
-  // Define state variables for input errors
   const [inputErrors, setInputErrors] = useState({
     batchTitle: "",
     batchTime: "",
     totalSet: "",
     courseFee: "",
+    village: "",
+    union: "",
+    thana: "",
+    district: "",
   });
 
   const [batchData, setBatchData] = useState({
     batchTitle:
       route.params.status === "create" ? "" : route.params.data.batchTitle,
-    batchTime:
-      route.params.status === "create" ? "" : route.params.data.batchTime,
+
     totalSet:
       route.params.status === "create" ? "" : route.params.data.totalSet,
     courseFee:
       route.params.status === "create" ? "" : route.params.data.courseFee,
+    village: route.params.status === "create" ? "" : route.params.data.village,
+    union: route.params.status === "create" ? "" : route.params.data.union,
+    thana: route.params.status === "create" ? "" : route.params.data.thana,
+    district:
+      route.params.status === "create" ? "" : route.params.data.district,
   });
+
+  const [startDate, setStartDate] = useState(
+    route.params.status === "create" ? "" : route.params.data.batchTime
+  );
 
   const [feeType, setFeeType] = useState(
     route.params.status === "create" ? "monthly" : route.params.data.feeType
@@ -59,7 +74,6 @@ const EditAndAddBatch = ({ navigation, route }) => {
       [name]: value,
     });
 
-    // Clear the error message when the user starts typing in the input field
     setInputErrors({
       ...inputErrors,
       [name]: "",
@@ -67,17 +81,22 @@ const EditAndAddBatch = ({ navigation, route }) => {
   };
 
   const handleSubmit = async () => {
-    // Check for empty input fields and set error messages
     const errors = {};
 
+    if (batchData.batchTitle === "") {
+      errors.batchTitle = "Title is required";
+    }
+    if (startDate === "") {
+      errors.batchTime = "Date is required";
+    }
     if (batchData.totalSet === "") {
       errors.totalSet = "Total Set is required";
     }
     if (batchData.courseFee === "") {
       errors.courseFee = "Course Fee is required";
     }
+    // Add validation for other fields if needed
 
-    // If there are errors, don't proceed with submission
     if (Object.keys(errors).length > 0) {
       setInputErrors(errors);
     } else {
@@ -88,51 +107,107 @@ const EditAndAddBatch = ({ navigation, route }) => {
           teacherId: userInfo.currentUser._id,
           batchTitle: batchData.batchTitle,
           bio: batchDetails,
-          batchTime: batchData.batchTime,
+          batchTime: startDate,
           totalSet: batchData.totalSet,
           courseFee: batchData.courseFee,
           feeType: feeType,
+          village: batchData.village,
+          union: batchData.union,
+          thana: batchData.thana,
+          district: batchData.district,
+          customDetailsAddress: customDetailsAddress,
         };
-
-        console.log("this is id payload ", payload);
 
         try {
           const data = await createTuitionBatch(payload);
 
-          console.log("this is create 33 data ", data);
           navigation.navigate("CreateBatchScreen");
-          //    navigation.goBack();
           setLoading(false);
         } catch (error) {
-          console.log("this is error ,", error);
+          console.log("Error:", error);
           setLoading(false);
         }
       } else {
         let payload = {
           batchId: route.params.data._id,
-          batchTime: batchData.batchTime,
+          batchTime: startDate,
           totalSet: batchData.totalSet,
           bio: batchDetails,
           feeType: feeType,
+          village: batchData.village,
+          union: batchData.union,
+          thana: batchData.thana,
+          district: batchData.district,
+
+          customDetailsAddress: customDetailsAddress,
         };
 
         try {
-          console.log(("this is id payload ", payload));
-
           const data = await updateTuitionBatch(payload);
 
-          console.log("data ", data);
-          navigation.goBack();
+          //    navigation.goBack();
+
+          console.log(route, "<- this is update data -> ", data);
+
+          let newBatch = {
+            batchdetails: route.params.data.batchdetails,
+            ...data.data.saveBatch,
+          };
+
+          console.log("this is new batch ", newBatch);
+
+          navigation.navigate("ViewTeacherBatch", {
+            data: newBatch,
+          });
+
           setLoading(false);
         } catch (error) {
-          console.log("this is error ,", error);
+          console.log("Error:", error);
           setLoading(false);
         }
       }
     }
   };
 
-  const handleDelete = () => {};
+  const [date, setDate] = useState(
+    route.params.status === "create" ? new Date() : route.params.data.batchTime
+  );
+  const [show, setShow] = useState(false);
+  const [formattedDate, setFormattedDate] = useState(
+    route.params.status === "create"
+      ? ""
+      : moment(route.params.data.batchTime).format("YYYY-MM-DD")
+  );
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios"); // For iOS, set show to true only if the done button is pressed
+    setDate(currentDate);
+    setStartDate(currentDate.toString());
+    // Format the date to your desired string format
+
+    // const formatted = `${currentDate.getFullYear()}-${
+    //   currentDate.getMonth() + 1
+    // }-${currentDate.getDate()}`;
+
+    //  const formatted = currentDate;
+
+    console.log("data", selectedDate);
+
+    const formattedDate = moment(currentDate).format("YYYY-MM-DD");
+
+    console.log("this is formatted", formattedDate);
+
+    setFormattedDate(formattedDate);
+  };
+
+  const showDatepicker = () => {
+    setShow(true);
+  };
+
+  const handleDelete = () => {
+    // Add logic for deletion if needed
+  };
 
   return (
     <View>
@@ -140,7 +215,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
         <View style={{ padding: 10 }}>
           <View style={{ marginTop: 10 }}>
             <Text style={{ padding: 5, fontWeight: "bold" }}>
-              Batch Title : (max 14 characters)
+              Batch Title: (max 14 characters)
             </Text>
             <TextInput
               style={{
@@ -157,11 +232,11 @@ const EditAndAddBatch = ({ navigation, route }) => {
               editable={route.params.status === "create" ? true : false}
             />
             <Text style={{ color: "red" }}>{inputErrors.batchTitle}</Text>
-            {/* Display error message */}
           </View>
+
           <View style={{ marginTop: 10 }}>
             <Text style={{ padding: 5, fontWeight: "bold" }}>
-              Batch Details :
+              Batch Details:
             </Text>
             <Textarea
               containerStyle={{
@@ -172,7 +247,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
                 borderBottomWidth: 1,
               }}
               style={{
-                textAlignVertical: "top", // hack android
+                textAlignVertical: "top",
                 height: 100,
                 fontSize: 14,
                 color: "#333",
@@ -186,7 +261,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
             />
           </View>
           <View style={{ marginTop: 10 }}>
-            <Text style={{ padding: 5, fontWeight: "bold" }}>Batch Time :</Text>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>Village:</Text>
             <TextInput
               style={{
                 borderWidth: 1,
@@ -195,15 +270,135 @@ const EditAndAddBatch = ({ navigation, route }) => {
                 borderRadius: 8,
                 backgroundColor: "#F9F9F9",
               }}
-              placeholder="Time"
-              value={batchData.batchTime}
-              onChangeText={(text) => handleInputChange("batchTime", text)}
+              placeholder="Village"
+              value={batchData.village}
+              onChangeText={(text) => handleInputChange("village", text)}
             />
-            <Text style={{ color: "red" }}>{inputErrors.batchTime}</Text>
-            {/* Display error message */}
+            <Text style={{ color: "red" }}>{inputErrors.village}</Text>
           </View>
+
           <View style={{ marginTop: 10 }}>
-            <Text style={{ padding: 5, fontWeight: "bold" }}>Total Set :</Text>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>Union:</Text>
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "#EEEEEE",
+                padding: 10,
+                borderRadius: 8,
+                backgroundColor: "#F9F9F9",
+              }}
+              placeholder="Union"
+              value={batchData.union}
+              onChangeText={(text) => handleInputChange("union", text)}
+            />
+            <Text style={{ color: "red" }}>{inputErrors.union}</Text>
+          </View>
+
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>Thana:</Text>
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "#EEEEEE",
+                padding: 10,
+                borderRadius: 8,
+                backgroundColor: "#F9F9F9",
+              }}
+              placeholder="Thana"
+              value={batchData.thana}
+              onChangeText={(text) => handleInputChange("thana", text)}
+            />
+            <Text style={{ color: "red" }}>{inputErrors.thana}</Text>
+          </View>
+
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>District:</Text>
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "#EEEEEE",
+                padding: 10,
+                borderRadius: 8,
+                backgroundColor: "#F9F9F9",
+              }}
+              placeholder="District"
+              value={batchData.district}
+              onChangeText={(text) => handleInputChange("district", text)}
+            />
+            <Text style={{ color: "red" }}>{inputErrors.district}</Text>
+          </View>
+
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>
+              Custom Details Address:
+            </Text>
+            <Textarea
+              containerStyle={{
+                height: 100,
+                padding: 5,
+                backgroundColor: "#F9F9F9",
+                borderBottomColor: "#040E29",
+                borderBottomWidth: 1,
+              }}
+              style={{
+                textAlignVertical: "top",
+                height: 100,
+                fontSize: 14,
+                color: "#333",
+              }}
+              onChangeText={(e) => setCustomDetailsAddress(e)}
+              maxLength={100}
+              defaultValue={customDetailsAddress}
+              placeholder={"Enter custom details..."}
+              placeholderTextColor={"#c7c7c7"}
+              underlineColorAndroid={"transparent"}
+            />
+          </View>
+
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>
+              Batch Date: {formattedDate}
+            </Text>
+            <View>
+              <TouchableOpacity
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: "#040E29",
+                  padding: 10,
+
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={showDatepicker}
+              >
+                <Text style={{ color: "white" }}>Calender</Text>
+                <IonIcon
+                  style={{
+                    fontSize: 16,
+                    color: "white",
+                    marginLeft: 14,
+                  }}
+                  name={"calendar-outline"}
+                />
+              </TouchableOpacity>
+            </View>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode="date" // Change this to 'time' for time picker
+                is24Hour={true}
+                //  display="default"
+                onChange={onChange}
+              />
+            )}
+
+            <Text style={{ color: "red" }}>{inputErrors.batchTime}</Text>
+          </View>
+
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>Total Set:</Text>
             <TextInput
               style={{
                 borderWidth: 1,
@@ -218,11 +413,11 @@ const EditAndAddBatch = ({ navigation, route }) => {
               onChangeText={(text) => handleInputChange("totalSet", text)}
             />
             <Text style={{ color: "red" }}>{inputErrors.totalSet}</Text>
-            {/* Display error message */}
           </View>
+
           <View style={{ marginTop: 10 }}>
             <Text style={{ padding: 5, fontWeight: "bold" }}>
-              Course Fee : (TAKA)
+              Course Fee: (TAKA)
             </Text>
             <TextInput
               style={{
@@ -238,11 +433,10 @@ const EditAndAddBatch = ({ navigation, route }) => {
               keyboardType="numeric"
               editable={route.params.status === "create" ? true : false}
             />
-
-            {console.log("this is batchData.courseFee", batchData.courseFee)}
             <Text style={{ color: "red" }}>{inputErrors.courseFee}</Text>
-            {/* Display error message */}
           </View>
+
+          {/* ... (other fields) */}
 
           <View
             style={{
@@ -251,8 +445,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
               marginTop: 5,
             }}
           >
-            <Text style={{ fontWeight: "bold" }}>Fee type : </Text>
-
+            <Text style={{ fontWeight: "bold" }}>Fee type: </Text>
             <TouchableOpacity
               disabled={route.params.status === "create" ? false : true}
               style={
@@ -327,7 +520,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
               </Text>
             </TouchableOpacity>
           </View>
-          {/* Submit button */}
+
           <View
             style={{
               flexDirection: "row",
