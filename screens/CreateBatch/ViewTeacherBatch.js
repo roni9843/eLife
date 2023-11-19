@@ -69,6 +69,59 @@ const ViewTeacherBatch = ({ navigation, route }) => {
           >
             <View style={{ flexDirection: "row" }}>
               <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                Category :
+              </Text>
+              <Text style={{ fontSize: 17 }}>
+                {" "}
+                {route.params.data.category}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              elevation: 2,
+              backgroundColor: "white",
+              padding: 10,
+              borderRadius: 10,
+              marginVertical: 5,
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>Class :</Text>
+              <Text style={{ fontSize: 17 }}>
+                {" "}
+                {route.params.data.batchClass}
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              elevation: 2,
+              backgroundColor: "white",
+              padding: 10,
+              borderRadius: 10,
+              marginVertical: 5,
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                Subject :
+              </Text>
+              <Text style={{ fontSize: 17 }}> {route.params.data.subject}</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              elevation: 2,
+              backgroundColor: "white",
+              padding: 10,
+              borderRadius: 10,
+              marginVertical: 5,
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
                 Start Time :
               </Text>
               <Text style={{ fontSize: 17 }}>
@@ -254,6 +307,7 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                         navigation.navigate("AddStudentFee", {
                           state: "Null",
                           id: route.params.data._id,
+                          data: route.params.data,
                         });
                       }}
                       style={{ borderRadius: 5, backgroundColor: "#040E29" }}

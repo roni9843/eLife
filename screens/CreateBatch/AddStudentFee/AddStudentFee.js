@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import FeeCollect from "./FeeCollect";
 const moment = require("moment");
 
 const StudentCard = ({ route }) => {
@@ -151,71 +150,15 @@ const StudentCard = ({ route }) => {
   );
 };
 
-const FeeCollect = ({ route }) => {
-  const [inputValue, setInputValue] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handlePressSubmit = () => {
-    if (inputValue.trim() === "") {
-      setErrorMessage("Please enter a number");
-    } else {
-      setErrorMessage("");
-      // Perform your submit logic here
-      Alert.alert("Success", `Submitted value: ${inputValue}`);
-    }
-  };
-
-  return (
-    <View style={styles.container}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 16,
-        }}
-      >
-        <Text style={{ fontSize: 18, marginBottom: 8 }}>Amount :</Text>
-        <TextInput
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            borderRadius: 5,
-            paddingHorizontal: 10,
-            marginBottom: 16,
-            width: "100%",
-          }}
-          placeholder="TAKA"
-          keyboardType="numeric"
-          value={inputValue}
-          onChangeText={(text) => setInputValue(text)}
-        />
-
-        {errorMessage ? (
-          <Text style={{ color: "red", marginBottom: 10 }}>{errorMessage}</Text>
-        ) : null}
-
-        <TouchableOpacity
-          style={{ backgroundColor: "blue", padding: 10, borderRadius: 5 }}
-          onPress={handlePressSubmit}
-        >
-          <Text style={{ color: "white", textAlign: "center", fontSize: 16 }}>
-            Submit
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-
 const AddStudentFee = ({ navigation, route }) => {
   const [isCollectFee, setIsCollectFee] = useState(false);
 
   useEffect(() => {
-    console.log("fff 1", route.params.id);
+    console.log("fff 1", route.params.data);
     console.log("fff 2", route);
   }, [route]);
+
+  const [oldData, _setOldData] = useState(route.params.data);
 
   return (
     <ScrollView>
@@ -272,7 +215,11 @@ const AddStudentFee = ({ navigation, route }) => {
         </View>
         {isCollectFee && (
           <View>
-            <FeeCollect></FeeCollect>
+            <FeeCollect
+              navigation={navigation}
+              route={route}
+              data={oldData}
+            ></FeeCollect>
           </View>
         )}
 

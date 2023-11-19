@@ -162,6 +162,13 @@ export const usersApi = createApi({
         body: data,
       }),
     }),
+    addStudentFee: builder.mutation({
+      query: (data) => ({
+        url: "TuitionBatch/createFee",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -189,4 +196,5 @@ export const {
   useGetOnePostReactionMutation,
   useGetTeacherAllBatchMutation,
   useGetAllBloodUserQuery,
+  useAddStudentFeeMutation,
 } = usersApi;

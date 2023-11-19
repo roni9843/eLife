@@ -35,6 +35,9 @@ const EditAndAddBatch = ({ navigation, route }) => {
   );
 
   const [inputErrors, setInputErrors] = useState({
+    courseCategory: "",
+    class: "",
+    subject: "",
     batchTitle: "",
     batchTime: "",
     totalSet: "",
@@ -45,7 +48,52 @@ const EditAndAddBatch = ({ navigation, route }) => {
     district: "",
   });
 
+  const CategoryData = [
+    "Academic",
+    "Language Learning",
+    "Digital Marketing",
+    "Design and Multimedia",
+    "Technology and Programming",
+
+    "Health and Fitness",
+    "Photography and Videography",
+    "Music and Performing Arts",
+  ];
+  const ClassData = [
+    "others",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9-10 Science",
+    "9-10 commerce",
+    "9-10 Arts",
+    "11-12 Science",
+    "11-12 commerce",
+    "11-12 Arts",
+  ];
+
+  const [category, setCategory] = useState(
+    route.params.status === "create" ? null : route.params.data.category
+  );
+
+  const handleCategorySelection = (item) => {
+    setCategory(item === category ? null : item);
+  };
+  const [batchClass, setBatchClass] = useState(
+    route.params.status === "create" ? null : route.params.data.batchClass
+  );
+
+  const handleSelection = (item) => {
+    setBatchClass(item === batchClass ? null : item);
+  };
+
   const [batchData, setBatchData] = useState({
+    subject: route.params.status === "create" ? "" : route.params.data.subject,
     batchTitle:
       route.params.status === "create" ? "" : route.params.data.batchTitle,
 
@@ -83,6 +131,15 @@ const EditAndAddBatch = ({ navigation, route }) => {
   const handleSubmit = async () => {
     const errors = {};
 
+    if (category === null) {
+      errors.category = "Course category is required";
+    }
+    if (batchClass === null) {
+      errors.batchClass = "Class is required";
+    }
+    if (batchData.subject === "") {
+      errors.subject = "Subject is required";
+    }
     if (batchData.batchTitle === "") {
       errors.batchTitle = "Title is required";
     }
@@ -105,6 +162,9 @@ const EditAndAddBatch = ({ navigation, route }) => {
       if (route.params.status === "create") {
         let payload = {
           teacherId: userInfo.currentUser._id,
+          category: category,
+          batchClass: batchClass,
+          subject: batchData.subject,
           batchTitle: batchData.batchTitle,
           bio: batchDetails,
           batchTime: startDate,
@@ -121,7 +181,11 @@ const EditAndAddBatch = ({ navigation, route }) => {
         try {
           const data = await createTuitionBatch(payload);
 
-          navigation.navigate("CreateBatchScreen");
+          console.log("create ", data);
+
+          navigation.navigate("CreateBatchScreen", {
+            dataState: Math.floor(10000 + Math.random() * 90000),
+          });
           setLoading(false);
         } catch (error) {
           console.log("Error:", error);
@@ -138,6 +202,9 @@ const EditAndAddBatch = ({ navigation, route }) => {
           union: batchData.union,
           thana: batchData.thana,
           district: batchData.district,
+          category: category,
+          batchClass: batchClass,
+          subject: batchData.subject,
 
           customDetailsAddress: customDetailsAddress,
         };
@@ -229,9 +296,116 @@ const EditAndAddBatch = ({ navigation, route }) => {
               maxLength={14}
               value={batchData.batchTitle}
               onChangeText={(text) => handleInputChange("batchTitle", text)}
-              editable={route.params.status === "create" ? true : false}
             />
             <Text style={{ color: "red" }}>{inputErrors.batchTitle}</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>Subject:</Text>
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "#EEEEEE",
+                padding: 10,
+                borderRadius: 8,
+                backgroundColor: "#F9F9F9",
+              }}
+              placeholder="Subject"
+              value={batchData.subject}
+              onChangeText={(text) => handleInputChange("subject", text)}
+            />
+            <Text style={{ color: "red" }}>{inputErrors.subject}</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>
+              Category : {category}
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+            >
+              <ScrollView horizontal>
+                {CategoryData.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleCategorySelection(item)}
+                    style={[
+                      {
+                        padding: 10,
+                        borderWidth: 1,
+                        borderColor: "black",
+
+                        marginVertical: 5,
+                        borderRadius: 5,
+                        margin: 5,
+                      },
+                      {
+                        backgroundColor:
+                          item === category ? "#040E29" : "white",
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={{
+                        color: item === category ? "white" : "#040E29",
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+            <Text style={{ color: "red" }}>{inputErrors.category}</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>
+              Class : {batchClass}
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+            >
+              <ScrollView horizontal>
+                {ClassData.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleSelection(item)}
+                    style={[
+                      {
+                        padding: 10,
+                        borderWidth: 1,
+                        borderColor: "black",
+
+                        marginVertical: 5,
+                        borderRadius: 5,
+                        margin: 5,
+                      },
+                      {
+                        backgroundColor:
+                          item === batchClass ? "#040E29" : "white",
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={{
+                        color: item === batchClass ? "white" : "#040E29",
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+            <Text style={{ color: "red" }}>{inputErrors.batchClass}</Text>
           </View>
 
           <View style={{ marginTop: 10 }}>
