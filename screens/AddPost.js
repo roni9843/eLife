@@ -14,6 +14,7 @@ import { ActivityIndicator } from "react-native-paper";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  useGetAllStatusPostQuery,
   useStatusPostMutation,
   useUpdateOnePostMutation,
 } from "../redux/apiSlice";
@@ -26,6 +27,8 @@ const AddPost = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const [currentTime, setCurrentTime] = useState(moment().format("DD-MM-YYYY"));
+
+  const { data: getAllStatusPost, refetch } = useGetAllStatusPostQuery();
 
   const [userStatus, setUserStatus] = useState(
     route?.params?.status ? route?.params?.status : ""
@@ -59,11 +62,17 @@ const AddPost = ({ navigation, route }) => {
         };
 
         const data = await updateOnePost(payloadForUpdate);
+        await refetch();
 
-        dispatch(addStatusPost(data.data.post));
-        setLoading(false);
-        navigation.goBack();
         //navigation.navigate("LandingScreen");
+
+        setTimeout(() => {
+          navigation.navigate("LandingScreen");
+
+          console.log("5---> ", getAllStatusPost.posts);
+          //    navigation.goBack();
+          setLoading(false);
+        }, 0);
       } else {
         const payload = {
           postBy: route?.params?.userId,
@@ -74,12 +83,17 @@ const AddPost = ({ navigation, route }) => {
 
         console.log("this is post 9833 ->  ", data.data.posts);
 
-        dispatch(addStatusPost(data.data.posts));
+        // dispatch(addStatusPost(data.data.posts));
+
+        await refetch();
 
         setTimeout(() => {
+          // navigation.navigate("LandingScreen");
+
+          console.log("5---> ", getAllStatusPost.posts);
           navigation.goBack();
           setLoading(false);
-        }, 1000);
+        }, 0);
       }
     } catch (error) {
       console.log(error);
@@ -92,6 +106,13 @@ const AddPost = ({ navigation, route }) => {
   const submitTest = () => {
     console.log(route?.params?.pageState);
   };
+
+  // ? add post to state
+  useEffect(() => {
+    if (getAllStatusPost?.message === "successful") {
+      dispatch(addStatusPost(getAllStatusPost.posts));
+    }
+  }, [getAllStatusPost]);
 
   return (
     <ScrollView style={styles.container}>
@@ -143,11 +164,32 @@ const AddPost = ({ navigation, route }) => {
                 />
               )}
             </View>
+
             <View style={{ marginLeft: 5 }}>
               <View>
-                <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                  {route?.params?.userName}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                    {" "}
+                    {route?.params?.userName}
+                  </Text>
+
+                  {route?.params?.verified === true && (
+                    <View style={{ marginTop: 0, marginLeft: 5 }}>
+                      <Image
+                        source={require("../assets/blueTick.png")}
+                        style={{ height: 15, width: 20 }}
+                      />
+                    </View>
+                  )}
+                </View>
+
                 <Text style={{ fontSize: 10, color: "gray" }}>
                   {route?.params?.timestamps
                     ? moment(route?.params?.timestamps).format("YYYY-MM-DD")

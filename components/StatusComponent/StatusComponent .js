@@ -296,8 +296,27 @@ const StatusComponent = ({
           >
             <View>
               <TouchableOpacity onPress={() => reDirect && goProfile()}>
-                <Text style={styles.userName}>{userName}</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={styles.userName}>{userName}</Text>
+
+                  {userInfo?.verified === true && (
+                    <View style={{ marginTop: 0, marginLeft: 5 }}>
+                      <Image
+                        source={require("../../assets/blueTick.png")}
+                        style={{ height: 15, width: 20 }}
+                      />
+                    </View>
+                  )}
+                </View>
               </TouchableOpacity>
+
               <Text style={styles.time}>{timeAgo}</Text>
             </View>
             {isMenuShow && (
@@ -373,6 +392,7 @@ const StatusComponent = ({
                                 userName: userName,
                                 userImage: userImage,
                                 postId: postId,
+                                verified: userInfo?.verified,
                               });
                             } else {
                               closeModal();

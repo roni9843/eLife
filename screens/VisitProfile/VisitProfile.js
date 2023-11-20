@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import ViewPageHeader from "../../components/HeaderBar/ViewPageHeader";
@@ -374,6 +381,18 @@ const VisitProfile = ({ route, navigation }) => {
                   />
                 </View>
               ))}
+            {userPosts === null && (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 30,
+                }}
+              >
+                <ActivityIndicator size="large" color="#040E29" />
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>

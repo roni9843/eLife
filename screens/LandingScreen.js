@@ -386,6 +386,7 @@ const LandingScreen = ({ props, navigation }) => {
                   userImage: userInfo.currentUser.profilePic,
                   timestamps: null,
                   status: null,
+                  verified: userInfo.currentUser.verified,
                 })
               : navigation.navigate("AccountCreate");
           }}

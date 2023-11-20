@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   ScrollView,
   StatusBar,
   Text,
@@ -10,7 +11,6 @@ import { useSelector } from "react-redux";
 import BloodHeader from "../../components/HeaderBar/BloodHeader";
 import { useGetAllBloodUserQuery } from "../../redux/apiSlice";
 import StatusCard from "./StatusCard ";
-
 const Blood = ({ navigation }) => {
   // * redux store user
   const userInfo = useSelector((state) => state.userInfo);
@@ -23,12 +23,15 @@ const Blood = ({ navigation }) => {
 
   const [allBloodData, setAllBloodData] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (allBloodUserApi) {
       console.log("allBloodUser -> ", allBloodUserApi.user);
 
       setAllBloodData(allBloodUserApi.user);
       setInitialData(allBloodUserApi.user);
+      setLoading(false);
     }
   }, [allBloodUserApi]);
 
@@ -164,6 +167,18 @@ const Blood = ({ navigation }) => {
                   Donation request
                 </Text>
               </View>
+              {loading && (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 30,
+                  }}
+                >
+                  <ActivityIndicator size="large" color="#040E29" />
+                </View>
+              )}
               <View>
                 {allBloodData &&
                   allBloodData.map((dt) => (

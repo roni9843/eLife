@@ -238,7 +238,7 @@ const StatusCard = ({
             padding: 10,
             alignContent: "center",
             alignItems: "center",
-            alignSelf: "center",
+            alignSelf: "flex-end",
           }}
         >
           <Text
