@@ -66,6 +66,13 @@ export const usersApi = createApi({
     getAllStatusPost: builder.query({
       query: () => "post/getAllPost",
     }),
+    getAllStatusPostWithPagination: builder.mutation({
+      query: (data) => ({
+        url: "post/getAllPostWithPagination",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getThisUserStatusPost: builder.mutation({
       query: (data) => ({
         url: "post/getOneUserPosts",
@@ -134,9 +141,23 @@ export const usersApi = createApi({
         body: data,
       }),
     }),
+    searchTuitionBatch: builder.mutation({
+      query: (data) => ({
+        url: "TuitionBatch/searchBatch",
+        method: "POST",
+        body: data,
+      }),
+    }),
     updateTuitionBatch: builder.mutation({
       query: (data) => ({
         url: "TuitionBatch/updateBatch",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DeleteTuitionBatch: builder.mutation({
+      query: (data) => ({
+        url: "TuitionBatch/deleteBatch",
         method: "POST",
         body: data,
       }),
@@ -169,6 +190,13 @@ export const usersApi = createApi({
         body: data,
       }),
     }),
+    deleteStudent: builder.mutation({
+      query: (data) => ({
+        url: "TuitionBatch/deleteBatchDetails",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -197,4 +225,8 @@ export const {
   useGetTeacherAllBatchMutation,
   useGetAllBloodUserQuery,
   useAddStudentFeeMutation,
+  useSearchTuitionBatchMutation,
+  useGetAllStatusPostWithPaginationMutation,
+  useDeleteTuitionBatchMutation,
+  useDeleteStudentMutation,
 } = usersApi;

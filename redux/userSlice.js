@@ -8,8 +8,9 @@ export const usersSlice = createSlice({
     currentUser: null,
     token: null,
     fetchForAllUserAndAllStatusData: null,
-    allStatusPost: null,
+    allStatusPost: [],
     viewScreenData: [],
+    postPaginationPage: 1,
   },
   reducers: {
     addAllUser: (state, action) => {
@@ -30,7 +31,8 @@ export const usersSlice = createSlice({
     addStatusPost: (state, action) => {
       console.log(action.payload, "this is redux -> ", state.allStatusPost);
 
-      state.allStatusPost = action.payload;
+      state.allStatusPost = [...state.allStatusPost, ...action.payload];
+      // state.allStatusPost = action.payload;
     },
     addPostReaction: (state, action) => {
       console.log("this is payload -> ", action.payload);
@@ -52,6 +54,35 @@ export const usersSlice = createSlice({
         todoToUpdate.text = text;
       }
     },
+    testDataAdd: (state, action) => {
+      state.testData = [...state.testData, ...action.payload];
+    },
+    addLatestPost: (state, action) => {
+      state.allStatusPost = [...action.payload, ...state.allStatusPost];
+    },
+    updatePost: (state, action) => {
+      //  [...action.payload, ...state.allStatusPost];
+
+      let newData = state.allStatusPost.map((item) =>
+        item._id === action.payload._id ? action.payload : item
+      );
+
+      state.allStatusPost = newData;
+    },
+    removePost: (state, action) => {
+      //  = [...action.payload, ...state.allStatusPost];
+
+      console.log("state.allStatusPost old ", state.allStatusPost);
+      state.allStatusPost = state.allStatusPost.filter(
+        (p) => p._id !== action.payload
+      );
+
+      console.log("action.payload ", action.payload);
+      console.log("state.allStatusPost new ", state.allStatusPost);
+    },
+    addPostPaginationPage: (state, action) => {
+      state.postPaginationPage = state.postPaginationPage + 1;
+    },
   },
 });
 
@@ -66,4 +97,9 @@ export const {
   addViewScreenData,
   addPostReaction,
   addCurrentUserPost,
+  testDataAdd,
+  addPostPaginationPage,
+  addLatestPost,
+  removePost,
+  updatePost,
 } = usersSlice.actions;

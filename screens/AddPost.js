@@ -14,11 +14,10 @@ import { ActivityIndicator } from "react-native-paper";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  useGetAllStatusPostQuery,
   useStatusPostMutation,
   useUpdateOnePostMutation,
 } from "../redux/apiSlice";
-import { addStatusPost } from "../redux/userSlice";
+import { addLatestPost, updatePost } from "../redux/userSlice";
 
 const AddPost = ({ navigation, route }) => {
   // * redux store user
@@ -28,7 +27,7 @@ const AddPost = ({ navigation, route }) => {
 
   const [currentTime, setCurrentTime] = useState(moment().format("DD-MM-YYYY"));
 
-  const { data: getAllStatusPost, refetch } = useGetAllStatusPostQuery();
+  //  const { data: getAllStatusPost, refetch } = useGetAllStatusPostQuery();
 
   const [userStatus, setUserStatus] = useState(
     route?.params?.status ? route?.params?.status : ""
@@ -62,15 +61,19 @@ const AddPost = ({ navigation, route }) => {
         };
 
         const data = await updateOnePost(payloadForUpdate);
-        await refetch();
+        /// await refetch();
+
+        console.log("this update res data -> ", data.data.post[0]);
+
+        dispatch(updatePost(data.data.post[0]));
 
         //navigation.navigate("LandingScreen");
 
         setTimeout(() => {
           navigation.navigate("LandingScreen");
 
-          console.log("5---> ", getAllStatusPost.posts);
-          //    navigation.goBack();
+          //      console.log("5---> ", getAllStatusPost.posts);
+          navigation.goBack();
           setLoading(false);
         }, 0);
       } else {
@@ -83,14 +86,14 @@ const AddPost = ({ navigation, route }) => {
 
         console.log("this is post 9833 ->  ", data.data.posts);
 
-        // dispatch(addStatusPost(data.data.posts));
+        dispatch(addLatestPost(data.data.posts));
 
-        await refetch();
+        //await refetch();
 
         setTimeout(() => {
           // navigation.navigate("LandingScreen");
 
-          console.log("5---> ", getAllStatusPost.posts);
+          //   console.log("5---> ", getAllStatusPost.posts);
           navigation.goBack();
           setLoading(false);
         }, 0);
@@ -108,11 +111,11 @@ const AddPost = ({ navigation, route }) => {
   };
 
   // ? add post to state
-  useEffect(() => {
-    if (getAllStatusPost?.message === "successful") {
-      dispatch(addStatusPost(getAllStatusPost.posts));
-    }
-  }, [getAllStatusPost]);
+  // useEffect(() => {
+  //   if (getAllStatusPost?.message === "successful") {
+  //     dispatch(addStatusPost(getAllStatusPost.posts));
+  //   }
+  // }, [getAllStatusPost]);
 
   return (
     <ScrollView style={styles.container}>

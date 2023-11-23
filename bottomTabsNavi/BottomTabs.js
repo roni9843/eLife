@@ -3,10 +3,14 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  useGetAllStatusPostQuery,
+  useGetAllStatusPostWithPaginationMutation,
   useGetOneUserMutation,
 } from "../redux/apiSlice";
-import { addCurrentUser, addStatusPost } from "../redux/userSlice";
+import {
+  addCurrentUser,
+  addPostPaginationPage,
+  addStatusPost,
+} from "../redux/userSlice";
 import isUserLogged from "../services/isUserLogged";
 import StackNavi from "../stackNavi/StackNavi";
 import clearUserInfo from "./../services/clearUserInfo";
@@ -26,14 +30,37 @@ const BottomTabs = () => {
   const [getOneUser] = useGetOneUserMutation();
 
   // ? get all post with there reaction and with there react api
-  const { data: getAllStatusPost } = useGetAllStatusPostQuery();
+  //***** */ const { data: getAllStatusPost } = useGetAllStatusPostQuery();
+
+  const [getAllStatusPostWithPagination] =
+    useGetAllStatusPostWithPaginationMutation();
 
   // ? add post to state
+  // useEffect(() => {
+  //   if (getAllStatusPostWithPagination?.message === "successful") {
+  //     dispatch(addStatusPost(getAllStatusPostWithPagination.posts));
+  //   }
+  // }, [getAllStatusPost]);
+
   useEffect(() => {
-    if (getAllStatusPost?.message === "successful") {
-      dispatch(addStatusPost(getAllStatusPost.posts));
+    callPostApi();
+  }, []);
+
+  const callPostApi = async () => {
+    const payload = {
+      page: userInfo.postPaginationPage,
+    };
+
+    const getAllPost = await getAllStatusPostWithPagination(payload);
+
+    console.log("this is all  getAllPost - 78 -> ", getAllPost);
+
+    if (getAllPost.data?.message === "successful") {
+      dispatch(addStatusPost(getAllPost.data?.allPosts));
+
+      dispatch(addPostPaginationPage(1));
     }
-  }, [getAllStatusPost]);
+  };
 
   useEffect(() => {
     isUserLoggedFunc();

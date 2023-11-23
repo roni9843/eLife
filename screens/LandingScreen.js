@@ -12,12 +12,17 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import IonIcon from "react-native-vector-icons/Ionicons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import HomePageCard from "../components/HomePageCard";
 import HomePageStatusLoading from "../components/HomePageLoading/HomePageStatusLoading";
-import { useGetAllStatusPostQuery } from "../redux/apiSlice";
-import clearUserInfo from "../services/clearUserInfo";
+import { useGetAllStatusPostWithPaginationMutation } from "../redux/apiSlice";
+import {
+  addPostPaginationPage,
+  addStatusPost,
+  testDataAdd,
+} from "../redux/userSlice";
 import StatusComponent from "./../components/StatusComponent/StatusComponent ";
 
 const Category = [
@@ -149,8 +154,36 @@ const LandingScreen = ({ props, navigation }) => {
     setModalVisible(false);
   };
 
+  // ? redux dispatch
+  const dispatch = useDispatch();
+
+  // Function to close the modal
+  const addtestData = () => {
+    dispatch(testDataAdd(userInfo.allStatusPost));
+  };
+
   // ? get all post with there reaction and with there react api
-  const { data: getAllStatusPost } = useGetAllStatusPostQuery();
+  //  const { data: getAllStatusPost } = useGetAllStatusPostQuery();
+  const [loading, setLoading] = useState(false);
+  const [getAllStatusPostWithPagination] =
+    useGetAllStatusPostWithPaginationMutation();
+
+  const callPostApi = async () => {
+    setLoading(true);
+    const payload = {
+      page: userInfo.postPaginationPage,
+    };
+
+    const getAllPost = await getAllStatusPostWithPagination(payload);
+
+    console.log("this is all  getAllPost - 78 -> ", getAllPost);
+
+    if (getAllPost.data?.message === "successful") {
+      dispatch(addStatusPost(getAllPost.data?.allPosts));
+      setLoading(false);
+      dispatch(addPostPaginationPage(1));
+    }
+  };
 
   return (
     <View style={{ flex: 1, position: "relative" }}>
@@ -163,13 +196,16 @@ const LandingScreen = ({ props, navigation }) => {
 
       <View style={styles.topBarContainer}>
         <View style={styles.headerContain}>
-          <View style={{ flex: 2 }}>
+          <View
+            //style={{ flex: 2 }}
+            style={{ flex: 7 }}
+          >
             <Image
               style={{ width: 57, height: 36 }}
               source={require("../assets/logo.png")}
             />
           </View>
-          <View style={{ flex: 7 }}>
+          <View style={{ flex: 7, display: "none" }}>
             <TextInput
               style={styles.InputStyle}
               placeholder="Search..."
@@ -325,15 +361,6 @@ const LandingScreen = ({ props, navigation }) => {
                         <Text style={{ fontSize: 16 }}>Batch</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        style={{
-                          padding: 10,
-                          borderBottomWidth: 1,
-                          borderColor: "#D3D3D3",
-                        }}
-                      >
-                        <Text style={{ fontSize: 16 }}>Fee</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
                         onPress={() => {
                           if (userInfo.currentUser !== null) {
                             // clearUserInfo().then((e) =>
@@ -451,10 +478,10 @@ const LandingScreen = ({ props, navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={
-                () =>
-                  clearUserInfo().then((e) =>
-                    console.log("this is clear -> ", e)
-                  )
+                () => navigation.navigate("ViewTuitionBatch")
+                // clearUserInfo().then((e) =>
+                //   console.log("this is clear -> ", e)
+                // )
 
                 // console.log("ee", userInfo.allStatusPost)
               }
@@ -512,6 +539,54 @@ const LandingScreen = ({ props, navigation }) => {
                   />
                 </View>
               ))}
+          </View>
+          <View
+            style={{
+              margin: 20,
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                borderRadius: 5,
+                backgroundColor: "#040E29",
+                padding: 15,
+                width: 130,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => callPostApi()}
+            >
+              {loading === true ? (
+                <View>
+                  <View style={{ alignItems: "center" }}>
+                    <ActivityIndicator size="small" color="white" />
+                  </View>
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ color: "white", fontSize: 16 }}>Get More</Text>
+
+                  <IonIcon
+                    style={{
+                      fontSize: 20,
+                      color: "white",
+                      marginLeft: 14,
+                    }}
+                    name={"play-forward-circle-outline"}
+                  />
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>

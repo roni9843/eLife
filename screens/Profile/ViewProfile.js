@@ -1,496 +1,134 @@
-import React, { useEffect } from "react";
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import moment from "moment";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import IonIcon from "react-native-vector-icons/Ionicons"; // Import Ionicons from the appropriate library
 
-import {
-  Menu,
-  MenuOption,
-  MenuOptions,
-  MenuProvider,
-  MenuTrigger,
-} from "react-native-popup-menu";
-import IonIcon from "react-native-vector-icons/Ionicons";
-import { useSelector } from "react-redux";
-import ViewPageHeader from "../../components/HeaderBar/ViewPageHeader";
+const ViewTuitionBatchDetails = ({ route }) => {
+  console.log("this is route ", route);
 
-const TargetStudentBox = ({ item }) => {
+  // Check if profilePic is available, otherwise use IonIcon as a placeholder
+  const imageSource = route.params.courseData.teacherDetails.profilePic
+    ? { uri: route.params.courseData.teacherDetails.profilePic }
+    : null; // Set to null when the profilePic is not available
+
   return (
-    <View style={{ width: "33%" }}>
-      <Text
-        style={{
-          backgroundColor: "white",
-          padding: 5,
-          margin: 5,
-          borderRadius: 5,
-          color: "#040E29",
-          textAlign: "center",
-        }}
-      >
-        {item.class}
-      </Text>
-    </View>
-  );
-};
-
-const StatusBox = ({ item }) => {
-  return (
-    <View
-      style={{
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: "#E0E0E0",
-        padding: 10,
-        marginTop: 10,
-        backgroundColor: "white",
-      }}
-    >
-      <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <View>
-            <IonIcon
-              style={{
-                fontSize: 40,
-                color: "black",
-              }}
-              name={"person-circle-outline"}
-            />
-          </View>
-          <View style={{ marginLeft: 5 }}>
-            <View>
-              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                {item.name}
-              </Text>
-              <Text style={{ fontSize: 10, color: "gray" }}>{item.date}</Text>
-            </View>
-          </View>
-        </View>
-        <View>
-          <MenuProvider backHandler={true} style={{ padding: 5 }}>
-            <Menu>
-              <MenuTrigger
-                customStyles={{
-                  triggerWrapper: {
-                    marginLeft: 40,
-                    paddingVertical: 15,
-                  },
-                }}
-              >
-                <IonIcon
-                  style={{
-                    fontSize: 20,
-                    color: "black",
-                  }}
-                  name={"ellipsis-vertical-sharp"}
-                />
-              </MenuTrigger>
-              <MenuOptions
-                style={{
-                  backgroundColor: "#EEEEEE",
-                  borderWidth: 1,
-                  borderColor: "#999EA2",
-                  width: 60,
-                }}
-              >
-                <MenuOption onSelect={() => alert(`Edit`)} text="Edit" />
-                <MenuOption>
-                  <Text style={{ color: "red" }}>Delete</Text>
-                </MenuOption>
-              </MenuOptions>
-            </Menu>
-          </MenuProvider>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        {imageSource ? (
+          <Image source={imageSource} style={styles.teacherImage} />
+        ) : (
+          <IonIcon
+            style={{
+              marginBottom: -9,
+              marginHorizontal: -5,
+              fontSize: 100,
+              color: "white",
+            }}
+            name={"person-circle-outline"}
+          />
+        )}
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{route.params.courseData.batchTitle}</Text>
+          <Text style={styles.subtitle}>{route.params.courseData.bio}</Text>
         </View>
       </View>
-      <View>
-        <Text>{item.status}</Text>
+
+      <View style={styles.detailsContainer}>
+        <Text style={styles.details}>
+          Category: {route.params.courseData.category}
+        </Text>
+        <Text style={styles.details}>
+          Batch Time:{" "}
+          {moment(route.params.courseData.batchTime).format(
+            "MMMM Do YYYY, h:mm a"
+          )}
+        </Text>
+        <Text style={styles.details}>
+          Total Sets: {route.params.courseData.totalSet}
+        </Text>
+        <Text style={styles.details}>
+          Course Fee: ${route.params.courseData.courseFee}
+        </Text>
+        <Text style={styles.details}>
+          Fee Type: {route.params.courseData.feeType}
+        </Text>
+        <Text style={styles.details}>
+          Location: {route.params.courseData.village},{" "}
+          {route.params.courseData.district}
+        </Text>
+      </View>
+
+      {/* Render teacher details */}
+      <View style={styles.teacherContainer}>
+        <Text style={styles.teacherTitle}>Teacher Details</Text>
+        <Text style={styles.teacherDetails}>
+          Name: {route.params.courseData.teacherDetails.name}
+        </Text>
+        <Text style={styles.teacherDetails}>
+          Phone: {route.params.courseData.teacherDetails.phone}
+        </Text>
+        {/* Add other teacher details as needed */}
       </View>
     </View>
   );
 };
 
-const ViewProfile = ({ navigation }) => {
-  // * redux store user
-  const userInfo = useSelector((state) => state.userInfo);
-
-  useEffect(() => {
-    console.log("this is View screen data ", userInfo.viewScreenData);
-  }, []);
-
-  const targetStudents = [
-    { id: 1, class: "1" },
-    { id: 2, class: "2" },
-    { id: 3, class: "3" },
-    { id: 4, class: "4" },
-    { id: 5, class: "5" },
-    { id: 6, class: "6" },
-    { id: 7, class: "7" },
-    { id: 8, class: "8" },
-    { id: 9, class: "9 Science" },
-    { id: 10, class: "9 Commerce" },
-    { id: 11, class: "9 Arts" },
-    { id: 12, class: "10 Science" },
-    { id: 13, class: "10 Commerce" },
-    { id: 14, class: "10 Arts" },
-    { id: 15, class: "11 Science" },
-    { id: 16, class: "11 Commerce" },
-    { id: 17, class: "11 Arts" },
-    { id: 18, class: "12 Science" },
-    { id: 19, class: "12 Commerce" },
-    { id: 20, class: "12 Arts" },
-  ];
-
-  const targetSubject = [
-    { id: 1, class: "English" },
-    { id: 2, class: "Bangla" },
-    { id: 3, class: "Math" },
-    { id: 4, class: "Science" },
-    { id: 5, class: "History" },
-    { id: 6, class: "Physic" },
-    { id: 7, class: "Biology" },
-    { id: 8, class: "Accounting" },
-    { id: 9, class: "Finance and Banking" },
-  ];
-
-  const statusData = [
-    {
-      id: 1,
-      name: "Jubayth Hossen Roni",
-      date: "05-07-2023",
-      status:
-        "distinctio ex commodi facere, corporis nesciunt. Dolorum nihil distinctio unde velit omnis. Laborum iusto dolortempore eum beatae possimus, officia omnis illo a doloremque nisi dolore, suscipit delectus perspiciatis",
-    },
-    {
-      id: 2,
-      name: "Jubayth Hossen Roni",
-      date: "05-07-2023",
-      status:
-        "distinctio ex commodi facere, corporis nesciunt. Dolorum nihil distinctio unde velit omnis. Laborum iusto dolortempore eum beatae possimus, officia omnis illo a doloremque nisi dolore, suscipit delectus perspiciatis",
-    },
-    {
-      id: 3,
-      name: "Jubayth Hossen Roni",
-      date: "05-07-2023",
-      status:
-        "distinctio ex commodi facere, corporis nesciunt. Dolorum nihil distinctio unde velit omnis. Laborum iusto dolortempore eum beatae possimus, officia omnis illo a doloremque nisi dolore, suscipit delectus perspiciatis",
-    },
-    {
-      id: 4,
-      name: "Jubayth Hossen Roni",
-      date: "05-07-2023",
-      status:
-        "distinctio ex commodi facere, corporis nesciunt. Dolorum nihil distinctio unde velit omnis. Laborum iusto dolortempore eum beatae possimus, officia omnis illo a doloremque nisi dolore, suscipit delectus perspiciatis",
-    },
-    {
-      id: 5,
-      name: "Jubayth Hossen Roni",
-      date: "05-07-2023",
-      status:
-        "distinctio ex commodi facere, corporis nesciunt. Dolorum nihil distinctio unde velit omnis. Laborum iusto dolortempore eum beatae possimus, officia omnis illo a doloremque nisi dolore, suscipit delectus perspiciatis",
-    },
-    {
-      id: 6,
-      name: "Jubayth Hossen Roni",
-      date: "05-07-2023",
-      status:
-        "distinctio ex commodi facere, corporis nesciunt. Dolorum nihil distinctio unde velit omnis. Laborum iusto dolortempore eum beatae possimus, officia omnis illo a doloremque nisi dolore, suscipit delectus perspiciatis",
-    },
-  ];
-
-  //   state = {
-  //     selectedItems : []
-  //   };
-
-  return (
-    <View style={Styles.container}>
-      <ViewPageHeader navigation={navigation}></ViewPageHeader>
-      <ScrollView>
-        <View style={Styles.containerTop}></View>
-
-        <View style={Styles.ImageContainer}>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                fontWeight: "bold",
-                color: "white",
-                marginTop: -50,
-                backgroundColor: "#040E29",
-                borderRadius: 100,
-                margin: 0,
-                padding: 0,
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
-              <IonIcon
-                style={{
-                  marginBottom: -9,
-                  marginHorizontal: -5,
-                  fontSize: 100,
-                  color: "white",
-                }}
-                name={"person-circle-outline"}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignContent: "center",
-              textAlign: "center",
-            }}
-          >
-            <View>
-              <Text
-                style={{
-                  marginTop: 2,
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  textAlign: "center",
-                }}
-              >
-                Jubayth Hossen Roni
-              </Text>
-            </View>
-            <View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  color: "#81818A",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  textAlign: "center",
-                }}
-              >
-                Computer Science & Engineering (CSE)
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={{ marginTop: 8, height: 2, backgroundColor: "#E0E0E0" }}
-        ></View>
-        <View style={{ padding: 10 }}>
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <IonIcon
-                style={{
-                  fontSize: 18,
-                  color: "#040E29",
-                  marginRight: 10,
-                }}
-                name={"receipt-outline"}
-              />
-              <Text
-                style={{ color: "#040E29", fontSize: 18, fontWeight: "bold" }}
-              >
-                Bio
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: "#81818A", marginTop: 5 }}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Suscipit sint expedita necessitatibus, dolore nihil error quasi
-                id perferendis laudantium eos labore aspernatur libero saepe
-                velit commodi cum ex in hic assumenda accusamus. Quos, sit
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={{ marginTop: 8, height: 2, backgroundColor: "#E0E0E0" }}
-        ></View>
-        <View style={{ padding: 10 }}>
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <IonIcon
-                style={{
-                  fontSize: 23,
-                  color: "#040E29",
-                  marginRight: 10,
-                }}
-                name={"location-outline"}
-              />
-              <Text style={{ color: "#040E29" }}>
-                New Sonakanda, Ruhitpur, Keranigonj, Dhaka
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <IonIcon
-                style={{
-                  fontSize: 20,
-                  color: "#040E29",
-                  marginRight: 10,
-                }}
-                name={"call-outline"}
-              />
-              <Text style={{ color: "#040E29" }}>(0088) 0186372864 </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={{ marginTop: 8, height: 2, backgroundColor: "#E0E0E0" }}
-        ></View>
-        <View style={{ padding: 10 }}>
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <IonIcon
-                style={{
-                  fontSize: 19,
-                  color: "#040E29",
-                  marginRight: 10,
-                  marginLeft: 4,
-                }}
-                name={"book-outline"}
-              />
-              <Text
-                style={{ color: "#040E29", fontSize: 18, fontWeight: "bold" }}
-              >
-                Target Student
-              </Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              {
-                <FlatList
-                  columnWrapperStyle={{ justifyContent: "space-between" }}
-                  numColumns={3}
-                  data={targetStudents}
-                  renderItem={({ item }) => <TargetStudentBox item={item} />}
-                  keyExtractor={(item) => item.id}
-                />
-              }
-            </View>
-          </View>
-        </View>
-        <View
-          style={{ marginTop: 8, height: 2, backgroundColor: "#E0E0E0" }}
-        ></View>
-        <View style={{ padding: 10 }}>
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <IonIcon
-                style={{
-                  fontSize: 19,
-                  color: "#040E29",
-                  marginRight: 10,
-                }}
-                name={"bookmark-outline"}
-              />
-              <Text
-                style={{ color: "#040E29", fontSize: 18, fontWeight: "bold" }}
-              >
-                Target Subject
-              </Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <FlatList
-                columnWrapperStyle={{ justifyContent: "space-between" }}
-                numColumns={3}
-                data={targetSubject}
-                renderItem={({ item }) => <TargetStudentBox item={item} />}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
-          </View>
-        </View>
-        <View
-          style={{ marginTop: 8, height: 2, backgroundColor: "#E0E0E0" }}
-        ></View>
-        <View style={{ padding: 10 }}>
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <IonIcon
-                style={{
-                  fontSize: 20,
-                  color: "#040E29",
-                  marginRight: 10,
-                }}
-                name={"mail-open-outline"}
-              />
-              <Text
-                style={{ color: "#040E29", fontSize: 18, fontWeight: "bold" }}
-              >
-                Posts
-              </Text>
-            </View>
-          </View>
-          <View>
-            <View>
-              <FlatList
-                data={statusData}
-                renderItem={({ item }) => <StatusBox item={item} />}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
-          </View>
-        </View>
-        <View></View>
-      </ScrollView>
-    </View>
-  );
-};
-
-export default ViewProfile;
-
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F8FB",
+    padding: 20,
+    backgroundColor: "#fff",
   },
-  containerTop: {
-    backgroundColor: "#040E29",
-    height: 200,
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
   },
-  ImageContainer: {
-    backgroundColor: "#F4F8FB",
+  titleContainer: {
+    marginLeft: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#555",
+  },
+  teacherImage: {
+    width: 100,
     height: 100,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    marginTop: -40,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: "#ddd",
+  },
+  detailsContainer: {
+    marginBottom: 20,
+  },
+  details: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: "#333",
+    backgroundColor: "#f8f8f8",
+    padding: 15,
+    borderRadius: 10,
+  },
+  teacherContainer: {
+    borderTopWidth: 1,
+    paddingTop: 15,
+  },
+  teacherTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333",
+  },
+  teacherDetails: {
+    fontSize: 18,
+    marginBottom: 5,
+    color: "#555",
   },
 });
+
+export default ViewTuitionBatchDetails;

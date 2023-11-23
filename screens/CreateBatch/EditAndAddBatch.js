@@ -2,6 +2,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import React, { useState } from "react";
 import {
+  Alert,
   Platform,
   ScrollView,
   Text,
@@ -15,6 +16,7 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import {
   useCreateTuitionBatchMutation,
+  useDeleteTuitionBatchMutation,
   useUpdateTuitionBatchMutation,
 } from "../../redux/apiSlice";
 
@@ -272,8 +274,59 @@ const EditAndAddBatch = ({ navigation, route }) => {
     setShow(true);
   };
 
-  const handleDelete = () => {
+  const [DeleteTuitionBatch] = useDeleteTuitionBatchMutation();
+
+  const alertFunc = () => {
+    Alert.alert(
+      "Confirmation",
+      "Are you sure you want to delete The Batch?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+          onPress: () => {
+            // navigation.navigate(optionOneNavigatefetchForAllUserAndAllStatusData);
+            closeModal();
+          },
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          // If the user confirmed, then we dispatch the action we blocked earlier
+          // This will continue the action that had triggered the removal of the screen
+          onPress: () => handleDelete(),
+        },
+      ]
+      // { cancelable: false }
+    );
+  };
+
+  const handleDelete = async () => {
     // Add logic for deletion if needed
+    setLoadingDelete(true);
+    const payload = {
+      batchId: route.params.data._id,
+    };
+
+    const deleteBatch = await DeleteTuitionBatch(payload);
+
+    navigation.navigate("CreateBatchScreen", {
+      data: Math.floor(10000 + Math.random() * 90000),
+    });
+
+    setLoadingDelete(false);
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Function to open the modal
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   return (
@@ -282,7 +335,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
         <View style={{ padding: 10 }}>
           <View style={{ marginTop: 10 }}>
             <Text style={{ padding: 5, fontWeight: "bold" }}>
-              Batch Title: (max 14 characters)
+              Batch Title: (max 25 characters)
             </Text>
             <TextInput
               style={{
@@ -293,7 +346,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
                 backgroundColor: "#F9F9F9",
               }}
               placeholder="FinanceBatch"
-              maxLength={14}
+              maxLength={25}
               value={batchData.batchTitle}
               onChangeText={(text) => handleInputChange("batchTitle", text)}
             />
@@ -719,7 +772,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
                     alignItems: "center",
                     justifyContent: "center",
                   }}
-                  onPress={handleDelete}
+                  onPress={alertFunc}
                 >
                   {loadingDelete === true ? (
                     <View style={{ alignItems: "center" }}>

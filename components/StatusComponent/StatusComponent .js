@@ -21,7 +21,7 @@ import {
 } from "../../redux/apiSlice";
 
 import { Audio } from "expo-av";
-import { addStatusPost } from "../../redux/userSlice";
+import { removePost } from "../../redux/userSlice";
 
 const StatusComponent = ({
   userName,
@@ -141,9 +141,10 @@ const StatusComponent = ({
       });
 
       console.log("delete -> ", data);
-
+      dispatch(removePost(item._id));
       closeModal();
-      dispatch(addStatusPost(data.data.post));
+
+      //  dispatch(addStatusPost(data.data.post));
       // Optionally, you can perform additional actions after a successful deletion
     } catch (error) {
       // Handle error, e.g., show an alert
@@ -451,7 +452,7 @@ const StatusComponent = ({
           marginLeft: 5,
         }}
       >
-        {statusText} likee {likeCount}
+        {statusText}
       </Text>
       <View
         style={{

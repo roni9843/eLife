@@ -20,6 +20,8 @@ import ViewTeacherBatch from "../screens/CreateBatch/ViewTeacherBatch";
 import OfflineUiScreen from "../screens/OfflineUiScreen";
 import EditProfile from "../screens/Profile/EditProfile";
 import Setting from "../screens/Setting/Setting";
+import ViewTuitionBatch from "../screens/ViewTuitionBatch/ViewTuitionBatch";
+import ViewTuitionBatchDetails from "../screens/ViewTuitionBatch/ViewTuitionBatchDetails";
 import VisitProfile from "../screens/VisitProfile/VisitProfile";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import AddPost from "./../screens/AddPost";
@@ -218,6 +220,24 @@ const StackNavi = ({ navigation }) => {
         // }}
         name="BloodScreen"
         component={Blood}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ViewTuitionBatch"
+        component={ViewTuitionBatch}
+      />
+      <Stack.Screen
+        options={{
+          gestureDirection: "vertical",
+          transitionSpec: {
+            open: config,
+            close: closeConfig,
+          },
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          headerTitle: "Add Fee",
+        }}
+        name="ViewTuitionBatchDetails"
+        component={ViewTuitionBatchDetails}
       />
       <Stack.Screen
         options={{ headerShown: false }}

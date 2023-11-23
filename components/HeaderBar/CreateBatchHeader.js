@@ -50,9 +50,7 @@ const CreateBatchHeader = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View>
-            <Text style={{ fontSize: 16, color: "white" }}>
-              Batch Management
-            </Text>
+            <Text style={{ fontSize: 16, color: "white" }}>Tuition</Text>
           </View>
         </View>
       </View>
