@@ -1,4 +1,6 @@
+import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
+import moment from "moment";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -54,7 +56,44 @@ const EditProfile = ({ navigation }) => {
   const [markAs, setMarkAs] = useState("");
   const [verified, setVerified] = useState("");
   const [active, setActive] = useState("");
-  const [numberOfDonate, setNumberOfDonate] = useState(0);
+  const [numberOfDonate, setNumberOfDonate] = useState(
+    userInfo.currentUser?.numberOfDonate
+      ? userInfo.currentUser?.numberOfDonate
+      : 0
+  );
+
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [show, setShow] = useState(false);
+  const [formattedDate, setFormattedDate] = useState(
+    userInfo.currentUser?.lastDonateDate &&
+      moment(userInfo.currentUser?.lastDonateDate).format("YYYY-MM-DD")
+  );
+
+  const onChangeDate = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios"); // For iOS, set show to true only if the done button is pressed
+    setDate(currentDate);
+    //setFormattedDate(currentDate.toString());
+    // Format the date to your desired string format
+
+    // const formatted = `${currentDate.getFullYear()}-${
+    //   currentDate.getMonth() + 1
+    // }-${currentDate.getDate()}`;
+
+    //  const formatted = currentDate;
+
+    console.log("data", selectedDate);
+
+    const formattedDate = moment(currentDate).format("YYYY-MM-DD");
+
+    console.log("this is formatted", formattedDate);
+
+    setFormattedDate(formattedDate);
+  };
+
+  const showDatepicker = () => {
+    setShow(true);
+  };
 
   const [allBloodGroup, _setAllBloodGroup] = useState([
     "A+",
@@ -67,8 +106,6 @@ const EditProfile = ({ navigation }) => {
     "O-",
   ]);
   const [allMark, _setAllMark] = useState(["Student", "Teacher", "Guest"]);
-
-  const [date, setDate] = useState(new Date(1598051730000));
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -120,6 +157,12 @@ const EditProfile = ({ navigation }) => {
 
     return imgLink;
   };
+
+  console.log(
+    "numberOfDonate : ",
+    numberOfDonate,
+    userInfo.currentUser?.numberOfDonate
+  );
 
   useEffect(() => {
     navigation.setOptions({
@@ -262,7 +305,7 @@ const EditProfile = ({ navigation }) => {
         gender: gender,
         bloodGroup: bloodGroup ? bloodGroup : null,
         wantToDonate: wantToDonate,
-        lastDonateDate: lastDonateDate,
+        lastDonateDate: formattedDate,
         numberOfDonate: numberOfDonate,
         village: useVillage,
         union: useUnion,
@@ -782,15 +825,51 @@ const EditProfile = ({ navigation }) => {
                     borderRadius: 8,
                     backgroundColor: "#F9F9F9",
                   }}
-                  value={numberOfDonate} // set the value prop to the state
+                  value={numberOfDonate.toString()} // set the value prop to the state
                   onChangeText={(text) => setNumberOfDonate(text)}
                   keyboardType="numeric"
                 />
               </View>
               <View style={{ marginTop: 10 }}>
-                <Text style={{ padding: 5, fontWeight: "bold" }}>
-                  Last Donate Date :
-                </Text>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ padding: 5, fontWeight: "bold" }}>
+                    Last Donate Date : {formattedDate}
+                  </Text>
+                  <View>
+                    <TouchableOpacity
+                      style={{
+                        borderRadius: 5,
+                        backgroundColor: "#040E29",
+                        padding: 10,
+
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      onPress={showDatepicker}
+                    >
+                      <Text style={{ color: "white" }}>Calender</Text>
+                      <IonIcon
+                        style={{
+                          fontSize: 16,
+                          color: "white",
+                          marginLeft: 14,
+                        }}
+                        name={"calendar-outline"}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  {show && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date}
+                      mode="date" // Change this to 'time' for time picker
+                      is24Hour={true}
+                      //  display="default"
+                      onChange={onChangeDate}
+                    />
+                  )}
+                </View>
               </View>
               <View style={{ marginTop: 10 }}>
                 <Text style={{ padding: 5, fontWeight: "bold" }}>
