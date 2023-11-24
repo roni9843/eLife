@@ -42,8 +42,9 @@ const ViewTuitionBatchDetails = ({ route }) => {
           Fee Type: {route.params.courseData.feeType}
         </Text>
         <Text style={styles.details}>
-          Location: {route.params.courseData.village},{" "}
-          {route.params.courseData.district}
+          Location: {route.params.courseData?.village},{" "}
+          {route.params.courseData?.union} {route.params.courseData?.thana}{" "}
+          {route.params.courseData?.district}{" "}
         </Text>
       </View>
 

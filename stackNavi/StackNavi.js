@@ -234,7 +234,7 @@ const StackNavi = ({ navigation }) => {
             close: closeConfig,
           },
           cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-          headerTitle: "Add Fee",
+          headerTitle: "Details",
         }}
         name="ViewTuitionBatchDetails"
         component={ViewTuitionBatchDetails}
