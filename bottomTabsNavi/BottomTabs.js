@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGetAllStatusPostWithPaginationMutation,
@@ -88,7 +88,18 @@ const BottomTabs = () => {
 
   return (
     <View style={styles.container}>
-      <StackNavi></StackNavi>
+      <Text
+        style={{
+          flex: 1,
+          backgroundColor: "red",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: 20,
+          padding: 50,
+        }}
+      >
+        This is text
+      </Text>
     </View>
   );
 };
@@ -102,23 +113,35 @@ const styles = StyleSheet.create({
 export default BottomTabs;
 
 <Tab.Navigator>
-  <Tab.Screen
-    options={{
-      gestureEnabled: true,
-      tabBarIcon: null,
-      headerShown: false,
-
-      tabBarOptions: {
-        visible: false,
-      },
-      tabBarStyle: {
-        display: "none",
-      },
+  <Text
+    style={{
+      flex: 1,
+      backgroundColor: "red",
+      alignItems: "center",
+      justifyContent: "center",
+      margin: 20,
+      padding: 50,
     }}
-    screenOptions={{
-      tabBarIconStyle: { backgroundColor: "red", color: "red" },
-    }}
-    name="Home"
-    component={StackNavi}
-  />
+  >
+    This is text
+  </Text>
 </Tab.Navigator>;
+<Tab.Screen
+  options={{
+    gestureEnabled: true,
+    tabBarIcon: null,
+    headerShown: false,
+
+    tabBarOptions: {
+      visible: false,
+    },
+    tabBarStyle: {
+      display: "none",
+    },
+  }}
+  screenOptions={{
+    tabBarIconStyle: { backgroundColor: "red", color: "red" },
+  }}
+  name="Home"
+  component={StackNavi}
+/>;
