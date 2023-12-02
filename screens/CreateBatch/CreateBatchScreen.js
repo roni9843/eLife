@@ -149,7 +149,6 @@ const CreateBatchScreen = ({ navigation, route }) => {
                           <Text
                             style={{
                               color: "gray",
-                              fontWeight: "100",
                               fontSize: 14,
                             }}
                           >
@@ -164,7 +163,6 @@ const CreateBatchScreen = ({ navigation, route }) => {
                           <Text
                             style={{
                               color: "black",
-                              fontWeight: "100",
                               fontSize: 14,
                             }}
                           >
@@ -179,7 +177,6 @@ const CreateBatchScreen = ({ navigation, route }) => {
                           <Text
                             style={{
                               color: "black",
-                              fontWeight: "100",
                               fontSize: 14,
                             }}
                           >
@@ -194,7 +191,6 @@ const CreateBatchScreen = ({ navigation, route }) => {
                           <Text
                             style={{
                               color: "black",
-                              fontWeight: "100",
                               fontSize: 14,
                             }}
                           >

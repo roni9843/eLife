@@ -77,8 +77,8 @@ export const usersSlice = createSlice({
         (p) => p._id !== action.payload
       );
 
-      console.log("action.payload ", action.payload);
-      console.log("state.allStatusPost new ", state.allStatusPost);
+      console.log("this is delete 12 action.payload ->  ", action.payload);
+      console.log("this is delete 12 all state ->  ", state.allStatusPost);
     },
     addPostPaginationPage: (state, action) => {
       state.postPaginationPage = state.postPaginationPage + action.payload;

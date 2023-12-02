@@ -14,7 +14,13 @@ const ViewTuitionBatchDetails = ({ route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
+      <View
+        style={{
+          justifyContent: "center",
+          alignContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Image
           source={{
             uri:
@@ -23,9 +29,19 @@ const ViewTuitionBatchDetails = ({ route }) => {
           }}
           style={styles.teacherImage}
         />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{route.params.courseData.batchTitle}</Text>
-          <Text style={styles.subtitle}>{route.params.courseData.bio}</Text>
+        <View style={styles.header}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.title}>
+              {route.params.courseData.batchTitle}
+            </Text>
+            <Text style={styles.subtitle}>{route.params.courseData.bio}</Text>
+          </View>
         </View>
       </View>
 
@@ -76,13 +92,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
     marginBottom: 20,
   },
-  titleContainer: {
-    marginLeft: 20,
-  },
+  titleContainer: {},
   title: {
     fontSize: Dimensions.get("window").width * 0.06, // Responsive font size
     fontWeight: "bold",
@@ -91,6 +103,9 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: Dimensions.get("window").width * 0.04, // Responsive font size
     color: "#555",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
   },
   teacherImage: {
     width: Dimensions.get("window").width * 0.25, // Responsive image width

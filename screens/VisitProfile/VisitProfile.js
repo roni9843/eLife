@@ -378,6 +378,8 @@ const VisitProfile = ({ route, navigation }) => {
                     statusText={post.status}
                     userImage={post.userInfo[0][0].profilePic}
                     userInfo={post.userInfo[0][0]}
+                    userPosts={userPosts}
+                    setUserPosts={setUserPosts}
                   />
                 </View>
               ))}

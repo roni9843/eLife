@@ -167,6 +167,7 @@ const StatusCard = ({
             <Text style={styles.donateCount}>
               Total Donations: {donateCount}
             </Text>
+            <Text style={styles.donateCount}>Blood Group: {bloodGrp}</Text>
           </View>
         </View>
         <View
@@ -222,6 +223,7 @@ const StatusCard = ({
             style={{
               flexDirection: "row",
               alignItems: "center",
+              width: "80%",
             }}
           >
             <Text style={{ color: "gray" }}>Address : </Text>

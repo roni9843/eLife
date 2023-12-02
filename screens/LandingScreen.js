@@ -546,6 +546,8 @@ const LandingScreen = ({ props, navigation }) => {
                     statusText={post.status}
                     userImage={post.userInfo[0][0].profilePic}
                     userInfo={post.userInfo[0][0]}
+                    userPosts={null}
+                    setUserPosts={null}
                   />
                 </View>
               ))}
@@ -684,7 +686,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#040E29",
     zIndex: 99,
     flex: 1,
-    height: 75,
+    height: 65,
 
     // justifyContent: "center",
     // alignItems: "center",
@@ -708,7 +710,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   MainContentContainer: {
-    marginTop: 105,
+    marginTop: StatusBar.currentHeight + 50,
     marginBottom: 60,
     backgroundColor: "#F0F2F5",
   },

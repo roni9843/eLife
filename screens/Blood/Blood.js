@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Dimensions,
   ScrollView,
   StatusBar,
   Text,
@@ -17,7 +18,10 @@ const Blood = ({ navigation }) => {
 
   const bloodGroups = ["All", "A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 
-  const { data: allBloodUserApi } = useGetAllBloodUserQuery();
+  const { width } = Dimensions.get("window");
+
+  const { data: allBloodUserApi, refetch: reFetchAllBlood } =
+    useGetAllBloodUserQuery();
 
   const [initialData, setInitialData] = useState([]);
 
@@ -26,6 +30,9 @@ const Blood = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("call blood -> ");
+    reCallForBlood();
+
     if (allBloodUserApi) {
       console.log("allBloodUser -> ", allBloodUserApi.user);
 
@@ -34,6 +41,12 @@ const Blood = ({ navigation }) => {
       setLoading(false);
     }
   }, [allBloodUserApi]);
+
+  const reCallForBlood = async () => {
+    const reFetchFunc = await reFetchAllBlood();
+
+    console.log("this is reFetch -> ", reFetchFunc);
+  };
 
   const [selectedGroup, setSelectedGroup] = useState("All");
 
@@ -54,7 +67,7 @@ const Blood = ({ navigation }) => {
   }, [selectedGroup]);
 
   return (
-    <View style={{ backgroundColor: "#F8FBFF" }}>
+    <View style={{}}>
       <BloodHeader navigation={navigation}></BloodHeader>
 
       <ScrollView>
@@ -119,7 +132,7 @@ const Blood = ({ navigation }) => {
               </View>
             )}
 
-            <View style={{ marginHorizontal: 10, marginTop: 10 }}>
+            <View style={{ marginHorizontal: 25, marginTop: 10 }}>
               <View>
                 <Text
                   style={{ fontSize: 15, marginBottom: 10, color: "#616C7D" }}
@@ -139,7 +152,7 @@ const Blood = ({ navigation }) => {
                     style={{
                       backgroundColor:
                         selectedGroup === group ? "#ED1F4C" : "white",
-                      padding: 8,
+                      padding: width * 0.01,
                       marginRight: 5,
                       borderRadius: 5,
                       borderWidth: 1,

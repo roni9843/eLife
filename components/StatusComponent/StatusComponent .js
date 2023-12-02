@@ -38,6 +38,8 @@ const StatusComponent = ({
   userInfo,
   reDirect,
   getAllPostFunc,
+  userPosts,
+  setUserPosts,
 }) => {
   useEffect(() => {
     console.log(statusText, " 1 this is post reaction all   -> ", reaction);
@@ -130,20 +132,31 @@ const StatusComponent = ({
 
   const [deleteOnePost] = useDeleteOnePostMutation();
 
+  // ? delete loading
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
   // ? redux dispatch
   const dispatch = useDispatch();
 
   const deleteThisStatus = async () => {
     try {
-      setTimeout(() => {}, 1000);
+      setDeleteLoading(true);
+      dispatch(removePost(item._id));
 
       const data = await deleteOnePost({
         id: item._id,
       });
 
       console.log("delete -> ", data);
-      dispatch(removePost(item._id));
+
       closeModal();
+      setDeleteLoading(false);
+
+      if (userPosts) {
+        const filter = userPosts.filter((dt) => dt._id !== item._id);
+
+        setUserPosts(filter);
+      }
 
       //  dispatch(addStatusPost(data.data.post));
       // Optionally, you can perform additional actions after a successful deletion
@@ -437,7 +450,7 @@ const StatusComponent = ({
                           }}
                         >
                           <Text style={{ fontSize: 15, color: "white" }}>
-                            Delete
+                            {deleteLoading ? "Loading" : "Delete"}
                           </Text>
                         </TouchableOpacity>
                       </View>
