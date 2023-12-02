@@ -58,7 +58,7 @@ const BottomTabs = () => {
     if (getAllPost.data?.message === "successful") {
       dispatch(addStatusPost(getAllPost.data?.allPosts));
 
-      dispatch(addPostPaginationPage(1));
+      dispatch(addPostPaginationPage(getAllPost.data?.allPosts.length));
     }
   };
 
@@ -88,18 +88,7 @@ const BottomTabs = () => {
 
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          flex: 1,
-          backgroundColor: "red",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: 20,
-          padding: 50,
-        }}
-      >
-        This is text
-      </Text>
+      <StackNavi />
     </View>
   );
 };

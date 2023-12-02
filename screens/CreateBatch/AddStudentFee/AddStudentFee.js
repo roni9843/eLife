@@ -10,6 +10,8 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import FeeCollect from "./FeeCollect";
 const moment = require("moment");
 
+import { RFValue } from "react-native-responsive-fontsize";
+
 const StudentCard = ({ route }) => {
   console.log("this is data -> ", route);
 
@@ -47,15 +49,15 @@ const StudentCard = ({ route }) => {
             }}
           >
             <View style={{ flexDirection: "row" }}>
-              <Text>Batch Fee : </Text>
-              <Text>
+              <Text style={{ fontSize: RFValue(14) }}>Batch Fee : </Text>
+              <Text style={{ fontSize: RFValue(14) }}>
                 {route.params.selectedStudentInfo.batchId.courseFee} TK
               </Text>
             </View>
 
             <View style={{ flexDirection: "row" }}>
-              <Text>Batch Start Date : </Text>
-              <Text>
+              <Text style={{ fontSize: RFValue(14) }}>Batch Start Date : </Text>
+              <Text style={{ fontSize: RFValue(14) }}>
                 {moment(
                   route.params.selectedStudentInfo.batchId.batchTime
                 ).format("YYYY-MM-DD")}
@@ -64,8 +66,10 @@ const StudentCard = ({ route }) => {
           </View>
           <View>
             <View style={{ flexDirection: "row" }}>
-              <Text>Fee Type : </Text>
-              <Text>{route.params.selectedStudentInfo.batchId.feeType}</Text>
+              <Text style={{ fontSize: RFValue(14) }}>Fee Type : </Text>
+              <Text style={{ fontSize: RFValue(14) }}>
+                {route.params.selectedStudentInfo.batchId.feeType}
+              </Text>
             </View>
           </View>
         </View>

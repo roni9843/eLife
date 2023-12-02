@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 4.1.2"
+    "version": ">= 5.9.1"
   },
   "build": {
     "development": {
@@ -11,7 +11,6 @@
       }
     },
     "preview": {
-     
       "android" : {
         "buildType" : "apk"  
       },
@@ -20,12 +19,7 @@
         "resourceClass": "m1-medium"
       }
     },
-    "production": {
-      "ios": {
-        "resourceClass": "m1-medium"
-      }
-    
-    }
+    "production": {}
   },
   "submit": {
     "production": {}

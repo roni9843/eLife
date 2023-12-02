@@ -1,12 +1,19 @@
 import moment from "moment";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 const ViewTuitionBatchDetails = ({ route }) => {
   console.log("this is route ", route);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Image
           source={{
@@ -28,15 +35,13 @@ const ViewTuitionBatchDetails = ({ route }) => {
         </Text>
         <Text style={styles.details}>
           Batch Time:{" "}
-          {moment(route.params.courseData.batchTime).format(
-            "MMMM Do YYYY, h:mm a"
-          )}
+          {moment(route.params.courseData.batchTime).format("MMMM Do YYYY")}
         </Text>
         <Text style={styles.details}>
           Total Sets: {route.params.courseData.totalSet}
         </Text>
         <Text style={styles.details}>
-          Course Fee: ${route.params.courseData.courseFee}
+          Course Fee: {route.params.courseData.courseFee} টাকা
         </Text>
         <Text style={styles.details}>
           Fee Type: {route.params.courseData.feeType}
@@ -59,7 +64,7 @@ const ViewTuitionBatchDetails = ({ route }) => {
         </Text>
         {/* Add other teacher details as needed */}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -68,6 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#fff",
+    paddingBottom: 20,
   },
   header: {
     flexDirection: "row",
@@ -78,18 +84,18 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: Dimensions.get("window").width * 0.06, // Responsive font size
     fontWeight: "bold",
     color: "#333",
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: Dimensions.get("window").width * 0.04, // Responsive font size
     color: "#555",
   },
   teacherImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: Dimensions.get("window").width * 0.25, // Responsive image width
+    height: Dimensions.get("window").width * 0.25, // Responsive image height
+    borderRadius: Dimensions.get("window").width * 0.125, // Responsive border radius
     borderWidth: 2,
     borderColor: "#ddd",
   },
@@ -97,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   details: {
-    fontSize: 18,
+    fontSize: Dimensions.get("window").width * 0.04, // Responsive font size
     marginBottom: 10,
     color: "#333",
     backgroundColor: "#f8f8f8",
@@ -107,15 +113,16 @@ const styles = StyleSheet.create({
   teacherContainer: {
     borderTopWidth: 1,
     paddingTop: 15,
+    paddingBottom: 15,
   },
   teacherTitle: {
-    fontSize: 22,
+    fontSize: Dimensions.get("window").width * 0.05, // Responsive font size
     fontWeight: "bold",
     marginBottom: 10,
     color: "#333",
   },
   teacherDetails: {
-    fontSize: 18,
+    fontSize: Dimensions.get("window").width * 0.04, // Responsive font size
     marginBottom: 5,
     color: "#555",
   },

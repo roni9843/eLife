@@ -7,7 +7,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -18,11 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import HomePageCard from "../components/HomePageCard";
 import HomePageStatusLoading from "../components/HomePageLoading/HomePageStatusLoading";
 import { useGetAllStatusPostWithPaginationMutation } from "../redux/apiSlice";
-import {
-  addPostPaginationPage,
-  addStatusPost,
-  testDataAdd,
-} from "../redux/userSlice";
+import { addPostPaginationPage, addStatusPost } from "../redux/userSlice";
 import StatusComponent from "./../components/StatusComponent/StatusComponent ";
 
 const Category = [
@@ -159,7 +154,9 @@ const LandingScreen = ({ props, navigation }) => {
 
   // Function to close the modal
   const addtestData = () => {
-    dispatch(testDataAdd(userInfo.allStatusPost));
+    // dispatch(testDataAdd(userInfo.allStatusPost));
+
+    console.log("this is logggg ", userInfo.postPaginationPage);
   };
 
   // ? get all post with there reaction and with there react api
@@ -176,12 +173,12 @@ const LandingScreen = ({ props, navigation }) => {
 
     const getAllPost = await getAllStatusPostWithPagination(payload);
 
-    console.log("this is all  getAllPost - 78 -> ", getAllPost);
+    console.log("this is all  getAllPost - 78 -> ", getAllPost.data?.allPosts);
 
     if (getAllPost.data?.message === "successful") {
       dispatch(addStatusPost(getAllPost.data?.allPosts));
       setLoading(false);
-      dispatch(addPostPaginationPage(1));
+      dispatch(addPostPaginationPage(getAllPost.data?.allPosts.length));
     }
   };
 
@@ -198,13 +195,19 @@ const LandingScreen = ({ props, navigation }) => {
         <View style={styles.headerContain}>
           <View
             //style={{ flex: 2 }}
-            style={{ flex: 7 }}
+            style={
+              {
+                //  flex: 1
+              }
+            }
           >
             <Image
               style={{ width: 57, height: 36 }}
               source={require("../assets/logo.png")}
             />
           </View>
+
+          {/**  
           <View style={{ flex: 7, display: "none" }}>
             <TextInput
               style={styles.InputStyle}
@@ -212,19 +215,28 @@ const LandingScreen = ({ props, navigation }) => {
               placeholderTextColor="gray"
             />
           </View>
-          <View style={{ flex: 2, position: "relative" }}>
+        */}
+
+          <View
+            style={{
+              // flex: 7,
+              position: "relative",
+            }}
+          >
             <TouchableOpacity
               onPress={() => setModalVisible(!modalVisible)}
-              style={{
-                alignContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-                marginLeft: 3,
-                marginTop: 5,
-              }}
+              style={
+                {
+                  // alignContent: "center",
+                  // alignItems: "center",
+                  // textAlign: "center",
+                  // marginLeft: 3,
+                  // marginTop: 5,
+                }
+              }
             >
               {userInfo.currentUser !== null ? (
-                userInfo.currentUser.image ? (
+                userInfo.currentUser.profilePic ? (
                   <Image
                     style={{
                       width: 40,
@@ -233,7 +245,7 @@ const LandingScreen = ({ props, navigation }) => {
                     }}
                     source={{
                       // uri: image,
-                      uri: userInfo.currentUser.image,
+                      uri: userInfo.currentUser.profilePic,
                     }}
                   />
                 ) : (
@@ -389,7 +401,6 @@ const LandingScreen = ({ props, navigation }) => {
           </View>
         </View>
       </View>
-
       <View style={styles.container}>
         <TouchableOpacity
           style={{
@@ -424,7 +435,6 @@ const LandingScreen = ({ props, navigation }) => {
           />
         </TouchableOpacity>
       </View>
-
       <View style={styles.MainContentContainer}>
         <ScrollView style={styles.scrollView}>
           {
@@ -676,14 +686,16 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 75,
 
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
     paddingHorizontal: 10,
   },
   headerContain: {
     flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
+    // alignItems: "center",
+    // flex: 1,
+    justifyContent: "space-between",
+    padding: 15,
   },
   InputStyle: {
     marginTop: 7,

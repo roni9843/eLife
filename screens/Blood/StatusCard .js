@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Alert,
+  Dimensions,
   Image,
   Share,
   StyleSheet,
@@ -9,6 +10,8 @@ import {
   View,
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
+
+import { RFValue } from "react-native-responsive-fontsize";
 
 const StatusCard = ({
   name,
@@ -131,16 +134,20 @@ const StatusCard = ({
                   marginTop: 2,
                   fontSize: 20,
                   fontWeight: "bold",
+                  fontSize: RFValue(16),
                 }}
               >
                 {name}
               </Text>
 
               {verified === true && (
-                <View style={{ marginTop: 5, marginLeft: 5 }}>
+                <View style={{ marginTop: 3, marginLeft: 5 }}>
                   <Image
                     source={require("../../assets/blueTick.png")}
-                    style={{ height: 20, width: 23 }}
+                    style={{
+                      height: 20,
+                      width: Dimensions.get("window").width * 0.05,
+                    }}
                   />
                 </View>
               )}

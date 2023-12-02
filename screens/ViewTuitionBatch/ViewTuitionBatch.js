@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Dimensions,
   Pressable,
   ScrollView,
   StatusBar,
@@ -8,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import CreateBatchHeader from "../../components/HeaderBar/CreateBatchHeader";
@@ -59,27 +61,37 @@ const CourseCard = ({ item, navigation }) => {
                 flexDirection: "row",
               }}
             >
-              <Text>{teacherDetails.name}</Text>
+              <Text style={{ fontSize: RFValue(13) }}>
+                {teacherDetails.name}
+              </Text>
 
               {teacherDetails.verified === true && (
-                <View style={{ marginTop: 3, marginLeft: 5 }}>
+                <View style={{ marginTop: 2, marginLeft: 5 }}>
                   <Image
                     source={require("../../assets/blueTick.png")}
-                    style={{ height: 15, width: 20 }}
+                    style={{
+                      height: 15,
+                      width: Dimensions.get("window").width * 0.04,
+                    }}
                   />
                 </View>
               )}
             </View>
           </View>
 
-          <Text>Class: {item.batchClass}</Text>
-          <Text>Subject: {item.subject}</Text>
-          <Text>Phone: {teacherDetails.phone}</Text>
+          <Text style={{ fontSize: RFValue(12) }}>
+            Class: {item.batchClass}
+          </Text>
+          <Text style={{ fontSize: RFValue(12) }}>Subject: {item.subject}</Text>
+          <Text style={{ fontSize: RFValue(12) }}>
+            Phone: {teacherDetails.phone}
+          </Text>
         </View>
         <View style={styles.detailsContainer}>
           <Text
             style={{
               textAlign: "center",
+              fontSize: RFValue(12),
             }}
           >
             Course Fee
@@ -89,21 +101,25 @@ const CourseCard = ({ item, navigation }) => {
               textAlign: "center",
               borderWidth: 1,
               backgroundColor: "black",
-              padding: 10,
+              padding: 8,
               color: "white",
               borderRadius: 10,
               fontWeight: "bold",
+              fontSize: RFValue(10),
             }}
           >
             {courseFee} টাকা
           </Text>
-          <Text style={{ textAlign: "center" }}>Batch Date</Text>
+          <Text style={{ textAlign: "center", fontSize: RFValue(12) }}>
+            Batch Date
+          </Text>
           <Text
             style={{
               textAlign: "center",
 
               borderRadius: 10,
               fontWeight: "bold",
+              fontSize: RFValue(12),
             }}
           >
             {formattedBatchTime}
@@ -118,9 +134,11 @@ const CourseCard = ({ item, navigation }) => {
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "gray" }}>Address : </Text>
+            <Text style={{ color: "gray", fontSize: RFValue(12) }}>
+              Address :{" "}
+            </Text>
 
-            <Text style={{ color: "gray" }}>
+            <Text style={{ color: "gray", fontSize: RFValue(12) }}>
               {village && `${village},`} {union && `${union},`}{" "}
               {thana && `${thana},`} {district && `${district}`}
             </Text>
@@ -388,12 +406,14 @@ const ViewTuitionBatch = ({ navigation, route }) => {
                   <ActivityIndicator size="small" color="white" />
                 </View>
               ) : (
-                <Text style={{ color: "white", fontSize: 16 }}>Search</Text>
+                <Text style={{ color: "white", fontSize: RFValue(16) }}>
+                  Search
+                </Text>
               )}
 
               <IonIcon
                 style={{
-                  fontSize: 16,
+                  fontSize: RFValue(14),
                   color: "white",
                   marginLeft: 14,
                 }}
@@ -450,7 +470,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 16,
+    fontSize: RFValue(16),
     fontWeight: "bold",
     marginBottom: 5,
   },

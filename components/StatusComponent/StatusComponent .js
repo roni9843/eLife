@@ -3,6 +3,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
+  Dimensions,
   Image,
   Modal,
   Share,
@@ -311,7 +312,10 @@ const StatusComponent = ({
                     <View style={{ marginTop: 0, marginLeft: 5 }}>
                       <Image
                         source={require("../../assets/blueTick.png")}
-                        style={{ height: 15, width: 20 }}
+                        style={{
+                          height: 15,
+                          width: Dimensions.get("window").width * 0.04,
+                        }}
                       />
                     </View>
                   )}
@@ -557,8 +561,8 @@ const StatusComponent = ({
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            //onShare()
-            console.log(postId);
+            onShare();
+            // console.log(postId);
           }}
           style={{ flexDirection: "row", alignItems: "center" }}
         >

@@ -10,7 +10,7 @@ export const usersSlice = createSlice({
     fetchForAllUserAndAllStatusData: null,
     allStatusPost: [],
     viewScreenData: [],
-    postPaginationPage: 1,
+    postPaginationPage: 0,
   },
   reducers: {
     addAllUser: (state, action) => {
@@ -81,7 +81,7 @@ export const usersSlice = createSlice({
       console.log("state.allStatusPost new ", state.allStatusPost);
     },
     addPostPaginationPage: (state, action) => {
-      state.postPaginationPage = state.postPaginationPage + 1;
+      state.postPaginationPage = state.postPaginationPage + action.payload;
     },
   },
 });

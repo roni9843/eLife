@@ -17,7 +17,11 @@ import {
   useStatusPostMutation,
   useUpdateOnePostMutation,
 } from "../redux/apiSlice";
-import { addLatestPost, updatePost } from "../redux/userSlice";
+import {
+  addLatestPost,
+  addPostPaginationPage,
+  updatePost,
+} from "../redux/userSlice";
 
 const AddPost = ({ navigation, route }) => {
   // * redux store user
@@ -34,6 +38,8 @@ const AddPost = ({ navigation, route }) => {
   );
 
   const [loading, setLoading] = useState(false);
+
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     console.log(route.params);
@@ -54,49 +60,63 @@ const AddPost = ({ navigation, route }) => {
     setLoading(true);
 
     try {
-      if (route?.params?.pageState === "update") {
-        const payloadForUpdate = {
-          id: route?.params?.postId,
-          status: userStatus,
-        };
+      if (!userStatus.trim()) {
+        setError("Please enter something before submitting.");
+        setLoading(false);
+        return;
+      }
 
-        const data = await updateOnePost(payloadForUpdate);
-        /// await refetch();
+      // Reset the error state when user input is not empty
+      setError(null);
 
-        console.log("this update res data -> ", data.data.post[0]);
+      try {
+        if (route?.params?.pageState === "update") {
+          const payloadForUpdate = {
+            id: route?.params?.postId,
+            status: userStatus,
+          };
 
-        dispatch(updatePost(data.data.post[0]));
+          const data = await updateOnePost(payloadForUpdate);
+          /// await refetch();
 
-        //navigation.navigate("LandingScreen");
+          console.log("this update res data -> ", data.data.post[0]);
 
-        setTimeout(() => {
-          navigation.navigate("LandingScreen");
+          dispatch(updatePost(data.data.post[0]));
 
-          //      console.log("5---> ", getAllStatusPost.posts);
-          navigation.goBack();
-          setLoading(false);
-        }, 0);
-      } else {
-        const payload = {
-          postBy: route?.params?.userId,
-          status: userStatus,
-        };
+          //navigation.navigate("LandingScreen");
 
-        const data = await statusPost(payload);
+          setTimeout(() => {
+            navigation.navigate("LandingScreen");
 
-        console.log("this is post 9833 ->  ", data.data.posts);
+            //      console.log("5---> ", getAllStatusPost.posts);
+            navigation.goBack();
+            setLoading(false);
+          }, 0);
+        } else {
+          const payload = {
+            postBy: route?.params?.userId,
+            status: userStatus,
+          };
 
-        dispatch(addLatestPost(data.data.posts));
+          const data = await statusPost(payload);
 
-        //await refetch();
+          console.log("this is post 9833 ->  ", data.data.posts);
 
-        setTimeout(() => {
-          // navigation.navigate("LandingScreen");
+          dispatch(addLatestPost(data.data.posts));
+          dispatch(addPostPaginationPage(1));
 
-          //   console.log("5---> ", getAllStatusPost.posts);
-          navigation.goBack();
-          setLoading(false);
-        }, 0);
+          //await refetch();
+
+          setTimeout(() => {
+            // navigation.navigate("LandingScreen");
+
+            //   console.log("5---> ", getAllStatusPost.posts);
+            navigation.goBack();
+            setLoading(false);
+          }, 0);
+        }
+      } catch (error) {
+        console.log(error);
       }
     } catch (error) {
       console.log(error);
@@ -215,6 +235,9 @@ const AddPost = ({ navigation, route }) => {
             underlineColorAndroid={"transparent"}
           />
 
+          {error && (
+            <Text style={{ color: "red", marginBottom: 5 }}>{error}</Text>
+          )}
           <View style={{ marginTop: 10, alignItems: "flex-end" }}>
             <TouchableOpacity
               style={{
