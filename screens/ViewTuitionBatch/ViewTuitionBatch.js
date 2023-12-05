@@ -45,16 +45,20 @@ const CourseCard = ({ item, navigation }) => {
       }
     >
       <View
-        style={styles.cardInnerContainer}
-        android_ripple={{ color: "#040E29" }}
-      >
-        <Image
-          source={{ uri: teacherDetails.profilePic }}
-          style={styles.image}
-        />
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>{batchTitle}</Text>
+        style={{
+          flexDirection: "row",
 
+          marginBottom: 10,
+        }}
+      >
+        <View>
+          <Image
+            source={{ uri: teacherDetails.profilePic }}
+            style={styles.image}
+          />
+        </View>
+        <View>
+          <Text style={styles.title}>{batchTitle}</Text>
           <View>
             <View
               style={{
@@ -78,13 +82,29 @@ const CourseCard = ({ item, navigation }) => {
               )}
             </View>
           </View>
-
+        </View>
+      </View>
+      <View
+        style={styles.cardInnerContainer}
+        android_ripple={{ color: "#040E29" }}
+      >
+        <View style={styles.contentContainer}>
           <Text style={{ fontSize: RFValue(12) }}>
             Class: {item.batchClass}
           </Text>
           <Text style={{ fontSize: RFValue(12) }}>Subject: {item.subject}</Text>
           <Text style={{ fontSize: RFValue(12) }}>
             Phone: {teacherDetails.phone}
+          </Text>
+          <Text style={{ fontSize: RFValue(12) }}>Batch Start Date</Text>
+          <Text
+            style={{
+              borderRadius: 10,
+              fontWeight: "bold",
+              fontSize: RFValue(12),
+            }}
+          >
+            {formattedBatchTime}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -103,26 +123,12 @@ const CourseCard = ({ item, navigation }) => {
               backgroundColor: "black",
               padding: 8,
               color: "white",
-              borderRadius: 10,
+              borderRadius: 5,
               fontWeight: "bold",
               fontSize: RFValue(10),
             }}
           >
             {courseFee} টাকা
-          </Text>
-          <Text style={{ textAlign: "center", fontSize: RFValue(12) }}>
-            Batch Date
-          </Text>
-          <Text
-            style={{
-              textAlign: "center",
-
-              borderRadius: 10,
-              fontWeight: "bold",
-              fontSize: RFValue(12),
-            }}
-          >
-            {formattedBatchTime}
           </Text>
         </View>
       </View>
@@ -265,7 +271,7 @@ const ViewTuitionBatch = ({ navigation, route }) => {
       <CreateBatchHeader navigation={navigation}></CreateBatchHeader>
 
       <ScrollView style={{ marginTop: StatusBar.currentHeight + 55 }}>
-        <View style={{ padding: 10 }}>
+        <View style={{ padding: 15 }}>
           <View style={{ marginTop: 10 }}>
             <Text style={{ padding: 5, fontWeight: "bold" }}>Subject:</Text>
             <TextInput
@@ -406,7 +412,7 @@ const ViewTuitionBatch = ({ navigation, route }) => {
                   <ActivityIndicator size="small" color="white" />
                 </View>
               ) : (
-                <Text style={{ color: "white", fontSize: RFValue(16) }}>
+                <Text style={{ color: "white", fontSize: RFValue(14) }}>
                   Search
                 </Text>
               )}
@@ -449,7 +455,7 @@ const ViewTuitionBatch = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: "#fff",
-    margin: 10,
+    marginVertical: 10,
     padding: 10,
     borderRadius: 8,
     elevation: 3,
@@ -460,7 +466,7 @@ const styles = StyleSheet.create({
   image: {
     width: Dimensions.get("window").width * 0.15,
     height: Dimensions.get("window").width * 0.15,
-    borderRadius: 40,
+    borderRadius: 10,
     marginRight: 10,
   },
   contentContainer: {
@@ -472,7 +478,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: RFValue(16),
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 0,
   },
 });
 

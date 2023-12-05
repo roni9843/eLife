@@ -31,12 +31,11 @@ const StatusCard = ({
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `
-        Name     : ${name},
-        Gender   : ${gender},
-        Phone    : ${phone},
-        bloodGrp : ${bloodGrp},
-        Address  : village ${village}, union ${union},thana ${thana}, district ${district}
+        message: `Name     : ${name},
+Gender   : ${gender},
+Phone    : ${phone},
+bloodGrp : ${bloodGrp},
+Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${district}
           `,
       });
       if (result.action === Share.sharedAction) {
@@ -59,7 +58,6 @@ const StatusCard = ({
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
           }}
         >
           <View style={styles.ImageContainer}>
@@ -122,30 +120,34 @@ const StatusCard = ({
                 alignItems: "center",
               }}
             >
-              <Text style={{ color: "#040E29", fontWeight: "bold" }}>
+              <Text
+                style={{
+                  color: "#040E29",
+                  fontWeight: "bold",
+                  display: "none",
+                }}
+              >
                 {gender === "male" ? "Male" : "Female"}
               </Text>
             </View>
           </View>
           <View style={{ marginLeft: 10 }}>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", textAlign: "center" }}>
               <Text
                 style={{
-                  marginTop: 2,
-                  fontSize: 20,
                   fontWeight: "bold",
-                  fontSize: RFValue(16),
+                  fontSize: RFValue(15),
                 }}
               >
                 {name}
               </Text>
 
               {verified === true && (
-                <View style={{ marginTop: 3, marginLeft: 5 }}>
+                <View style={{ marginTop: 2, marginLeft: 5 }}>
                   <Image
                     source={require("../../assets/blueTick.png")}
                     style={{
-                      height: 20,
+                      height: Dimensions.get("window").width * 0.05,
                       width: Dimensions.get("window").width * 0.05,
                     }}
                   />
@@ -158,12 +160,17 @@ const StatusCard = ({
                 alignItems: "center",
               }}
             >
-              <Text style={{ color: "#040E29" }}>{phone}</Text>
+              <Text style={{ color: "#040E29", fontSize: RFValue(13) }}>
+                {phone}
+              </Text>
             </View>
 
-            <Text style={styles.lastDonateDate}>
-              Last Donate: {lastDonateDate}
-            </Text>
+            {donateCount > 0 && (
+              <Text style={styles.lastDonateDate}>
+                Last Donate: {lastDonateDate}
+              </Text>
+            )}
+
             <Text style={styles.donateCount}>
               Total Donations: {donateCount}
             </Text>
@@ -203,14 +210,20 @@ const StatusCard = ({
                   color: "white",
                   transform: [{ rotateZ: "135deg" }],
                   fontWeight: "bold",
-                  fontSize: 16,
+                  fontSize: RFValue(14),
                 }}
               >
                 {bloodGrp}
               </Text>
             </View>
             <View>
-              <Text style={{ fontWeight: "bold", color: "#ED1F4C" }}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: "#ED1F4C",
+                  fontSize: RFValue(12),
+                }}
+              >
                 Donate
               </Text>
             </View>
@@ -222,12 +235,9 @@ const StatusCard = ({
           <View
             style={{
               flexDirection: "row",
-              alignItems: "center",
-              width: "80%",
+              // width: "80%",
             }}
           >
-            <Text style={{ color: "gray" }}>Address : </Text>
-
             <Text style={{ color: "gray" }}>
               {village && `${village},`} {union && `${union},`}{" "}
               {thana && `${thana},`} {district && `${district}`}
@@ -244,7 +254,7 @@ const StatusCard = ({
             flexDirection: "row",
             textAlign: "center",
             justifyContent: "center",
-            padding: 10,
+            paddingTop: 5,
             alignContent: "center",
             alignItems: "center",
             alignSelf: "flex-end",
@@ -252,14 +262,14 @@ const StatusCard = ({
         >
           <Text
             style={{
-              fontSize: 16,
+              fontSize: RFValue(15),
             }}
           >
             Share
           </Text>
           <IonIcon
             style={{
-              fontSize: 18,
+              fontSize: RFValue(17),
               marginLeft: 14,
             }}
             name={"arrow-redo-outline"}
@@ -285,8 +295,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 60,
-    height: 60,
+    width: Dimensions.get("window").width * 0.13,
+    height: Dimensions.get("window").width * 0.13,
     borderRadius: 10,
   },
   textContainer: {
@@ -297,18 +307,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   bloodGrp: {
-    fontSize: 16,
+    fontSize: RFValue(13),
   },
   lastDonateDate: {
-    fontSize: 14,
+    fontSize: RFValue(13),
   },
   donateCount: {
-    fontSize: 14,
+    fontSize: RFValue(13),
   },
 
   waterDrop: {
-    width: 100,
-    height: 150,
+    width: Dimensions.get("window").width * 0.13,
+    height: Dimensions.get("window").width * 0.13,
     backgroundColor: "blue",
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,

@@ -27,10 +27,6 @@ const AddStudent = ({ navigation, route }) => {
   const [addStudentInBatch] = useAddStudentInBatchMutation();
 
   const handleValidation = () => {
-    //  console.log(isoString);
-
-    console.log(startDate, route.params);
-
     let isValid = true;
 
     if (studentName.trim() === "") {
@@ -42,7 +38,7 @@ const AddStudent = ({ navigation, route }) => {
 
     // ? date input validation
     if (startDate.trim() === "") {
-      setDateError("Student Start Date  cannot be empty");
+      setDateError("Student Start Date cannot be empty");
       isValid = false;
     } else {
       setDateError("");
@@ -53,6 +49,9 @@ const AddStudent = ({ navigation, route }) => {
       isValid = false;
     } else if (!/^\d+$/.test(phoneNumber)) {
       setPhoneNumberError("Phone Number must contain only digits");
+      isValid = false;
+    } else if (phoneNumber.length < 10) {
+      setPhoneNumberError("Phone Number must be at least 10 digits");
       isValid = false;
     } else {
       setPhoneNumberError("");
@@ -67,7 +66,6 @@ const AddStudent = ({ navigation, route }) => {
 
     return isValid;
   };
-
   const [gender, setGender] = useState("male");
 
   const handleGenderChange = (selectedGender) => {

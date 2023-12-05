@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { Button } from "react-native-paper";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Circle } from "react-native-svg";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import ViewTeacherBatchHeader from "../../components/HeaderBar/ViewTeacherBatchHeader";
@@ -175,11 +176,25 @@ const ViewTeacherBatch = ({ navigation, route }) => {
   console.log("this is router ", route.params.data._id);
   console.log("this is router ", route.params.data);
 
+  const [setErrorValue, setSetErrorValue] = useState({
+    state: false,
+    msg: "",
+  });
+
   const [student, setStudent] = useState([]);
 
   useEffect(() => {
     setStudent(route.params.data.batchdetails);
   }, [route]);
+
+  useEffect(() => {
+    delete route.params.data.batchdetails;
+
+    route.params.data = {
+      ...route.params.data,
+      batchdetails: student,
+    };
+  }, [student]);
 
   return (
     <View>
@@ -204,7 +219,7 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                 <Text style={{ fontWeight: "bold", fontSize: 17 }}>
                   Batch Title :
                 </Text>
-                <Text style={{ fontSize: 17 }}>
+                <Text style={{ fontSize: RFValue(15) }}>
                   {" "}
                   {route.params.data.batchTitle}
                 </Text>
@@ -221,7 +236,10 @@ const ViewTeacherBatch = ({ navigation, route }) => {
             >
               <View style={{}}>
                 <Text style={{ fontSize: 17, fontWeight: "bold" }}>Bio :</Text>
-                <Text style={{ fontSize: 14 }}> {route.params.data.bio}</Text>
+                <Text style={{ fontSize: RFValue(13) }}>
+                  {" "}
+                  {route.params.data.bio}
+                </Text>
               </View>
             </View>
             <View
@@ -237,7 +255,7 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                 <Text style={{ fontWeight: "bold", fontSize: 17 }}>
                   Category :
                 </Text>
-                <Text style={{ fontSize: 17 }}>
+                <Text style={{ fontSize: RFValue(14) }}>
                   {" "}
                   {route.params.data.category}
                 </Text>
@@ -375,15 +393,14 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                         fontSize: 18,
                       }}
                     >
-                      Total Set : {route.params.data.batchdetails.length}/
-                      {route.params.data.totalSet}
+                      Total Sit : {student.length}/{route.params.data.totalSet}
                     </Text>
                   </View>
 
                   <AnimatedCircularProgress
                     size={100}
                     width={10}
-                    fill={route.params.data.batchdetails.length}
+                    fill={(student.length / route.params.data.totalSet) * 100}
                     tintColor="#040E29"
                     backgroundColor="gray"
                     padding={10}
@@ -411,7 +428,7 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                             color: "#040E29",
                           }}
                         >
-                          {route.params.data.batchdetails.length}
+                          {student.length}
                         </Text>
                         <Text
                           style={{
@@ -468,10 +485,14 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                       <Button
                         mode="contained" // You can use "contained" or "outlined"
                         onPress={() => {
-                          // Handle button press here
-                          navigation.navigate("AddStudent", {
-                            data: route.params.data,
-                          });
+                          student.length !== route.params.data.totalSet
+                            ? navigation.navigate("AddStudent", {
+                                data: route.params.data,
+                              })
+                            : setSetErrorValue({
+                                status: true,
+                                msg: `Your sit is full!!! If you want to add  more sit, please update  the batch`,
+                              });
                         }}
                         style={{ borderRadius: 5, backgroundColor: "#040E29" }}
                       >
@@ -498,6 +519,28 @@ const ViewTeacherBatch = ({ navigation, route }) => {
                 </View>
               </View>
             </View>
+            {setErrorValue.status && (
+              <View>
+                <View
+                  style={{
+                    backgroundColor: "#ff9999", // Background color for the error container
+                    padding: 10,
+                    borderRadius: 5,
+                    margin: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#ff0000", // Text color for the error message
+                      fontSize: 16,
+                      textAlign: "center",
+                    }}
+                  >
+                    {setErrorValue.msg}
+                  </Text>
+                </View>
+              </View>
+            )}
             <View>
               <Text style={{ padding: 10, fontWeight: "bold", color: "gray" }}>
                 Student Details

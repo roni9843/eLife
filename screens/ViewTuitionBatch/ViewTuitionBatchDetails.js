@@ -67,6 +67,9 @@ const ViewTuitionBatchDetails = ({ route }) => {
           {route.params.courseData?.union} {route.params.courseData?.thana}{" "}
           {route.params.courseData?.district}{" "}
         </Text>
+        <Text style={styles.details}>
+          {route.params.courseData?.customDetailsAddress}
+        </Text>
       </View>
 
       {/* Render teacher details */}
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#fff",
-    paddingBottom: 20,
+    paddingBottom: 50,
   },
   header: {
     marginBottom: 20,
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
   teacherContainer: {
     borderTopWidth: 1,
     paddingTop: 15,
-    paddingBottom: 15,
+    paddingBottom: 105,
   },
   teacherTitle: {
     fontSize: Dimensions.get("window").width * 0.05, // Responsive font size

@@ -1,7 +1,14 @@
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { BackHandler, ScrollView, StyleSheet, View } from "react-native";
-import Login from "./Login";
-import SignIn from "./SignIn";
+import {
+  BackHandler,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  View,
+} from "react-native";
+import LoginNewScreen from "./AccountCreateNewScreen/LoginNewScreen";
+import SignUpNewScreen from "./AccountCreateNewScreen/SignUpNewScreen";
 
 const AccountCreate = ({ navigation }) => {
   // ? login or sign in state
@@ -30,24 +37,28 @@ const AccountCreate = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={Styles.container}>
-      <ScrollView>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1, backgroundColor: "white", height: "100%" }}
+    >
+      <StatusBar animated={true} backgroundColor="#FFFFFF" />
+      <View>
         <View>
           {isSignIn == true ? (
-            <SignIn setIsSignIn={setIsSignIn} />
+            <SignUpNewScreen setIsSignIn={setIsSignIn} />
           ) : (
-            <Login setIsSignIn={setIsSignIn} />
+            <LoginNewScreen setIsSignIn={setIsSignIn} />
           )}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#040E29",
+    backgroundColor: "white",
   },
 });
 

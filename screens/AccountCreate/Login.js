@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
+  Dimensions,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -76,7 +77,9 @@ const Login = ({ setIsSignIn }) => {
 
         dispatch(addCurrentUser(payload));
 
-        navigation.navigate("LandingScreen");
+        navigation.navigate("LandingScreen", {
+          data: Math.floor(10000 + Math.random() * 90000),
+        });
         setLoading(false);
       }
 
@@ -94,7 +97,7 @@ const Login = ({ setIsSignIn }) => {
 
   return (
     <View>
-      <StatusBar animated={true} backgroundColor="#040E29" />
+      <StatusBar animated={true} backgroundColor="#FFFFFF" />
       <View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -142,7 +145,9 @@ const Login = ({ setIsSignIn }) => {
                     </View>
                   </View>
                   {phoneError !== "" && (
-                    <Text style={{ color: "red", marginLeft: 10 }}>
+                    <Text
+                      style={{ color: "red", marginLeft: 10, opacity: 0.7 }}
+                    >
                       {phoneError}
                     </Text>
                   )}
@@ -172,7 +177,9 @@ const Login = ({ setIsSignIn }) => {
                     </View>
                   </View>
                   {passwordError !== "" && (
-                    <Text style={{ color: "red", marginLeft: 10 }}>
+                    <Text
+                      style={{ color: "red", marginLeft: 10, opacity: 0.7 }}
+                    >
                       {passwordError}
                     </Text>
                   )}
@@ -276,7 +283,7 @@ const Styles = StyleSheet.create({
   input: {
     height: 40,
     fontSize: 18,
-    paddingLeft: 10,
+    paddingLeft: 15,
     color: "#96A2D5",
   },
   inputContainer: {
@@ -284,7 +291,7 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#232843",
     borderRadius: 40,
-    width: 350,
+    width: Dimensions.get("window").width * 0.8,
     height: 50,
     alignItems: "center",
     justifyContent: "space-between",
@@ -300,7 +307,7 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "green",
     borderRadius: 40,
-    width: 350,
+    width: Dimensions.get("window").width * 0.8,
     height: 60,
     textAlign: "center",
     justifyContent: "center",
@@ -311,7 +318,7 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#696B77",
     borderRadius: 40,
-    width: 350,
+    width: Dimensions.get("window").width * 0.8,
     height: 60,
     textAlign: "center",
     justifyContent: "center",

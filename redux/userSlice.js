@@ -11,6 +11,7 @@ export const usersSlice = createSlice({
     allStatusPost: [],
     viewScreenData: [],
     postPaginationPage: 0,
+    isOtp: true,
   },
   reducers: {
     addAllUser: (state, action) => {
@@ -80,8 +81,28 @@ export const usersSlice = createSlice({
       console.log("this is delete 12 action.payload ->  ", action.payload);
       console.log("this is delete 12 all state ->  ", state.allStatusPost);
     },
+
+    replaceStatusPost: (state, action) => {
+      state.postPaginationPage = action.payload;
+    },
+
     addPostPaginationPage: (state, action) => {
       state.postPaginationPage = state.postPaginationPage + action.payload;
+    },
+    replacePaginationPage: (state, action) => {
+      state.postPaginationPage = 0;
+    },
+
+    logOut: (state, action) => {
+      //state.postPaginationPage = state.postPaginationPage + action.payload;
+
+      state.AllUser = [];
+      state.currentUser = null;
+      state.token = null;
+      state.fetchForAllUserAndAllStatusData = null;
+      state.allStatusPost = [];
+      state.viewScreenData = [];
+      state.postPaginationPage = 0;
     },
   },
 });
@@ -102,4 +123,7 @@ export const {
   addLatestPost,
   removePost,
   updatePost,
+  replacePaginationPage,
+  replaceStatusPost,
+  logOut,
 } = usersSlice.actions;

@@ -40,6 +40,7 @@ const StatusComponent = ({
   getAllPostFunc,
   userPosts,
   setUserPosts,
+  route,
 }) => {
   useEffect(() => {
     console.log(statusText, " 1 this is post reaction all   -> ", reaction);
@@ -96,7 +97,7 @@ const StatusComponent = ({
       console.log("outside");
       setLikeCount(0);
     }
-  }, [reaction]);
+  }, [reaction, route]);
 
   const alertFunc = () => {
     Alert.alert(
@@ -127,6 +128,16 @@ const StatusComponent = ({
     const isThisUserLikeThisPostLocalV = await reaction.find(
       (dt) => dt.reactId == userId
     );
+
+    console.log(
+      "6666666666666666666666666666666666666666666666666666666666 ",
+      isThisUserLikeThisPostLocalV
+    );
+    console.log(
+      "6666666666666666666666666666666666666666666666666666666666 ",
+      reaction
+    );
+
     return isThisUserLikeThisPostLocalV;
   };
 
@@ -314,7 +325,7 @@ const StatusComponent = ({
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "center",
+                    // justifyContent: "center",
                     alignContent: "center",
                     alignItems: "center",
                   }}
@@ -362,10 +373,8 @@ const StatusComponent = ({
               <BlurView
                 style={{
                   flex: 1,
-                  //
-                  // alignItems: "center",
                 }}
-                intensity={2} // Adjust the blur intensity as needed
+                intensity={0} // Adjust the blur intensity as needed
               >
                 <TouchableWithoutFeedback
                   onPress={closeModal}

@@ -83,6 +83,11 @@ const EditAndAddBatch = ({ navigation, route }) => {
     route.params.status === "create" ? null : route.params.data.category
   );
 
+  const [errorTotalSit, setErrorTotalSit] = useState({
+    status: false,
+    msg: "",
+  });
+
   const handleCategorySelection = (item) => {
     setCategory(item === category ? null : item);
   };
@@ -133,27 +138,47 @@ const EditAndAddBatch = ({ navigation, route }) => {
   const handleSubmit = async () => {
     const errors = {};
 
-    if (category === null) {
-      errors.category = "Course category is required";
-    }
-    if (batchClass === null) {
-      errors.batchClass = "Class is required";
-    }
-    if (batchData.subject === "") {
-      errors.subject = "Subject is required";
-    }
-    if (batchData.batchTitle === "") {
+    // Trim inputs before validation
+    const trimmedBatchTitle = batchData.batchTitle.trim();
+    const trimmedSubject = batchData.subject.trim();
+    const trimmedVillage = batchData.village.trim();
+    const trimmedUnion = batchData.union.trim();
+    const trimmedThana = batchData.thana.trim();
+    const trimmedDistrict = batchData.district.trim();
+
+    // Update the state with trimmed values
+    setBatchData({
+      ...batchData,
+      batchTitle: trimmedBatchTitle,
+      subject: trimmedSubject,
+      village: trimmedVillage,
+      union: trimmedUnion,
+      thana: trimmedThana,
+      district: trimmedDistrict,
+    });
+
+    if (trimmedBatchTitle === "") {
       errors.batchTitle = "Title is required";
+    }
+    if (trimmedSubject === "") {
+      errors.subject = "Subject is required";
     }
     if (startDate === "") {
       errors.batchTime = "Date is required";
     }
-    if (batchData.totalSet === "") {
-      errors.totalSet = "Total Set is required";
+    if (trimmedVillage === "") {
+      errors.village = "Village is required";
     }
-    if (batchData.courseFee === "") {
-      errors.courseFee = "Course Fee is required";
+    if (trimmedUnion === "") {
+      errors.union = "Union is required";
     }
+    if (trimmedThana === "") {
+      errors.thana = "Thana is required";
+    }
+    if (trimmedDistrict === "") {
+      errors.district = "District is required";
+    }
+
     // Add validation for other fields if needed
 
     if (Object.keys(errors).length > 0) {
@@ -194,6 +219,22 @@ const EditAndAddBatch = ({ navigation, route }) => {
           setLoading(false);
         }
       } else {
+        console.log(
+          "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
+          parseInt(batchData.totalSet) < route.params.data.batchdetails.length
+        );
+
+        if (
+          parseInt(batchData.totalSet) < route.params.data.batchdetails.length
+        ) {
+          setErrorTotalSit({
+            status: true,
+            msg: "Ensure the batch size is not lower than the current student count. If you want to increase the batch size, please remove students first. Thank you!",
+          });
+
+          setLoading(false);
+          return;
+        }
         let payload = {
           batchId: route.params.data._id,
           batchTime: startDate,
@@ -207,7 +248,6 @@ const EditAndAddBatch = ({ navigation, route }) => {
           category: category,
           batchClass: batchClass,
           subject: batchData.subject,
-
           customDetailsAddress: customDetailsAddress,
         };
 
@@ -216,11 +256,30 @@ const EditAndAddBatch = ({ navigation, route }) => {
 
           //    navigation.goBack();
 
-          console.log(route, "<- this is update data -> ", data);
+          console.log(route, "<- this is update data -> ", data.data.saveBatch);
+
+          const savePayload = {
+            batchTitle: data.data.saveBatch.batchTitle,
+            courseFee: data.data.saveBatch.courseFee,
+            teacherId: data.data.saveBatch.teacherId,
+            _id: data.data.saveBatch._id,
+            batchTime: startDate,
+            totalSet: batchData.totalSet,
+            bio: batchDetails,
+            feeType: feeType,
+            village: batchData.village,
+            union: batchData.union,
+            thana: batchData.thana,
+            district: batchData.district,
+            category: category,
+            batchClass: batchClass,
+            subject: batchData.subject,
+            customDetailsAddress: customDetailsAddress,
+          };
 
           let newBatch = {
             batchdetails: route.params.data.batchdetails,
-            ...data.data.saveBatch,
+            ...savePayload,
           };
 
           console.log("this is new batch ", newBatch);
@@ -625,7 +684,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
           </View>
 
           <View style={{ marginTop: 10 }}>
-            <Text style={{ padding: 5, fontWeight: "bold" }}>Total Set:</Text>
+            <Text style={{ padding: 5, fontWeight: "bold" }}>Total Sit:</Text>
             <TextInput
               style={{
                 borderWidth: 1,
@@ -634,11 +693,14 @@ const EditAndAddBatch = ({ navigation, route }) => {
                 borderRadius: 8,
                 backgroundColor: "#F9F9F9",
               }}
-              placeholder="Total Set"
+              placeholder="Total Sit"
               keyboardType="numeric"
               value={batchData.totalSet.toString()}
               onChangeText={(text) => handleInputChange("totalSet", text)}
             />
+            {errorTotalSit.status === true && (
+              <Text style={{ color: "red" }}>{errorTotalSit.msg}</Text>
+            )}
             <Text style={{ color: "red" }}>{inputErrors.totalSet}</Text>
           </View>
 

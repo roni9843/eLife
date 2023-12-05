@@ -69,11 +69,13 @@ const ViewTeacherBatchHeader = ({ navigation, submitBtn, id, data }) => {
             }}
           >
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("EditAndAddBatch", {
-                  status: "edit",
-                  data: data,
-                })
+              onPress={
+                () =>
+                  navigation.navigate("EditAndAddBatch", {
+                    status: "edit",
+                    data: data,
+                  })
+                //   console.log("this is log data ", data)
               }
             >
               <Text

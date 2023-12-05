@@ -21,9 +21,14 @@ import { useDispatch, useSelector } from "react-redux";
 import EditProfileHeader from "../../components/HeaderBar/EditProfileHeader";
 import {
   useGetAllStatusPostQuery,
+  useGetAllStatusPostWithPaginationMutation,
   useUpdateTheUserMutation,
 } from "../../redux/apiSlice";
-import { addCurrentUser, addStatusPost } from "../../redux/userSlice";
+import {
+  addCurrentUser,
+  replacePaginationPage,
+  replaceStatusPost,
+} from "../../redux/userSlice";
 import uploadImage from "../../services/uploadImage";
 
 const EditProfile = ({ navigation }) => {
@@ -281,6 +286,9 @@ const EditProfile = ({ navigation }) => {
   const { data: getAllStatusPost, refetch: statusRefetch } =
     useGetAllStatusPostQuery();
 
+  const [getAllStatusPostWithPagination] =
+    useGetAllStatusPostWithPaginationMutation();
+
   // ** for submit btn
   const submitBtn = async () => {
     const validate = await checkValidation();
@@ -334,14 +342,23 @@ const EditProfile = ({ navigation }) => {
 
             dispatch(addCurrentUser(payload));
 
-            const newPost = await statusRefetch();
+            //    const newPost = await statusRefetch();
 
-            console.log("this is update post ", newPost.data.posts);
+            const getAllPost = await getAllStatusPostWithPagination(payload);
 
-            dispatch(addStatusPost(newPost.data.posts));
+            if (getAllPost.data?.message === "successful") {
+              dispatch(replaceStatusPost(getAllPost.data?.allPosts));
+              dispatch(replacePaginationPage(0));
+            }
+
+            // console.log("this is update post ", newPost.data.posts);
+
+            // dispatch(addStatusPost(newPost.data.posts));
 
             setLoadingPage(false);
-            navigation.navigate("LandingScreen");
+            navigation.navigate("LandingScreen", {
+              data: Math.floor(10000 + Math.random() * 90000),
+            });
 
             console.log("confirm");
           }
@@ -352,11 +369,23 @@ const EditProfile = ({ navigation }) => {
     }
   };
 
-  const checkValidation = async () => {
-    userName === "" &&
-      setError({ status: true, msg: "Kindly provide your name." });
+  const trimp = (str) => {
+    if (typeof str !== "string") {
+      throw new Error("Input must be a string");
+    }
 
-    return userName === "" ? false : true;
+    return str.trim();
+  };
+
+  const checkValidation = async () => {
+    const trimmedUserName = trimp(userName);
+
+    if (trimmedUserName === "") {
+      setError({ status: true, msg: "Kindly provide your name." });
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -830,47 +859,51 @@ const EditProfile = ({ navigation }) => {
                   keyboardType="numeric"
                 />
               </View>
-              <View style={{ marginTop: 10 }}>
-                <View style={{ marginTop: 10 }}>
-                  <Text style={{ padding: 5, fontWeight: "bold" }}>
-                    Last Donate Date : {formattedDate}
-                  </Text>
-                  <View>
-                    <TouchableOpacity
-                      style={{
-                        borderRadius: 5,
-                        backgroundColor: "#040E29",
-                        padding: 10,
 
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                      onPress={showDatepicker}
-                    >
-                      <Text style={{ color: "white" }}>Calender</Text>
-                      <IonIcon
+              {numberOfDonate > 0 && (
+                <View style={{ marginTop: 10 }}>
+                  <View style={{ marginTop: 10 }}>
+                    <Text style={{ padding: 5, fontWeight: "bold" }}>
+                      Last Donate Date : {formattedDate}
+                    </Text>
+                    <View>
+                      <TouchableOpacity
                         style={{
-                          fontSize: 16,
-                          color: "white",
-                          marginLeft: 14,
+                          borderRadius: 5,
+                          backgroundColor: "#040E29",
+                          padding: 10,
+
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
-                        name={"calendar-outline"}
+                        onPress={showDatepicker}
+                      >
+                        <Text style={{ color: "white" }}>Calender</Text>
+                        <IonIcon
+                          style={{
+                            fontSize: 16,
+                            color: "white",
+                            marginLeft: 14,
+                          }}
+                          name={"calendar-outline"}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    {show && (
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode="date" // Change this to 'time' for time picker
+                        is24Hour={true}
+                        //  display="default"
+                        onChange={onChangeDate}
                       />
-                    </TouchableOpacity>
+                    )}
                   </View>
-                  {show && (
-                    <DateTimePicker
-                      testID="dateTimePicker"
-                      value={date}
-                      mode="date" // Change this to 'time' for time picker
-                      is24Hour={true}
-                      //  display="default"
-                      onChange={onChangeDate}
-                    />
-                  )}
                 </View>
-              </View>
+              )}
+
               <View style={{ marginTop: 10 }}>
                 <Text style={{ padding: 5, fontWeight: "bold" }}>
                   Address Village :

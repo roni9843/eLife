@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -266,7 +267,7 @@ const VisitProfile = ({ route, navigation }) => {
               <Text>🩸 </Text>
               <Text style={{ color: "#040E29" }}>
                 {"  "}{" "}
-                {thisUserInfo?.bloodGroup === ""
+                {!thisUserInfo?.bloodGroup
                   ? "No Record"
                   : thisUserInfo?.bloodGroup}
               </Text>
@@ -285,17 +286,21 @@ const VisitProfile = ({ route, navigation }) => {
                   : "Choosing to donate Blood."}
               </Text>
             </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Text>⏲️ </Text>
-              <Text style={{ color: "#040E29" }}>
-                {"  "} Last Blood donate 2 months ago
-              </Text>
-            </View>
+            {thisUserInfo?.numberOfDonate > 0 && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Text>⏲️ </Text>
+                <Text style={{ color: "#040E29" }}>
+                  {"  "} Last Blood donate{" "}
+                  {moment(thisUserInfo?.lastDonateDate).format("YYYY-MM-DD")}
+                </Text>
+              </View>
+            )}
+
             <View
               style={{
                 flexDirection: "row",

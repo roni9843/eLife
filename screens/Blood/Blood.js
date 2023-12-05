@@ -5,12 +5,17 @@ import {
   ScrollView,
   StatusBar,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { useSelector } from "react-redux";
 import BloodHeader from "../../components/HeaderBar/BloodHeader";
-import { useGetAllBloodUserQuery } from "../../redux/apiSlice";
+import {
+  useGetAllBloodUserQuery,
+  useGetBloodByAddressMutation,
+} from "../../redux/apiSlice";
 import StatusCard from "./StatusCard ";
 const Blood = ({ navigation }) => {
   // * redux store user
@@ -29,23 +34,47 @@ const Blood = ({ navigation }) => {
 
   const [loading, setLoading] = useState(true);
 
+  const [getBloodByAddress] = useGetBloodByAddressMutation();
+
   useEffect(() => {
     console.log("call blood -> ");
     reCallForBlood();
 
-    if (allBloodUserApi) {
-      console.log("allBloodUser -> ", allBloodUserApi.user);
+    // if (allBloodUserApi) {
+    //   console.log("allBloodUser -> ", allBloodUserApi.user);
 
-      setAllBloodData(allBloodUserApi.user);
-      setInitialData(allBloodUserApi.user);
-      setLoading(false);
-    }
-  }, [allBloodUserApi]);
+    //   setAllBloodData(allBloodUserApi.user);
+    //   setInitialData(allBloodUserApi.user);
+    //   setLoading(false);
+    // }
+
+    searchAddress();
+  }, []);
 
   const reCallForBlood = async () => {
     const reFetchFunc = await reFetchAllBlood();
 
     console.log("this is reFetch -> ", reFetchFunc);
+  };
+
+  const [selectedLocation, setSelectedLocation] = useState(""); // Added location state
+
+  // ? search by address
+  const searchAddress = async () => {
+    setLoading(true);
+
+    const payload = {
+      searchText: selectedLocation,
+    };
+
+    const result = await getBloodByAddress(payload);
+
+    console.log("this is result -> ", result);
+
+    setAllBloodData(result.data.user);
+    setInitialData(result.data.user);
+
+    setLoading(false);
   };
 
   const [selectedGroup, setSelectedGroup] = useState("All");
@@ -61,7 +90,7 @@ const Blood = ({ navigation }) => {
       }
 
       if (selectedGroup === "All") {
-        setAllBloodData(allBloodUserApi.user);
+        setAllBloodData(initialData);
       }
     }
   }, [selectedGroup]);
@@ -119,7 +148,7 @@ const Blood = ({ navigation }) => {
                         <Text
                           style={{
                             color: "#ED1F4C",
-                            fontSize: 20,
+                            fontSize: RFValue(16),
                             fontWeight: "bold",
                           }}
                         >
@@ -132,6 +161,45 @@ const Blood = ({ navigation }) => {
               </View>
             )}
 
+            {/* Added location search section */}
+
+            <View style={{ marginHorizontal: 25 }}>
+              <View style={{ marginTop: 10 }}>
+                <View style={{}}>
+                  <Text style={{ padding: 5, fontWeight: "bold" }}>
+                    Location:
+                  </Text>
+                  <TextInput
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "#EEEEEE",
+                      padding: 10,
+                      borderRadius: 8,
+                      backgroundColor: "#F9F9F9",
+                    }}
+                    placeholder="find by location..."
+                    onChangeText={(text) => setSelectedLocation(text)}
+                    value={selectedLocation}
+                  />
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: "#ED1F4C",
+                      padding: 10,
+                      borderRadius: 5,
+                      alignItems: "center",
+                    }}
+                    onPress={() => searchAddress()}
+                  >
+                    <Text style={{ color: "white", fontSize: RFValue(14) }}>
+                      Search
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
             <View style={{ marginHorizontal: 25, marginTop: 10 }}>
               <View>
                 <Text
@@ -141,7 +209,7 @@ const Blood = ({ navigation }) => {
                 </Text>
               </View>
               <View
-                style={{ flexDirection: "row", justifyContent: "center" }}
+                style={{ flexDirection: "row" }}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingHorizontal: 16 }}
@@ -166,6 +234,7 @@ const Blood = ({ navigation }) => {
                     <Text
                       style={{
                         color: selectedGroup === group ? "white" : "#ED1F4C",
+                        fontSize: RFValue(14),
                       }}
                     >
                       {group}

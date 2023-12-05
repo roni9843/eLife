@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
+  Dimensions,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -26,9 +27,15 @@ const SignIn = ({ setIsSignIn }) => {
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [phoneError, setPhoneError] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [phoneError, setPhoneError] = useState(
+    "Please enter a valid phone number"
+  );
+  const [nameError, setNameError] = useState(
+    "Please enter at lest 3 characters"
+  );
+  const [passwordError, setPasswordError] = useState(
+    "Please enter 8 or more characters"
+  );
   const [error, setError] = useState({
     msg: "",
     status: false,
@@ -36,7 +43,7 @@ const SignIn = ({ setIsSignIn }) => {
 
   useEffect(() => {
     setIsInputValid(
-      userPhone.length >= 9 && userName.length >= 3 && userPassword.length >= 7
+      phoneError === false && nameError === false && passwordError === false
         ? 1
         : 0
     );
@@ -57,16 +64,37 @@ const SignIn = ({ setIsSignIn }) => {
   const [postUser] = usePostUserMutation();
 
   const validatePhone = (input) => {
-    setPhoneError(input.length < 9 ? "Please enter a valid phone number" : "");
+    setPhoneError(
+      !isValidBangladeshiNumber(input)
+        ? "Please enter a valid phone number"
+        : false
+    );
+  };
+
+  /**
+   * Checks if the given phone number is a valid Bangladeshi mobile number.
+   * Valid formats: +8801712345678, 8801712345678, 01712345678
+   *
+   * @param {string} number - The phone number to validate.
+   * @returns {boolean} - True if the number is a valid Bangladeshi mobile number, false otherwise.
+   */
+  const isValidBangladeshiNumber = (number) => {
+    // Regular expression for validating Bangladeshi mobile numbers
+    const bdNumberRegex = /^(?:\+88|88)?(01[3-9]\d{8})$/;
+
+    // Check if the number matches the pattern
+    return bdNumberRegex.test(number);
   };
 
   const validateName = (input) => {
-    setNameError(input.length <= 3 ? "Please enter at lest 3 characters " : "");
+    setNameError(
+      input.length <= 3 ? "Please enter at lest 3 characters " : false
+    );
   };
 
   const validatePassword = (input) => {
     setPasswordError(
-      input.length < 7 ? "Please enter 8 or more characters" : ""
+      input.length < 7 ? "Please enter 8 or more characters" : false
     );
   };
 
@@ -102,6 +130,16 @@ const SignIn = ({ setIsSignIn }) => {
     }
   };
 
+  const [isOtp, setIsOtp] = useState(false);
+
+  const [otp, setOtp] = useState("");
+
+  // Function to handle OTP submission
+  const submitOtp = () => {
+    // Add your logic to handle OTP submission
+    console.log("OTP Submitted:", otp);
+  };
+
   return (
     <View>
       <StatusBar animated={true} backgroundColor="#040E29" />
@@ -124,7 +162,7 @@ const SignIn = ({ setIsSignIn }) => {
               <View style={{ marginBottom: 5 }}>
                 <Image source={require("../../assets/LineSignUp.png")} />
               </View>
-              <View>
+              <View style={{ display: isOtp ? "none" : "block" }}>
                 <View>
                   <View style={Styles.inputContainer}>
                     <View style={Styles.inputBoxContainer}>
@@ -151,8 +189,10 @@ const SignIn = ({ setIsSignIn }) => {
                       />
                     </View>
                   </View>
-                  {phoneError !== "" && (
-                    <Text style={{ color: "red", marginLeft: 10 }}>
+                  {phoneError !== false && (
+                    <Text
+                      style={{ color: "red", marginLeft: 10, opacity: 0.5 }}
+                    >
                       {phoneError}
                     </Text>
                   )}
@@ -181,8 +221,10 @@ const SignIn = ({ setIsSignIn }) => {
                       />
                     </View>
                   </View>
-                  {nameError !== "" && (
-                    <Text style={{ color: "red", marginLeft: 10 }}>
+                  {nameError !== false && (
+                    <Text
+                      style={{ color: "red", marginLeft: 10, opacity: 0.5 }}
+                    >
                       {nameError}
                     </Text>
                   )}
@@ -211,8 +253,10 @@ const SignIn = ({ setIsSignIn }) => {
                       />
                     </View>
                   </View>
-                  {passwordError !== "" && (
-                    <Text style={{ color: "red", marginLeft: 10 }}>
+                  {passwordError !== false && (
+                    <Text
+                      style={{ color: "red", marginLeft: 10, opacity: 0.5 }}
+                    >
                       {passwordError}
                     </Text>
                   )}
@@ -248,9 +292,9 @@ const SignIn = ({ setIsSignIn }) => {
                       validatePassword(userPassword);
 
                       if (
-                        userPhone.length >= 9 &&
-                        userName.length > 3 &&
-                        userPassword.length >= 7
+                        phoneError === false &&
+                        nameError === false &&
+                        passwordError === false
                       ) {
                         submitBtn();
                       }
@@ -275,12 +319,43 @@ const SignIn = ({ setIsSignIn }) => {
                   <View style={Styles.PageSwCon}>
                     <Text style={Styles.PageSw}>Please</Text>
                     <Text
-                      onPress={() => setIsSignIn(false)}
+                      onPress={() => {
+                        setIsSignIn(false);
+                      }}
                       style={Styles.PageSwSignLink}
                     >
                       {" "}
                       Login
                     </Text>
+                  </View>
+                </View>
+              </View>
+              <View>
+                <View>
+                  <View style={{ display: isOtp ? "block" : "none" }}>
+                    {/* OTP Section */}
+                    <View style={Styles.otpContainer}>
+                      {/* Your 4-digit OTP input UI */}
+                      <TextInput
+                        style={Styles.otpInput}
+                        placeholder="•"
+                        placeholderTextColor="#96A2D5"
+                        maxLength={4}
+                        keyboardType="numeric"
+                        onChangeText={(otp) => setOtp(otp)}
+                        value={otp}
+                      />
+
+                      {/* Submit OTP button */}
+                      <TouchableOpacity
+                        onPress={submitOtp}
+                        style={Styles.ValidBtnContainer}
+                      >
+                        <Text style={Styles.btnText}>
+                          {loading ? "Verifying..." : "Verify OTP"}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -318,7 +393,7 @@ const Styles = StyleSheet.create({
   input: {
     height: 40,
     fontSize: 18,
-    paddingLeft: 10,
+    paddingLeft: 15,
     color: "#96A2D5",
   },
   inputContainer: {
@@ -326,7 +401,7 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#232843",
     borderRadius: 40,
-    width: 350,
+    width: Dimensions.get("window").width * 0.8,
     height: 50,
     alignItems: "center",
     justifyContent: "space-between",
@@ -372,7 +447,7 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "green",
     borderRadius: 40,
-    width: 350,
+    width: Dimensions.get("window").width * 0.8,
     height: 60,
     textAlign: "center",
     justifyContent: "center",
@@ -383,7 +458,7 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#696B77",
     borderRadius: 40,
-    width: 350,
+    width: Dimensions.get("window").width * 0.8,
     height: 60,
     textAlign: "center",
     justifyContent: "center",
@@ -416,6 +491,23 @@ const Styles = StyleSheet.create({
   PageSwSignLink: {
     fontWeight: "700",
     color: "#4868F0",
+  },
+  otpContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  otpInput: {
+    fontSize: 24,
+    width: 40,
+    height: 40,
+    borderColor: "#96A2D5",
+    borderWidth: 1,
+    borderRadius: 8,
+    textAlign: "center",
+    marginHorizontal: 5,
+    color: "#96A2D5",
   },
 });
 

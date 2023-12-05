@@ -22,6 +22,13 @@ export const usersApi = createApi({
       query: () => "user/findAlUser",
     }),
 
+    postOtp: builder.mutation({
+      query: (data) => ({
+        url: "auth/otp",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getOneUser: builder.mutation({
       query: (data) => ({
         url: "user/findTheUser",
@@ -127,6 +134,13 @@ export const usersApi = createApi({
     getAllBloodUser: builder.query({
       query: () => "user/GetAllBlood",
     }),
+    getBloodByAddress: builder.mutation({
+      query: (data) => ({
+        url: "user/searchByBlood",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getAllBatch: builder.mutation({
       query: (data) => ({
         url: "TuitionBatch/getAllBatch",
@@ -197,6 +211,20 @@ export const usersApi = createApi({
         body: data,
       }),
     }),
+    findAllUserFromAdmin: builder.mutation({
+      query: (data) => ({
+        url: "admin/getAllUser/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    createVerify: builder.mutation({
+      query: (data) => ({
+        url: "admin/createVerify/",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -229,4 +257,8 @@ export const {
   useGetAllStatusPostWithPaginationMutation,
   useDeleteTuitionBatchMutation,
   useDeleteStudentMutation,
+  useGetBloodByAddressMutation,
+  useFindAllUserFromAdminMutation,
+  useCreateVerifyMutation,
+  usePostOtpMutation,
 } = usersApi;

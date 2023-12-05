@@ -69,7 +69,7 @@ const LikesList = ({ navigation, route }) => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "center",
+            // justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
           }}

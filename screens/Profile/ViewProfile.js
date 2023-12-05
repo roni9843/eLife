@@ -39,9 +39,7 @@ const ViewTuitionBatchDetails = ({ route }) => {
         </Text>
         <Text style={styles.details}>
           Batch Time:{" "}
-          {moment(route.params.courseData.batchTime).format(
-            "MMMM Do YYYY, h:mm a"
-          )}
+          {moment(route.params.courseData.batchTime).format("MMMM Do YYYY")}
         </Text>
         <Text style={styles.details}>
           Total Sets: {route.params.courseData.totalSet}

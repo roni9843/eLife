@@ -1,6 +1,7 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Image, Pressable, StatusBar, Text, View } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import CreateBatchHeader from "../../components/HeaderBar/CreateBatchHeader";
@@ -121,7 +122,11 @@ const CreateBatchScreen = ({ navigation, route }) => {
                     <View>
                       <View
                         style={{
-                          backgroundColor: "green",
+                          backgroundColor: `${
+                            b.batchdetails.length === b.totalSet
+                              ? "red"
+                              : "green"
+                          }`,
                           width: 13,
                           height: 13,
                           borderRadius: 100,
@@ -129,7 +134,13 @@ const CreateBatchScreen = ({ navigation, route }) => {
                         }}
                       ></View>
                     </View>
-                    <View style={{ marginTop: 35 }}>
+                    <View
+                      style={
+                        {
+                          // marginTop: 35
+                        }
+                      }
+                    >
                       <View>
                         <Image
                           style={{
@@ -145,11 +156,14 @@ const CreateBatchScreen = ({ navigation, route }) => {
                         />
                       </View>
                       <View>
-                        <View style={{ flexDirection: "row" }}>
+                        <View
+                          style={{ flexDirection: "row", marginVertical: 5 }}
+                        >
                           <Text
                             style={{
-                              color: "gray",
-                              fontSize: 14,
+                              color: "black",
+                              fontWeight: "bold",
+                              fontSize: RFValue(13),
                             }}
                           >
                             {b.batchTitle}
@@ -163,7 +177,7 @@ const CreateBatchScreen = ({ navigation, route }) => {
                           <Text
                             style={{
                               color: "black",
-                              fontSize: 14,
+                              fontSize: RFValue(12),
                             }}
                           >
                             Start:
@@ -177,21 +191,23 @@ const CreateBatchScreen = ({ navigation, route }) => {
                           <Text
                             style={{
                               color: "black",
-                              fontSize: 14,
+                              fontSize: RFValue(12),
                             }}
                           >
-                            Set:
+                            Sit:
                           </Text>
                           <Text style={{ fontWeight: "bold" }}>
                             {" "}
                             {b.batchdetails.length}/{b.totalSet}
                           </Text>
                         </View>
-                        <View style={{ flexDirection: "row" }}>
+                        <View
+                          style={{ flexDirection: "row", alignItems: "center" }}
+                        >
                           <Text
                             style={{
                               color: "black",
-                              fontSize: 14,
+                              fontSize: RFValue(12),
                             }}
                           >
                             Fee:
@@ -200,7 +216,12 @@ const CreateBatchScreen = ({ navigation, route }) => {
                             {" "}
                             {b.courseFee}/-
                           </Text>
-                          <Text style={{ fontWeight: "gray" }}>
+                          <Text
+                            style={{
+                              fontWeight: "gray",
+                              fontSize: RFValue(10),
+                            }}
+                          >
                             {" "}
                             ({b.feeType})
                           </Text>

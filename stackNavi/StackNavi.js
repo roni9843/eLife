@@ -10,6 +10,9 @@ import LandingScreen from "../screens/LandingScreen";
 import ViewProfile from "../screens/Profile/ViewProfile";
 
 import LikesList from "../components/StatusComponent/LikesList";
+import SignUpWelcome from "../screens/AccountCreate/AccountCreateNewScreen/SignUpWelcome";
+import ValidationScreen from "../screens/Admin/ValidationScreen/ValidationScreen";
+import VerifyScreen from "../screens/Admin/ValidationScreen/VerifyScreen";
 import Blood from "../screens/Blood/Blood";
 import AddStudent from "../screens/CreateBatch/AddStudent/AddStudent";
 import AddStudentFee from "../screens/CreateBatch/AddStudentFee/AddStudentFee";
@@ -17,6 +20,7 @@ import StudentListFee from "../screens/CreateBatch/AddStudentFee/StudentListFee"
 import CreateBatchScreen from "../screens/CreateBatch/CreateBatchScreen";
 import EditAndAddBatch from "../screens/CreateBatch/EditAndAddBatch";
 import ViewTeacherBatch from "../screens/CreateBatch/ViewTeacherBatch";
+import LogOutScreen from "../screens/LogOutScreen";
 import OfflineUiScreen from "../screens/OfflineUiScreen";
 import EditProfile from "../screens/Profile/EditProfile";
 import Setting from "../screens/Setting/Setting";
@@ -190,6 +194,22 @@ const StackNavi = ({ navigation }) => {
         name="Welcome"
         component={WelcomeScreen}
       />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          tabBarOptions: {
+            visible: false,
+          },
+          tabBarStyle: {
+            display: "none",
+          },
+        }}
+        screenOptions={{
+          tabBarIconStyle: { display: "none" },
+        }}
+        name="LogOut"
+        component={LogOutScreen}
+      />
 
       <Stack.Screen
         options={{ headerShown: false }}
@@ -298,6 +318,11 @@ const StackNavi = ({ navigation }) => {
         // }}
         name="Setting"
         component={Setting}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="SignUpWelcome"
+        component={SignUpWelcome}
       />
       <Stack.Screen
         options={{ headerShown: false }}
@@ -418,6 +443,19 @@ const StackNavi = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
+          gestureDirection: "vertical",
+          transitionSpec: {
+            open: config,
+            close: closeConfig,
+          },
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          headerTitle: "Verify",
+        }}
+        name="VerifyScreen"
+        component={VerifyScreen}
+      />
+      <Stack.Screen
+        options={{
           headerShown: false,
           tabBarOptions: {
             visible: false,
@@ -432,6 +470,11 @@ const StackNavi = ({ navigation }) => {
         }}
         name="ViewTeacherBatch"
         component={ViewTeacherBatch}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="validationScreen"
+        component={ValidationScreen}
       />
     </Stack.Navigator>
   );

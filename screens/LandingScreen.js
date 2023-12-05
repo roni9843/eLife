@@ -17,8 +17,13 @@ import { useDispatch, useSelector } from "react-redux";
 import HomePageCard from "../components/HomePageCard";
 import HomePageStatusLoading from "../components/HomePageLoading/HomePageStatusLoading";
 import { useGetAllStatusPostWithPaginationMutation } from "../redux/apiSlice";
-import { addPostPaginationPage, addStatusPost } from "../redux/userSlice";
+import {
+  addPostPaginationPage,
+  addStatusPost,
+  logOut,
+} from "../redux/userSlice";
 import StatusComponent from "./../components/StatusComponent/StatusComponent ";
+import clearUserInfo from "./../services/clearUserInfo";
 
 const Category = [
   {
@@ -91,7 +96,7 @@ const Item = ({ title, selectCategory, setSelectCategory }) => (
   </TouchableOpacity>
 );
 
-const LandingScreen = ({ props, navigation }) => {
+const LandingScreen = ({ props, navigation, route }) => {
   React.useLayoutEffect(() => {
     setTimeout(() => {
       navigation.setOptions({
@@ -310,90 +315,171 @@ const LandingScreen = ({ props, navigation }) => {
                       marginRight: 30,
                     }}
                   >
-                    <View
-                      style={{
-                        backgroundColor: "white",
-                        borderBottomEndRadius: 5,
-                        borderBottomLeftRadius: 5,
-                        borderTopLeftRadius: 5,
-                        borderTopRightRadius: 5,
-                        padding: 5,
-                        textAlign: "center",
-                        alignContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (userInfo.currentUser !== null) {
-                            // clearUserInfo().then((e) =>
-                            //   console.log("this is clear -> ", e)
-                            // );
+                    {userInfo?.currentUser?._id && (
+                      <View
+                        style={{
+                          backgroundColor: "white",
+                          borderBottomEndRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          borderTopLeftRadius: 5,
+                          borderTopRightRadius: 5,
+                          padding: 5,
+                          textAlign: "center",
+                          alignContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (userInfo.currentUser !== null) {
+                              // clearUserInfo().then((e) =>
+                              //   console.log("this is clear -> ", e)
+                              // );
 
-                            // isUserLogged().then((dt) => console.log(dt, userInfo));
-                            closeModal();
-                            navigation.navigate("VisitProfile", {
-                              data: userInfo.currentUser,
-                              navigateScreen: "MyProfile",
+                              // isUserLogged().then((dt) => console.log(dt, userInfo));
+                              closeModal();
+                              navigation.navigate("VisitProfile", {
+                                data: userInfo.currentUser,
+                                navigateScreen: "MyProfile",
+                              });
+                            } else {
+                              closeModal();
+                              navigation.navigate("AccountCreate");
+                            }
+                          }}
+                          style={{
+                            padding: 10,
+                            borderBottomWidth: 1,
+                            borderColor: "#D3D3D3",
+                          }}
+                        >
+                          <Text style={{ fontSize: 16 }}>Profile</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (userInfo.currentUser !== null) {
+                              // clearUserInfo().then((e) =>
+                              //   console.log("this is clear -> ", e)
+                              // );
+
+                              // isUserLogged().then((dt) => console.log(dt, userInfo));
+                              closeModal();
+                              navigation.navigate("CreateBatchScreen");
+                            } else {
+                              closeModal();
+                              navigation.navigate("AccountCreate");
+                            }
+                          }}
+                          style={{
+                            padding: 10,
+                            borderBottomWidth: 1,
+                            borderColor: "#D3D3D3",
+                          }}
+                        >
+                          <Text style={{ fontSize: 16 }}>Batch</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (userInfo.currentUser !== null) {
+                              // clearUserInfo().then((e) =>
+                              //   console.log("this is clear -> ", e)
+                              // );
+
+                              // isUserLogged().then((dt) => console.log(dt, userInfo));
+                              closeModal();
+                              navigation.navigate("Setting");
+                            } else {
+                              closeModal();
+                              navigation.navigate("AccountCreate");
+                            }
+                          }}
+                          style={{
+                            padding: 10,
+                            borderBottomWidth: 1,
+                            borderColor: "#D3D3D3",
+                          }}
+                        >
+                          <Text style={{ fontSize: 16 }}>Setting</Text>
+                        </TouchableOpacity>
+                        {userInfo?.currentUser?.role === "admin" && (
+                          <TouchableOpacity
+                            onPress={() => {
+                              closeModal();
+                              navigation.navigate("validationScreen");
+                            }}
+                            style={{
+                              padding: 10,
+                              borderBottomWidth: 1,
+                              borderColor: "#D3D3D3",
+                            }}
+                          >
+                            <Text style={{ fontSize: 16, color: "black" }}>
+                              Validation
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+                        <TouchableOpacity
+                          onPress={() => {
+                            clearUserInfo().then((e) => {
+                              closeModal();
+                              dispatch(logOut());
+                              navigation.navigate("LogOut");
                             });
-                          } else {
-                            closeModal();
-                            navigation.navigate("AccountCreate");
-                          }
-                        }}
-                        style={{
-                          padding: 10,
-                          borderBottomWidth: 1,
-                          borderColor: "#D3D3D3",
-                        }}
-                      >
-                        <Text style={{ fontSize: 16 }}>Profile</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (userInfo.currentUser !== null) {
-                            // clearUserInfo().then((e) =>
-                            //   console.log("this is clear -> ", e)
-                            // );
+                          }}
+                          style={{
+                            padding: 10,
 
-                            // isUserLogged().then((dt) => console.log(dt, userInfo));
-                            closeModal();
-                            navigation.navigate("CreateBatchScreen");
-                          } else {
-                            closeModal();
-                            navigation.navigate("AccountCreate");
-                          }
-                        }}
+                            borderColor: "#D3D3D3",
+                          }}
+                        >
+                          <Text style={{ fontSize: 16, color: "red" }}>
+                            Log out
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    {!userInfo?.currentUser?._id && (
+                      <View
                         style={{
-                          padding: 10,
-                          borderBottomWidth: 1,
-                          borderColor: "#D3D3D3",
+                          backgroundColor: "white",
+                          borderBottomEndRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          borderTopLeftRadius: 5,
+                          borderTopRightRadius: 5,
+                          padding: 5,
+                          textAlign: "center",
+                          alignContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        <Text style={{ fontSize: 16 }}>Batch</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (userInfo.currentUser !== null) {
-                            // clearUserInfo().then((e) =>
-                            //   console.log("this is clear -> ", e)
-                            // );
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (userInfo.currentUser !== null) {
+                              // clearUserInfo().then((e) =>
+                              //   console.log("this is clear -> ", e)
+                              // );
 
-                            // isUserLogged().then((dt) => console.log(dt, userInfo));
-                            closeModal();
-                            navigation.navigate("Setting");
-                          } else {
-                            closeModal();
-                            navigation.navigate("AccountCreate");
-                          }
-                        }}
-                        style={{
-                          padding: 10,
-                        }}
-                      >
-                        <Text style={{ fontSize: 16 }}>Setting</Text>
-                      </TouchableOpacity>
-                    </View>
+                              // isUserLogged().then((dt) => console.log(dt, userInfo));
+                              closeModal();
+                              navigation.navigate("VisitProfile", {
+                                data: userInfo.currentUser,
+                                navigateScreen: "MyProfile",
+                              });
+                            } else {
+                              closeModal();
+                              navigation.navigate("AccountCreate");
+                            }
+                          }}
+                          style={{
+                            padding: 10,
+                          }}
+                        >
+                          <Text style={{ fontSize: 16, color: "black" }}>
+                            Log in
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
                   </View>
                 </TouchableWithoutFeedback>
               </Modal>
@@ -548,13 +634,14 @@ const LandingScreen = ({ props, navigation }) => {
                     userInfo={post.userInfo[0][0]}
                     userPosts={null}
                     setUserPosts={null}
+                    route={route?.params?.data}
                   />
                 </View>
               ))}
           </View>
           <View
             style={{
-              margin: 20,
+              margin: 15,
               alignItems: "center",
               justifyContent: "center",
               textAlign: "center",
@@ -564,7 +651,7 @@ const LandingScreen = ({ props, navigation }) => {
               style={{
                 borderRadius: 5,
                 backgroundColor: "#040E29",
-                padding: 15,
+                padding: 10,
                 width: 130,
                 flexDirection: "row",
                 alignItems: "center",
