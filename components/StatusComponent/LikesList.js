@@ -1,7 +1,16 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
-import IonIcon from "react-native-vector-icons/Ionicons";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import VerifyIcon from "react-native-vector-icons/MaterialIcons";
+import ProfileIcon from "react-native-vector-icons/SimpleLineIcons";
 import { useGetOnePostReactionMutation } from "../../redux/apiSlice";
 
 const LikesList = ({ navigation, route }) => {
@@ -9,6 +18,15 @@ const LikesList = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
   const [reactionListData, setReactionListData] = useState([]);
   const [noLike, setLike] = useState("no likes");
+
+  const getTimeAgo = (createdAt) => {
+    // Implement your time ago logic here
+    // For simplicity, you can use a library like `moment`
+    // or implement a custom logic like the previous example
+
+    // Placeholder logic
+    return moment(createdAt).fromNow();
+  };
 
   useEffect(() => {
     callReactionApi();
@@ -35,75 +53,102 @@ const LikesList = ({ navigation, route }) => {
     }
   };
 
-  const renderItem = ({ item }) => (
-    <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
-      {item.reactId.profilePic ? (
-        <Image
-          source={{ uri: item.reactId.profilePic }}
-          style={{ width: 50, height: 50, borderRadius: 25, marginRight: 10 }}
-        />
-      ) : (
-        <View
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            marginRight: 10,
-            backgroundColor: "lightgray",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {/* Use IonIcon when no profile picture */}
-          <IonIcon
-            style={{
-              fontSize: 40,
-              color: "black",
-            }}
-            name={"person-circle-outline"}
-          />
-        </View>
-      )}
+  const renderItem = ({ item }) => {
+    console.log(item);
 
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            // justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-            {" "}
-            {item.reactId.name}
-          </Text>
-
-          {item.reactId?.verified === true && (
-            <View style={{ marginTop: 3, marginLeft: 5 }}>
+    return (
+      <View
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 5,
+          backgroundColor: "white",
+          marginHorizontal: 10,
+          marginTop: 10,
+          borderRadius: 5,
+        }}
+      >
+        <View style={styles.postContainer}>
+          <View>
+            {!item.reactId.profilePic ? (
+              <View
+                style={{
+                  // backgroundColor: "green",
+                  borderRadius: 50,
+                  borderWidth: 2,
+                  borderColor: "#040E29",
+                  padding: 4,
+                  backgroundColor: "#040E29",
+                  marginRight: 5,
+                  width: 40,
+                  height: 40,
+                  borderRadius: 25, // Make it round
+                  marginRight: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <ProfileIcon
+                  name="user"
+                  size={20}
+                  color="white"
+                  style={
+                    {
+                      // backgroundColor: "green",
+                    }
+                  }
+                />
+              </View>
+            ) : (
               <Image
-                source={require("../../assets/blueTick.png")}
-                style={{ height: 15, width: 20 }}
+                source={{ uri: item.reactId.profilePic }}
+                style={styles.userImage}
               />
+            )}
+          </View>
+          <View style={styles.textContainer}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <View>
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      // justifyContent: "center",
+                      alignContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={styles.userName}>{item.reactId.name}</Text>
+
+                    {item.reactId?.verified === true && (
+                      <View style={{ marginLeft: 10 }}>
+                        <VerifyIcon
+                          name="verified-user"
+                          size={18}
+                          color="#040E29"
+                          style={
+                            {
+                              // backgroundColor: "green",
+                            }
+                          }
+                        />
+                      </View>
+                    )}
+                  </View>
+                </View>
+
+                <Text style={styles.time}>{getTimeAgo(item.createdAt)}</Text>
+              </View>
             </View>
-          )}
+          </View>
         </View>
-        <Text>{getTimeAgo(item.createdAt)}</Text>
       </View>
-    </View>
-  );
-
-  const getTimeAgo = (createdAt) => {
-    // Implement your time ago logic here
-    // For simplicity, you can use a library like `moment`
-    // or implement a custom logic like the previous example
-
-    // Placeholder logic
-    return moment(createdAt).fromNow();
+    );
   };
 
   return (
-    <View>
+    <ScrollView>
       {loading && (
         <View
           style={{
@@ -146,8 +191,34 @@ const LikesList = ({ navigation, route }) => {
           )}
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  Container: {
+    margin: 7,
+  },
+  postContainer: {
+    flexDirection: "row",
+  },
+  userImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 25, // Make it round
+    marginRight: 10,
+  },
+  textContainer: {
+    flex: 1,
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  time: {
+    fontSize: 12,
+    color: "#888888",
+  },
+});
 
 export default LikesList;
