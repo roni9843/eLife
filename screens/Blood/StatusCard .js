@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import VerifyIcon from "react-native-vector-icons/MaterialIcons";
+import ProfileIcon from "react-native-vector-icons/SimpleLineIcons";
 
 import { RFValue } from "react-native-responsive-fontsize";
 
@@ -94,24 +95,29 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
               ) : (
                 <View
                   style={{
-                    fontWeight: "bold",
-                    color: "white",
+                    // backgroundColor: "green",
+                    borderRadius: 50,
+                    borderWidth: 2,
+                    borderColor: "#040E29",
+                    padding: 4,
+                    backgroundColor: "#040E29",
+                    width: Dimensions.get("window").width * 0.13,
+                    height: Dimensions.get("window").width * 0.13,
+                    borderRadius: 25, // Make it round
 
-                    //backgroundColor: "#040E29",
-                    borderRadius: 100,
-                    margin: 0,
-                    padding: 0,
                     justifyContent: "center",
                     alignItems: "center",
-                    textAlign: "center",
                   }}
                 >
-                  <IonIcon
-                    style={{
-                      fontSize: 60,
-                      color: "black",
-                    }}
-                    name={"person-circle-outline"}
+                  <ProfileIcon
+                    name="user"
+                    size={Dimensions.get("window").width * 0.07}
+                    color="white"
+                    style={
+                      {
+                        // backgroundColor: "green",
+                      }
+                    }
                   />
                 </View>
               )}

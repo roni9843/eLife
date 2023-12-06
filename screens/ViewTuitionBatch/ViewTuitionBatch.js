@@ -11,8 +11,11 @@ import {
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import ProfileIcon from "react-native-vector-icons/SimpleLineIcons";
 import { useSelector } from "react-redux";
 import CreateBatchHeader from "../../components/HeaderBar/CreateBatchHeader";
+
+import VerifyIcon from "react-native-vector-icons/MaterialIcons";
 
 import moment from "moment";
 import { Image, StyleSheet } from "react-native";
@@ -51,32 +54,91 @@ const CourseCard = ({ item, navigation }) => {
           marginBottom: 10,
         }}
       >
-        <View>
-          <Image
-            source={{ uri: teacherDetails.profilePic }}
-            style={styles.image}
-          />
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: 10,
+          }}
+        >
+          {teacherDetails.profilePic && teacherDetails.profilePic !== null ? (
+            <View
+              style={{
+                fontWeight: "bold",
+                color: "white",
+
+                backgroundColor: "#040E29",
+                borderRadius: 100,
+                margin: 0,
+                padding: 0,
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <Image
+                style={styles.image}
+                source={{
+                  // uri: image,
+                  uri: teacherDetails.profilePic,
+                }}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                // backgroundColor: "green",
+                borderRadius: 50,
+                borderWidth: 2,
+                borderColor: "#040E29",
+                padding: 4,
+                backgroundColor: "#040E29",
+                width: Dimensions.get("window").width * 0.13,
+                height: Dimensions.get("window").width * 0.13,
+                borderRadius: 25, // Make it round
+
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ProfileIcon
+                name="user"
+                size={Dimensions.get("window").width * 0.07}
+                color="white"
+                style={
+                  {
+                    // backgroundColor: "green",
+                  }
+                }
+              />
+            </View>
+          )}
         </View>
+
         <View>
           <Text style={styles.title}>{batchTitle}</Text>
           <View>
             <View
               style={{
                 flexDirection: "row",
+                // justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
               }}
             >
-              <Text style={{ fontSize: RFValue(13) }}>
-                {teacherDetails.name}
-              </Text>
+              <Text style={styles.userName}>{teacherDetails.name}</Text>
 
               {teacherDetails.verified === true && (
-                <View style={{ marginTop: 2, marginLeft: 5 }}>
-                  <Image
-                    source={require("../../assets/blueTick.png")}
-                    style={{
-                      height: 15,
-                      width: Dimensions.get("window").width * 0.04,
-                    }}
+                <View style={{ marginLeft: 10 }}>
+                  <VerifyIcon
+                    name="verified-user"
+                    size={16}
+                    color="#040E29"
+                    style={
+                      {
+                        // backgroundColor: "green",
+                      }
+                    }
                   />
                 </View>
               )}
@@ -464,10 +526,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   image: {
-    width: Dimensions.get("window").width * 0.15,
-    height: Dimensions.get("window").width * 0.15,
+    width: Dimensions.get("window").width * 0.13,
+    height: Dimensions.get("window").width * 0.13,
     borderRadius: 10,
-    marginRight: 10,
   },
   contentContainer: {
     flex: 2,
@@ -479,6 +540,13 @@ const styles = StyleSheet.create({
     fontSize: RFValue(16),
     fontWeight: "bold",
     marginBottom: 0,
+  },
+  textContainer: {
+    flex: 1,
+  },
+  userName: {
+    fontSize: RFValue(13),
+    fontWeight: "bold",
   },
 });
 

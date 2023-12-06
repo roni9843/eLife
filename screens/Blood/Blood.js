@@ -244,9 +244,14 @@ const Blood = ({ navigation }) => {
               </View>
               <View style={{ marginTop: 10 }}>
                 <Text
-                  style={{ fontSize: 15, marginBottom: 10, color: "black" }}
+                  style={{
+                    fontSize: 15,
+                    marginBottom: 10,
+                    color: "#ED1F4C",
+                    fontWeight: "bold",
+                  }}
                 >
-                  Donation
+                  BLOOD HEROS
                 </Text>
               </View>
               {loading && (

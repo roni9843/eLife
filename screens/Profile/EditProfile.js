@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import Textarea from "react-native-textarea";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import VerifyIcon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
 import EditProfileHeader from "../../components/HeaderBar/EditProfileHeader";
 import {
@@ -528,11 +529,17 @@ const EditProfile = ({ navigation }) => {
               >
                 {userName}
               </Text>
+
               {verified === true && !userName.length === false && (
-                <View style={{ marginTop: 5, marginLeft: 5 }}>
-                  <Image
-                    source={require("../../assets/blueTick.png")}
-                    style={{ height: 22, width: 25 }}
+                <View style={{ marginLeft: 10 }}>
+                  <VerifyIcon
+                    name="verified-user"
+                    size={18}
+                    color="#040E29"
+                    style={{
+                      // backgroundColor: "green",
+                      marginTop: 5,
+                    }}
                   />
                 </View>
               )}

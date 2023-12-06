@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from "react-native";
+import ProfileIcon from "react-native-vector-icons/SimpleLineIcons";
 
 const ViewTuitionBatchDetails = ({ route }) => {
   console.log("this is route ", route);
@@ -21,14 +22,73 @@ const ViewTuitionBatchDetails = ({ route }) => {
           alignItems: "center",
         }}
       >
-        <Image
-          source={{
-            uri:
-              route.params.courseData.teacherDetails.profilePic +
-              `?${Math.random()}`,
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
           }}
-          style={styles.teacherImage}
-        />
+        >
+          {route.params.courseData.teacherDetails.profilePic &&
+          route.params.courseData.teacherDetails.profilePic !== null ? (
+            <View
+              style={{
+                fontWeight: "bold",
+                color: "white",
+
+                backgroundColor: "#040E29",
+                borderRadius: 100,
+                margin: 0,
+                padding: 0,
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <Image
+                style={{
+                  width: Dimensions.get("window").width * 0.4,
+                  height: Dimensions.get("window").width * 0.4,
+                  borderRadius: 10,
+                }}
+                source={{
+                  // uri: image,
+                  uri:
+                    route.params.courseData.teacherDetails.profilePic +
+                    `?${Math.random()}`,
+                }}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                // backgroundColor: "green",
+                borderRadius: 50,
+                borderWidth: 2,
+                borderColor: "#040E29",
+                padding: 4,
+                backgroundColor: "#040E29",
+                width: Dimensions.get("window").width * 0.2,
+                height: Dimensions.get("window").width * 0.2,
+                borderRadius: 25, // Make it round
+
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ProfileIcon
+                name="user"
+                size={Dimensions.get("window").width * 0.15}
+                color="white"
+                style={
+                  {
+                    // backgroundColor: "green",
+                  }
+                }
+              />
+            </View>
+          )}
+        </View>
+
         <View style={styles.header}>
           <View
             style={{

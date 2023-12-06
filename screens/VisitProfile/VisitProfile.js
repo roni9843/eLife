@@ -8,13 +8,14 @@ import {
   Text,
   View,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import VerifyIcon from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from "react-redux";
 import ViewPageHeader from "../../components/HeaderBar/ViewPageHeader";
 import VisitProfileHeader from "../../components/HeaderBar/VisitProfileHeader";
 import StatusComponent from "../../components/StatusComponent/StatusComponent ";
 import { useGetThisUserStatusPostMutation } from "../../redux/apiSlice";
-
 const VisitProfile = ({ route, navigation }) => {
   // * redux store user
   const userInfo = useSelector((state) => state.userInfo);
@@ -131,27 +132,43 @@ const VisitProfile = ({ route, navigation }) => {
                 alignItems: "center",
               }}
             >
-              <Text
+              <View
                 style={{
-                  marginTop: 2,
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  justifyContent: "center",
+                  flexDirection: "row",
+                  // justifyContent: "center",
                   alignContent: "center",
-                  textAlign: "center",
+                  alignItems: "center",
                 }}
               >
-                {thisUserInfo?.name}
-              </Text>
+                <Text
+                  style={{
+                    marginTop: 2,
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    justifyContent: "center",
+                    alignContent: "center",
+                    textAlign: "center",
+                    fontSize: RFValue(20),
+                  }}
+                >
+                  {thisUserInfo?.name}
+                </Text>
 
-              {thisUserInfo?.verified === true && (
-                <View style={{ marginTop: 5, marginLeft: 5 }}>
-                  <Image
-                    source={require("../../assets/blueTick.png")}
-                    style={{ height: 22, width: 25 }}
-                  />
-                </View>
-              )}
+                {thisUserInfo?.verified === true && (
+                  <View style={{ marginLeft: 10 }}>
+                    <VerifyIcon
+                      name="verified-user"
+                      size={18}
+                      color="#040E29"
+                      style={
+                        {
+                          // backgroundColor: "green",
+                        }
+                      }
+                    />
+                  </View>
+                )}
+              </View>
             </View>
             <Text
               style={{

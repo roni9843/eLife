@@ -259,25 +259,31 @@ const LandingScreen = ({ props, navigation, route }) => {
                   />
                 ) : (
                   <View
-                    style={
-                      {
-                        // backgroundColor: "white",
-                        // borderWidth: 1,
-                        // borderColor: "#020A0D",
-                        // padding: 3,
-                        // borderRadius: 50,
-                        // marginTop: 7,
-                        // marginLeft: 10,
-                      }
-                    }
+                    style={{
+                      // backgroundColor: "green",
+                      borderRadius: 50,
+                      borderWidth: 1,
+                      borderColor: "white",
+                      padding: 4,
+                      backgroundColor: "#040E29",
+                      // marginRight: 5,
+                      width: 35,
+                      height: 35,
+                      borderRadius: 25, // Make it round
+                      //marginRight: 10,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
-                    <IonIcon
-                      style={{
-                        fontSize: 40,
-                        fontWeight: "bold",
-                        color: "white",
-                      }}
-                      name={"person-circle-outline"}
+                    <ProfileIcon
+                      name="user"
+                      size={20}
+                      color="white"
+                      style={
+                        {
+                          // backgroundColor: "green",
+                        }
+                      }
                     />
                   </View>
                 )
@@ -446,7 +452,7 @@ const LandingScreen = ({ props, navigation, route }) => {
                             borderColor: "#D3D3D3",
                           }}
                         >
-                          <Text style={{ fontSize: 16, color: "red" }}>
+                          <Text style={{ fontSize: 16, color: "black" }}>
                             Log out
                           </Text>
                         </TouchableOpacity>

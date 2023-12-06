@@ -57,7 +57,7 @@ const BloodHeader = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View>
-            <Text style={{ fontSize: 16, color: "white" }}>Blood 🩸</Text>
+            <Text style={{ fontSize: 16, color: "white" }}>Blood</Text>
           </View>
         </View>
       </View>
