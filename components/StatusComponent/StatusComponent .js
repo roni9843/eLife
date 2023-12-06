@@ -609,16 +609,17 @@ const StatusComponent = ({
           style={{ flexDirection: "row", alignItems: "center" }}
         >
           <View>
+            <Text style={{ color: "gray" }}> Share</Text>
+          </View>
+          <View>
             <IonIcon
               style={{
                 fontSize: 22,
                 color: "#040E29",
+                marginLeft: 6,
               }}
               name={"arrow-redo-outline"}
             />
-          </View>
-          <View>
-            <Text style={{ color: "gray", marginLeft: 5 }}> Share</Text>
           </View>
         </TouchableOpacity>
       </View>

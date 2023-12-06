@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import VerifyIcon from "react-native-vector-icons/MaterialIcons";
 
 import { RFValue } from "react-native-responsive-fontsize";
 
@@ -132,28 +133,41 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
             </View>
           </View>
           <View style={{ marginLeft: 10 }}>
-            <View style={{ flexDirection: "row", textAlign: "center" }}>
-              <Text
+            <View>
+              <View
                 style={{
-                  fontWeight: "bold",
-                  fontSize: RFValue(15),
+                  flexDirection: "row",
+                  // justifyContent: "center",
+                  alignContent: "center",
+                  alignItems: "center",
                 }}
               >
-                {name}
-              </Text>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: RFValue(15),
+                  }}
+                >
+                  {name}
+                </Text>
 
-              {verified === true && (
-                <View style={{ marginTop: 2, marginLeft: 5 }}>
-                  <Image
-                    source={require("../../assets/blueTick.png")}
-                    style={{
-                      height: Dimensions.get("window").width * 0.05,
-                      width: Dimensions.get("window").width * 0.05,
-                    }}
-                  />
-                </View>
-              )}
+                {verified === true && (
+                  <View style={{ marginLeft: 10 }}>
+                    <VerifyIcon
+                      name="verified-user"
+                      size={18}
+                      color="#040E29"
+                      style={
+                        {
+                          // backgroundColor: "green",
+                        }
+                      }
+                    />
+                  </View>
+                )}
+              </View>
             </View>
+
             <View
               style={{
                 flexDirection: "row",
@@ -211,6 +225,8 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
                   transform: [{ rotateZ: "135deg" }],
                   fontWeight: "bold",
                   fontSize: RFValue(14),
+                  backgroundColor: "#ED1F4C",
+                  borderRadius: 50,
                 }}
               >
                 {bloodGrp}
@@ -224,7 +240,7 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
                   fontSize: RFValue(12),
                 }}
               >
-                Donate
+                Blood
               </Text>
             </View>
           </View>

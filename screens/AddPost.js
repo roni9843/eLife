@@ -9,9 +9,11 @@ import {
   View,
 } from "react-native";
 import Textarea from "react-native-textarea";
+import VerifyIcon from "react-native-vector-icons/MaterialIcons";
 
 import { ActivityIndicator } from "react-native-paper";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import ProfileIcon from "react-native-vector-icons/SimpleLineIcons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useStatusPostMutation,
@@ -167,53 +169,81 @@ const AddPost = ({ navigation, route }) => {
             <View>
               {route?.params?.userImage ? (
                 <Image
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 100,
-                  }}
                   source={{
                     // uri: image,
                     uri: route?.params?.userImage,
                   }}
+                  style={styles.userImage}
                 />
               ) : (
-                <IonIcon
-                  style={{
-                    fontSize: 40,
-                    color: "black",
-                  }}
-                  name={"person-circle-outline"}
-                />
-              )}
-            </View>
-
-            <View style={{ marginLeft: 5 }}>
-              <View>
                 <View
                   style={{
-                    flexDirection: "row",
-                    // justifyContent: "center",
-                    alignContent: "center",
+                    // backgroundColor: "green",
+                    borderRadius: 50,
+                    borderWidth: 2,
+                    borderColor: "#040E29",
+                    padding: 4,
+                    backgroundColor: "#040E29",
+                    marginRight: 5,
+                    width: 40,
+                    height: 40,
+                    borderRadius: 25, // Make it round
+                    marginRight: 10,
+                    justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                    {" "}
-                    {route?.params?.userName}
-                  </Text>
+                  <ProfileIcon
+                    name="user"
+                    size={20}
+                    color="white"
+                    style={
+                      {
+                        // backgroundColor: "green",
+                      }
+                    }
+                  />
+                </View>
+              )}
+            </View>
+          </View>
+          <View style={styles.textContainer}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <View>
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      // justifyContent: "center",
+                      alignContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={styles.userName}>
+                      {route?.params?.userName}
+                    </Text>
 
-                  {route?.params?.verified === true && (
-                    <View style={{ marginTop: 0, marginLeft: 5 }}>
-                      <Image
-                        source={require("../assets/blueTick.png")}
-                        style={{ height: 15, width: 20 }}
-                      />
-                    </View>
-                  )}
+                    {userInfo?.verified === true && (
+                      <View style={{ marginLeft: 10 }}>
+                        <VerifyIcon
+                          name="verified-user"
+                          size={18}
+                          color="#040E29"
+                          style={
+                            {
+                              // backgroundColor: "green",
+                            }
+                          }
+                        />
+                      </View>
+                    )}
+                  </View>
                 </View>
 
-                <Text style={{ fontSize: 10, color: "gray" }}>
+                <Text style={styles.time}>
+                  {" "}
                   {route?.params?.timestamps
                     ? moment(route?.params?.timestamps).format("YYYY-MM-DD")
                     : currentTime}
@@ -222,6 +252,7 @@ const AddPost = ({ navigation, route }) => {
             </View>
           </View>
         </View>
+
         <View style={{ marginTop: 5 }}>
           <Textarea
             autoFocus={true}
@@ -297,5 +328,25 @@ const styles = StyleSheet.create({
     height: 170,
     fontSize: 14,
     color: "#333",
+  },
+  postContainer: {
+    flexDirection: "row",
+  },
+  userImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 25, // Make it round
+    marginRight: 10,
+  },
+  textContainer: {
+    flex: 1,
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  time: {
+    fontSize: 12,
+    color: "#888888",
   },
 });

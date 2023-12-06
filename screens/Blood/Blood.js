@@ -209,7 +209,7 @@ const Blood = ({ navigation }) => {
                 </Text>
               </View>
               <View
-                style={{ flexDirection: "row" }}
+                style={{ flexDirection: "row", justifyContent: "space-around" }}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingHorizontal: 16 }}
@@ -246,7 +246,7 @@ const Blood = ({ navigation }) => {
                 <Text
                   style={{ fontSize: 15, marginBottom: 10, color: "black" }}
                 >
-                  Donation request
+                  Donation
                 </Text>
               </View>
               {loading && (
