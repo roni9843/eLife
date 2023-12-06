@@ -3,7 +3,6 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
-  Dimensions,
   Image,
   Modal,
   Share,
@@ -14,6 +13,10 @@ import {
   View,
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
+
+import VerifyIcon from "react-native-vector-icons/MaterialIcons";
+import ProfileIcon from "react-native-vector-icons/SimpleLineIcons";
+
 import { useDispatch } from "react-redux";
 import {
   useCreatePostReactionMutation,
@@ -299,14 +302,34 @@ const StatusComponent = ({
       <View style={styles.postContainer}>
         <TouchableOpacity onPress={() => reDirect && goProfile()}>
           {!userImage ? (
-            <IonIcon
+            <View
               style={{
-                fontSize: 42,
-                color: "black",
+                // backgroundColor: "green",
+                borderRadius: 50,
+                borderWidth: 2,
+                borderColor: "#040E29",
+                padding: 4,
+                backgroundColor: "#040E29",
                 marginRight: 5,
+                width: 40,
+                height: 40,
+                borderRadius: 25, // Make it round
+                marginRight: 10,
+                justifyContent: "center",
+                alignItems: "center",
               }}
-              name={"person-circle-outline"}
-            />
+            >
+              <ProfileIcon
+                name="user"
+                size={20}
+                color="white"
+                style={
+                  {
+                    // backgroundColor: "green",
+                  }
+                }
+              />
+            </View>
           ) : (
             <Image
               source={{
@@ -333,13 +356,16 @@ const StatusComponent = ({
                   <Text style={styles.userName}>{userName}</Text>
 
                   {userInfo?.verified === true && (
-                    <View style={{ marginTop: 0, marginLeft: 5 }}>
-                      <Image
-                        source={require("../../assets/blueTick.png")}
-                        style={{
-                          height: 15,
-                          width: Dimensions.get("window").width * 0.04,
-                        }}
+                    <View style={{ marginLeft: 10 }}>
+                      <VerifyIcon
+                        name="verified-user"
+                        size={18}
+                        color="#040E29"
+                        style={
+                          {
+                            // backgroundColor: "green",
+                          }
+                        }
                       />
                     </View>
                   )}
@@ -473,9 +499,8 @@ const StatusComponent = ({
       </View>
       <Text
         style={{
-          fontSize: 14,
           marginTop: 5,
-          marginLeft: 5,
+          fontSize: 14,
         }}
       >
         {statusText}
@@ -503,7 +528,7 @@ const StatusComponent = ({
               <IonIcon
                 style={{
                   fontSize: 20,
-                  color: likeCount > 0 ? "#618a3d" : "gray",
+                  color: likeCount > 0 ? "#040E29" : "gray",
                   marginTop: 10,
                 }}
                 name={"leaf"}
@@ -512,7 +537,7 @@ const StatusComponent = ({
               <IonIcon
                 style={{
                   fontSize: 20,
-                  color: likeCount > 0 ? "#618a3d" : "gray",
+                  color: likeCount > 0 ? "#040E29" : "gray",
                   marginTop: 10,
                 }}
                 name={"leaf"}
@@ -534,6 +559,7 @@ const StatusComponent = ({
           alignSelf: "center",
           marginTop: 5,
           width: "100%",
+          marginBottom: 3,
         }}
       ></View>
 
@@ -541,7 +567,6 @@ const StatusComponent = ({
         style={{
           flexDirection: "row",
           alignItems: "center",
-          marginHorizontal: 10,
           justifyContent: "space-between",
         }}
       >
@@ -557,28 +582,23 @@ const StatusComponent = ({
             {isThisUserLikeThisPost ? (
               <IonIcon
                 style={{
-                  fontSize: 25,
-                  color: "#618a3d",
-                  marginTop: 10,
+                  fontSize: 22,
+                  color: "#040E29",
                 }}
                 name={"leaf"}
               />
             ) : (
               <IonIcon
                 style={{
-                  fontSize: 25,
+                  fontSize: 22,
                   color: "#040E29",
-                  marginTop: 10,
                 }}
                 name={"leaf-outline"}
               />
             )}
           </View>
           <View>
-            <Text style={{ marginTop: 8, color: "gray", marginLeft: 5 }}>
-              {" "}
-              Like
-            </Text>
+            <Text style={{ color: "gray", marginLeft: 5 }}> Like</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -591,18 +611,14 @@ const StatusComponent = ({
           <View>
             <IonIcon
               style={{
-                fontSize: 25,
+                fontSize: 22,
                 color: "#040E29",
-                marginTop: 10,
               }}
               name={"arrow-redo-outline"}
             />
           </View>
           <View>
-            <Text style={{ marginTop: 8, color: "gray", marginLeft: 5 }}>
-              {" "}
-              Share
-            </Text>
+            <Text style={{ color: "gray", marginLeft: 5 }}> Share</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -612,7 +628,7 @@ const StatusComponent = ({
 
 const styles = StyleSheet.create({
   Container: {
-    margin: 10,
+    margin: 7,
   },
   postContainer: {
     flexDirection: "row",
@@ -621,7 +637,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 25, // Make it round
-    marginRight: 16,
+    marginRight: 10,
   },
   textContainer: {
     flex: 1,

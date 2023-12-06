@@ -16,6 +16,7 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import HomePageCard from "../components/HomePageCard";
 import HomePageStatusLoading from "../components/HomePageLoading/HomePageStatusLoading";
+import HomePageTopButton from "../components/HomePageTop/HomePageTopButton";
 import { useGetAllStatusPostWithPaginationMutation } from "../redux/apiSlice";
 import {
   addPostPaginationPage,
@@ -516,7 +517,7 @@ const LandingScreen = ({ props, navigation, route }) => {
           }}
         >
           <IonIcon
-            style={{ fontSize: 45, fontWeight: "bold", color: "white" }}
+            style={{ fontSize: 35, color: "white" }}
             name={"add-circle-outline"}
           />
         </TouchableOpacity>
@@ -559,39 +560,9 @@ const LandingScreen = ({ props, navigation, route }) => {
               ))}
           </ScrollView>
 
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.buttonContainer}
-          >
-            <TouchableOpacity
-              // onPress={() =>
-              // //  clearUserInfo().then((e) => console.log("this is clear -> ", e))
-              // }
-              style={styles.buttonActive}
-            >
-              <Text style={styles.buttonText}>Feed 📰</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={
-                () => navigation.navigate("ViewTuitionBatch")
-                // clearUserInfo().then((e) =>
-                //   console.log("this is clear -> ", e)
-                // )
-
-                // console.log("ee", userInfo.allStatusPost)
-              }
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Tuition 👨‍🏫</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("BloodScreen")}
-            >
-              <Text style={styles.buttonText}>Blood 🩸</Text>
-            </TouchableOpacity>
-          </ScrollView>
+          <View style={{ paddingHorizontal: 5 }}>
+            <HomePageTopButton navigation={navigation}></HomePageTopButton>
+          </View>
 
           {userInfo.allStatusPost === null && (
             <HomePageStatusLoading></HomePageStatusLoading>
@@ -641,7 +612,8 @@ const LandingScreen = ({ props, navigation, route }) => {
           </View>
           <View
             style={{
-              margin: 15,
+              marginTop: 5,
+              marginBottom: 10,
               alignItems: "center",
               justifyContent: "center",
               textAlign: "center",
@@ -651,11 +623,12 @@ const LandingScreen = ({ props, navigation, route }) => {
               style={{
                 borderRadius: 5,
                 backgroundColor: "#040E29",
-                padding: 10,
-                width: 130,
+
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
+                paddingVertical: 5,
+                paddingHorizontal: 10,
               }}
               onPress={() => callPostApi()}
             >
@@ -673,7 +646,7 @@ const LandingScreen = ({ props, navigation, route }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Text style={{ color: "white", fontSize: 16 }}>Get More</Text>
+                  <Text style={{ color: "white", fontSize: 14 }}>Get More</Text>
 
                   <IonIcon
                     style={{
@@ -696,7 +669,8 @@ const LandingScreen = ({ props, navigation, route }) => {
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
-    paddingLeft: 10,
+    paddingLeft: 0,
+    marginBottom: 5,
   },
   buttonActive: {
     backgroundColor: "#ffffff", // Change the background color to your preference
@@ -728,10 +702,10 @@ const styles = StyleSheet.create({
   userBox: {
     // flexBasis: "100%", // 48% to leave space for margins and allow two items in a row
     marginBottom: 5, // Add margin to the bottom for spacing between rows
-    borderRadius: 8,
+    borderRadius: 5,
     //margin: 15,
-    marginVertical: 10,
-    marginHorizontal: 15,
+    marginVertical: 5,
+    marginHorizontal: 10,
     backgroundColor: "#ffffff",
   },
   accountBox: {
@@ -751,7 +725,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
-    height: 60,
+    height: 50,
     backgroundColor: "#040E29",
   },
 
@@ -797,8 +771,8 @@ const styles = StyleSheet.create({
     color: "white",
   },
   MainContentContainer: {
-    marginTop: StatusBar.currentHeight + 50,
-    marginBottom: 60,
+    marginTop: StatusBar.currentHeight + 49,
+    marginBottom: 50,
     backgroundColor: "#F0F2F5",
   },
 });

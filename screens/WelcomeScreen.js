@@ -1,6 +1,6 @@
 import NetInfo from "@react-native-community/netinfo";
 import React, { useEffect, useState } from "react";
-import { StatusBar, StyleSheet, Text, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 
 const WelcomeScreen = ({ navigation }) => {
@@ -35,7 +35,7 @@ const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="white" />
-      {animationStarted ? <AnimatedLogo /> : <Text>Loading...</Text>}
+      {animationStarted && <AnimatedLogo />}
     </View>
   );
 };
