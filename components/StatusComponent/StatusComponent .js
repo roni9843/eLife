@@ -382,7 +382,7 @@ const StatusComponent = ({
                   <IonIcon
                     style={{
                       fontSize: 20,
-                      color: "black",
+                      color: "#040E29",
                     }}
                     name={"ellipsis-vertical"}
                   />

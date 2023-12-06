@@ -13,11 +13,13 @@ import {
 } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import ProfileIcon from "react-native-vector-icons/SimpleLineIcons";
 import { useDispatch, useSelector } from "react-redux";
 import HomePageCard from "../components/HomePageCard";
 import HomePageStatusLoading from "../components/HomePageLoading/HomePageStatusLoading";
 import HomePageTopButton from "../components/HomePageTop/HomePageTopButton";
 import { useGetAllStatusPostWithPaginationMutation } from "../redux/apiSlice";
+
 import {
   addPostPaginationPage,
   addStatusPost,
@@ -227,6 +229,7 @@ const LandingScreen = ({ props, navigation, route }) => {
             style={{
               // flex: 7,
               position: "relative",
+              // backgroundColor: "red",
             }}
           >
             <TouchableOpacity
@@ -280,21 +283,31 @@ const LandingScreen = ({ props, navigation, route }) => {
                 )
               ) : (
                 <View
-                  style={
-                    {
-                      // backgroundColor: "white",
-                      // borderWidth: 1,
-                      // borderColor: "#020A0D",
-                      // padding: 3,
-                      // borderRadius: 50,
-                      // marginTop: 7,
-                      // marginLeft: 10,
-                    }
-                  }
+                  style={{
+                    // backgroundColor: "green",
+                    borderRadius: 50,
+                    borderWidth: 1,
+                    borderColor: "white",
+                    padding: 4,
+                    backgroundColor: "#040E29",
+                    // marginRight: 5,
+                    width: 35,
+                    height: 35,
+                    borderRadius: 25, // Make it round
+                    //marginRight: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  <IonIcon
-                    style={{ fontSize: 40, fontWeight: "bold", color: "white" }}
-                    name={"person-circle-outline"}
+                  <ProfileIcon
+                    name="user"
+                    size={20}
+                    color="white"
+                    style={
+                      {
+                        // backgroundColor: "green",
+                      }
+                    }
                   />
                 </View>
               )}
@@ -451,6 +464,8 @@ const LandingScreen = ({ props, navigation, route }) => {
                           textAlign: "center",
                           alignContent: "center",
                           alignItems: "center",
+                          borderWidth: 1,
+                          borderColor: "#040E29",
                         }}
                       >
                         <TouchableOpacity
@@ -747,7 +762,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#040E29",
     zIndex: 99,
     flex: 1,
-    height: 65,
+    height: 55,
 
     // justifyContent: "center",
     // alignItems: "center",
@@ -758,7 +773,8 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // flex: 1,
     justifyContent: "space-between",
-    padding: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
   },
   InputStyle: {
     marginTop: 7,
@@ -771,7 +787,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   MainContentContainer: {
-    marginTop: StatusBar.currentHeight + 49,
+    marginTop: StatusBar.currentHeight + 40,
     marginBottom: 50,
     backgroundColor: "#F0F2F5",
   },
