@@ -136,6 +136,8 @@ const EditAndAddBatch = ({ navigation, route }) => {
   };
 
   const handleSubmit = async () => {
+    console.log("this is route data -> ", route.params.data);
+
     const errors = {};
 
     // Trim inputs before validation
@@ -219,6 +221,10 @@ const EditAndAddBatch = ({ navigation, route }) => {
           setLoading(false);
         }
       } else {
+        console.log(
+          "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
+          route.params.data
+        );
         console.log(
           "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
           parseInt(batchData.totalSet) < route.params.data.batchdetails.length
