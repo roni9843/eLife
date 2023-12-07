@@ -179,7 +179,7 @@ const Blood = ({ navigation }) => {
                       borderRadius: 8,
                       backgroundColor: "#F9F9F9",
                     }}
-                    placeholder="Search by location..."
+                    placeholder="Search by location"
                     onChangeText={(text) => setSelectedLocation(text)}
                     value={selectedLocation}
                   />

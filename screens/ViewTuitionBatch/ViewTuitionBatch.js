@@ -50,7 +50,6 @@ const CourseCard = ({ item, navigation }) => {
       <View
         style={{
           flexDirection: "row",
-
           marginBottom: 10,
         }}
       >
@@ -66,11 +65,8 @@ const CourseCard = ({ item, navigation }) => {
               style={{
                 fontWeight: "bold",
                 color: "white",
-
                 backgroundColor: "#040E29",
                 borderRadius: 100,
-                margin: 0,
-                padding: 0,
                 justifyContent: "center",
                 alignItems: "center",
                 textAlign: "center",
@@ -79,7 +75,6 @@ const CourseCard = ({ item, navigation }) => {
               <Image
                 style={styles.image}
                 source={{
-                  // uri: image,
                   uri: teacherDetails.profilePic,
                 }}
               />
@@ -93,8 +88,8 @@ const CourseCard = ({ item, navigation }) => {
                 borderColor: "#040E29",
                 padding: 4,
                 backgroundColor: "#040E29",
-                width: Dimensions.get("window").width * 0.13,
-                height: Dimensions.get("window").width * 0.13,
+                width: 40, // Dimensions.get("window").width * 0.13,
+                height: 40, // Dimensions.get("window").width * 0.13,
                 borderRadius: 25, // Make it round
 
                 justifyContent: "center",
@@ -103,13 +98,8 @@ const CourseCard = ({ item, navigation }) => {
             >
               <ProfileIcon
                 name="user"
-                size={Dimensions.get("window").width * 0.07}
+                size={20} // {Dimensions.get("window").width * 0.07}
                 color="white"
-                style={
-                  {
-                    // backgroundColor: "green",
-                  }
-                }
               />
             </View>
           )}
@@ -121,7 +111,6 @@ const CourseCard = ({ item, navigation }) => {
             <View
               style={{
                 flexDirection: "row",
-                // justifyContent: "center",
                 alignContent: "center",
                 alignItems: "center",
               }}
@@ -130,22 +119,14 @@ const CourseCard = ({ item, navigation }) => {
 
               {teacherDetails.verified === true && (
                 <View style={{ marginLeft: 10 }}>
-                  <VerifyIcon
-                    name="verified-user"
-                    size={16}
-                    color="#040E29"
-                    style={
-                      {
-                        // backgroundColor: "green",
-                      }
-                    }
-                  />
+                  <VerifyIcon name="verified-user" size={16} color="#040E29" />
                 </View>
               )}
             </View>
           </View>
         </View>
       </View>
+
       <View
         style={styles.cardInnerContainer}
         android_ripple={{ color: "#040E29" }}
@@ -158,7 +139,7 @@ const CourseCard = ({ item, navigation }) => {
           <Text style={{ fontSize: RFValue(12) }}>
             Phone: {teacherDetails.phone}
           </Text>
-          <Text style={{ fontSize: RFValue(12) }}>Batch Start Date</Text>
+          {/* <Text style={{ fontSize: RFValue(12) }}>Batch Start Date</Text> */}
           <Text
             style={{
               borderRadius: 10,
@@ -166,47 +147,30 @@ const CourseCard = ({ item, navigation }) => {
               fontSize: RFValue(12),
             }}
           >
-            {formattedBatchTime}
+            Start: {formattedBatchTime}
           </Text>
         </View>
+
         <View style={styles.detailsContainer}>
           <Text
             style={{
-              textAlign: "center",
               fontSize: RFValue(12),
+              fontWeight: "bold",
             }}
           >
             Course Fee
           </Text>
-          <Text
-            style={{
-              textAlign: "center",
-              borderWidth: 1,
-              backgroundColor: "black",
-              padding: 8,
-              color: "white",
-              borderRadius: 5,
-              fontWeight: "bold",
-              fontSize: RFValue(10),
-            }}
-          >
-            {courseFee} টাকা
-          </Text>
+
+          <View style={styles.courseFeeBox}>
+            <Text style={styles.courseFeeText}>{courseFee} টাকা</Text>
+          </View>
         </View>
       </View>
+
       <View style={{ marginTop: 5 }}>
         {(village || union || thana || district) && (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "gray", fontSize: RFValue(12) }}>
-              Address :{" "}
-            </Text>
-
-            <Text style={{ color: "gray", fontSize: RFValue(12) }}>
+          <View>
+            <Text style={{ fontSize: RFValue(12) }}>
               {village && `${village},`} {union && `${union},`}{" "}
               {thana && `${thana},`} {district && `${district}`}
             </Text>
@@ -333,8 +297,8 @@ const ViewTuitionBatch = ({ navigation, route }) => {
       <CreateBatchHeader navigation={navigation}></CreateBatchHeader>
 
       <ScrollView style={{ marginTop: StatusBar.currentHeight + 55 }}>
-        <View style={{ padding: 15 }}>
-          <View style={{ marginTop: 10 }}>
+        <View style={{ padding: 10 }}>
+          <View>
             <Text style={{ padding: 5, fontWeight: "bold" }}>Subject:</Text>
             <TextInput
               style={{
@@ -344,22 +308,14 @@ const ViewTuitionBatch = ({ navigation, route }) => {
                 borderRadius: 8,
                 backgroundColor: "#F9F9F9",
               }}
-              placeholder="Subject"
+              placeholder="Search by subject"
               onChangeText={(e) => setSubject(e)}
             />
           </View>
 
           <View style={{ marginTop: 10 }}>
-            <Text style={{ padding: 5, fontWeight: "bold" }}>
-              Category : {category}
-            </Text>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
+            <Text style={{ fontWeight: "bold" }}>Category: {category}</Text>
+            <View>
               <ScrollView horizontal>
                 {CategoryData.map((item, index) => (
                   <TouchableOpacity
@@ -370,7 +326,6 @@ const ViewTuitionBatch = ({ navigation, route }) => {
                         padding: 10,
                         borderWidth: 1,
                         borderColor: "black",
-
                         marginVertical: 5,
                         borderRadius: 5,
                         margin: 5,
@@ -395,9 +350,7 @@ const ViewTuitionBatch = ({ navigation, route }) => {
           </View>
 
           <View style={{ marginTop: 10 }}>
-            <Text style={{ padding: 5, fontWeight: "bold" }}>
-              Class : {batchClass}
-            </Text>
+            <Text style={{ fontWeight: "bold" }}>Class: {batchClass}</Text>
             <View
               style={{
                 justifyContent: "center",
@@ -438,7 +391,7 @@ const ViewTuitionBatch = ({ navigation, route }) => {
               </ScrollView>
             </View>
             <View style={{ marginTop: 10 }}>
-              <Text style={{ padding: 5, fontWeight: "bold" }}>Location :</Text>
+              <Text style={{ fontWeight: "bold" }}>Location:</Text>
               <TextInput
                 style={{
                   borderWidth: 1,
@@ -447,14 +400,14 @@ const ViewTuitionBatch = ({ navigation, route }) => {
                   borderRadius: 8,
                   backgroundColor: "#F9F9F9",
                 }}
-                placeholder="Address...."
+                placeholder="Search by location"
                 onChangeText={(e) => setUAddress(e)}
                 value={uAddress}
               />
             </View>
           </View>
 
-          <View style={{ marginTop: 10, alignItems: "flex-end" }}>
+          <View style={{ marginVertical: 10, alignItems: "flex-end" }}>
             <TouchableOpacity
               style={{
                 borderRadius: 5,
@@ -517,24 +470,25 @@ const ViewTuitionBatch = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: "#fff",
-    marginVertical: 10,
+    marginVertical: 5,
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 5,
     elevation: 3,
   },
   cardInnerContainer: {
     flexDirection: "row",
   },
   image: {
-    width: Dimensions.get("window").width * 0.13,
-    height: Dimensions.get("window").width * 0.13,
-    borderRadius: 10,
+    width: 40, // Dimensions.get("window").width * 0.13,
+    height: 40, // Dimensions.get("window").width * 0.13,
+    borderRadius: 100,
   },
   contentContainer: {
     flex: 2,
   },
   detailsContainer: {
     flex: 1,
+    alignItems: "center",
   },
   title: {
     fontSize: RFValue(16),
@@ -547,6 +501,20 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: RFValue(13),
     fontWeight: "bold",
+  },
+  courseFeeBox: {
+    width: 90,
+    height: 30,
+    backgroundColor: "#040E29",
+    borderRadius: 5,
+    alignItems: "center", // Center horizontally
+    justifyContent: "center", // Center vertically
+  },
+  courseFeeText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: RFValue(13),
+    textAlign: "center", // Center text horizontally
   },
 });
 
