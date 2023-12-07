@@ -229,7 +229,7 @@ const AddPost = ({ navigation, route }) => {
                       <View style={{ marginLeft: 10 }}>
                         <VerifyIcon
                           name="verified-user"
-                          size={18}
+                          size={16}
                           color="#040E29"
                           style={
                             {

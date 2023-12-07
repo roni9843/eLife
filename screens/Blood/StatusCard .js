@@ -62,32 +62,17 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
             flexDirection: "row",
           }}
         >
-          <View style={styles.ImageContainer}>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+          <View>
+            <View>
               {image && image !== null ? (
                 <View
                   style={{
-                    fontWeight: "bold",
-                    color: "white",
-
-                    backgroundColor: "#040E29",
                     borderRadius: 100,
-                    margin: 0,
-                    padding: 0,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center",
                   }}
                 >
                   <Image
                     style={styles.image}
                     source={{
-                      // uri: image,
                       uri: image,
                     }}
                   />
@@ -95,33 +80,26 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
               ) : (
                 <View
                   style={{
-                    // backgroundColor: "green",
                     borderRadius: 50,
                     borderWidth: 2,
                     borderColor: "#040E29",
-                    padding: 4,
                     backgroundColor: "#040E29",
-                    width: Dimensions.get("window").width * 0.13,
-                    height: Dimensions.get("window").width * 0.13,
-                    borderRadius: 25, // Make it round
-
+                    width: 40,
+                    height: 40,
+                    borderRadius: 25,
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
                   <ProfileIcon
                     name="user"
-                    size={Dimensions.get("window").width * 0.07}
+                    size={20} //{Dimensions.get("window").width * 0.07}
                     color="white"
-                    style={
-                      {
-                        // backgroundColor: "green",
-                      }
-                    }
                   />
                 </View>
               )}
             </View>
+
             <View
               style={{
                 alignItems: "center",
@@ -138,137 +116,102 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
               </Text>
             </View>
           </View>
+
           <View style={{ marginLeft: 10 }}>
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  // justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: RFValue(15),
-                  }}
-                >
-                  {name}
-                </Text>
-
-                {verified === true && (
-                  <View style={{ marginLeft: 10 }}>
-                    <VerifyIcon
-                      name="verified-user"
-                      size={18}
-                      color="#040E29"
-                      style={
-                        {
-                          // backgroundColor: "green",
-                        }
-                      }
-                    />
-                  </View>
-                )}
-              </View>
-            </View>
-
             <View
               style={{
                 flexDirection: "row",
-                alignItems: "center",
               }}
             >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: RFValue(15),
+                }}
+              >
+                {name}
+              </Text>
+
+              {verified === true && (
+                <View style={{ marginLeft: 10 }}>
+                  <VerifyIcon name="verified-user" size={16} color="#040E29" />
+                </View>
+              )}
+            </View>
+
+            <View>
               <Text style={{ color: "#040E29", fontSize: RFValue(13) }}>
                 {phone}
               </Text>
             </View>
-
-            {donateCount > 0 && (
-              <Text style={styles.lastDonateDate}>
-                Last Donate: {lastDonateDate}
-              </Text>
-            )}
-
-            <Text style={styles.donateCount}>
-              Total Donations: {donateCount}
-            </Text>
-            <Text style={styles.donateCount}>Blood Group: {bloodGrp}</Text>
           </View>
         </View>
+
         <View
           style={{
             alignItems: "flex-end",
             justifyContent: "flex-end",
             flex: 1,
+            marginTop: 10,
           }}
         >
           <View
             style={{
               alignItems: "center",
-              justifyContent: "flex-end",
-
-              padding: 10,
+              justifyContent: "center",
+              width: 35,
+              height: 35,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              borderBottomLeftRadius: 30,
+              backgroundColor: "#ED1F4C",
+              transform: [{ rotateZ: "225deg" }],
             }}
           >
-            <View
+            <Text
               style={{
-                alignItems: "center",
-                justifyContent: "center",
-                width: 40,
-                height: 40,
-                borderTopLeftRadius: 30,
-                borderTopRightRadius: 30,
-                borderBottomLeftRadius: 30,
+                color: "white",
+                transform: [{ rotateZ: "135deg" }],
+                fontWeight: "bold",
+                fontSize: RFValue(14),
                 backgroundColor: "#ED1F4C",
-                transform: [{ rotateZ: "225deg" }],
+                borderRadius: 50,
               }}
             >
-              <Text
-                style={{
-                  color: "white",
-                  transform: [{ rotateZ: "135deg" }],
-                  fontWeight: "bold",
-                  fontSize: RFValue(14),
-                  backgroundColor: "#ED1F4C",
-                  borderRadius: 50,
-                }}
-              >
-                {bloodGrp}
-              </Text>
-            </View>
-            <View>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  color: "#ED1F4C",
-                  fontSize: RFValue(12),
-                }}
-              >
-                Blood
-              </Text>
-            </View>
+              {bloodGrp}
+            </Text>
           </View>
         </View>
       </View>
-      <View style={{ marginTop: 5 }}>
+
+      <View>
+        {donateCount > 0 && (
+          <Text style={styles.lastDonateDate}>
+            Last Donate: {lastDonateDate}
+          </Text>
+        )}
+
+        <Text style={styles.donateCount}>Total Donations: {donateCount}</Text>
+        <Text style={styles.donateCount}>Blood Group: {bloodGrp}</Text>
+      </View>
+
+      <View style={{ marginTop: 1 }}>
         {(village || union || thana || district) && (
           <View
             style={{
               flexDirection: "row",
-              // width: "80%",
             }}
           >
-            <Text style={{ color: "gray" }}>
+            <Text>
               {village && `${village},`} {union && `${union},`}{" "}
               {thana && `${thana},`} {district && `${district}`}
             </Text>
           </View>
         )}
       </View>
+
       <View
-        style={{ marginTop: 10, borderTopWidth: 0.3, borderTopColor: "gray" }}
+        style={{ marginTop: 3, borderTopWidth: 0.3, borderTopColor: "gray" }}
       >
         <TouchableOpacity
           onPress={onShare}
@@ -285,14 +228,16 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
           <Text
             style={{
               fontSize: RFValue(15),
+              color: "gray",
             }}
           >
             Share
           </Text>
           <IonIcon
             style={{
-              fontSize: RFValue(17),
-              marginLeft: 14,
+              fontSize: 20,
+              color: "#040E29",
+              marginLeft: 10,
             }}
             name={"arrow-redo-outline"}
           />
@@ -307,19 +252,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 5,
     marginVertical: 5,
   },
 
   card: {
     flexDirection: "row",
-    alignItems: "center",
+    marginBottom: 5,
   },
 
   image: {
-    width: Dimensions.get("window").width * 0.13,
-    height: Dimensions.get("window").width * 0.13,
-    borderRadius: 10,
+    width: 40, //Dimensions.get("window").width * 0.13,
+    height: 40, //Dimensions.get("window").width * 0.13,
+    borderRadius: 100,
   },
   textContainer: {
     marginLeft: 16,

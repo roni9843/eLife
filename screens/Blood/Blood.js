@@ -163,10 +163,12 @@ const Blood = ({ navigation }) => {
 
             {/* Added location search section */}
 
-            <View style={{ marginHorizontal: 25 }}>
+            <View style={{ marginHorizontal: 10 }}>
               <View style={{ marginTop: 10 }}>
-                <View style={{}}>
-                  <Text style={{ padding: 5, fontWeight: "bold" }}>
+                <View>
+                  <Text
+                    style={{ paddingTop: 5, paddingBottom: 3, fontSize: 14 }}
+                  >
                     Location:
                   </Text>
                   <TextInput
@@ -177,7 +179,7 @@ const Blood = ({ navigation }) => {
                       borderRadius: 8,
                       backgroundColor: "#F9F9F9",
                     }}
-                    placeholder="find by location..."
+                    placeholder="Search by location..."
                     onChangeText={(text) => setSelectedLocation(text)}
                     value={selectedLocation}
                   />
@@ -200,19 +202,21 @@ const Blood = ({ navigation }) => {
               </View>
             </View>
 
-            <View style={{ marginHorizontal: 25, marginTop: 10 }}>
+            <View style={{ marginHorizontal: 10, marginTop: 15 }}>
               <View>
-                <Text
-                  style={{ fontSize: 15, marginBottom: 10, color: "#616C7D" }}
-                >
-                  Select blood group
+                <Text style={{ fontSize: 14, marginBottom: 3 }}>
+                  Filter By Group
                 </Text>
               </View>
+
               <View
-                style={{ flexDirection: "row", justifyContent: "space-around" }}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 16 }}
+                contentContainerStyle={{ paddingHorizontal: 0 }}
               >
                 {bloodGroups.map((group, index) => (
                   <TouchableOpacity
@@ -220,8 +224,8 @@ const Blood = ({ navigation }) => {
                     style={{
                       backgroundColor:
                         selectedGroup === group ? "#ED1F4C" : "white",
-                      padding: width * 0.01,
-                      marginRight: 5,
+                      padding: width * 0.02,
+                      marginRight: 0,
                       borderRadius: 5,
                       borderWidth: 1,
                       borderColor: "#ED1F4C",
@@ -242,13 +246,13 @@ const Blood = ({ navigation }) => {
                   </TouchableOpacity>
                 ))}
               </View>
+
               <View style={{ marginTop: 10 }}>
                 <Text
                   style={{
-                    fontSize: 15,
-                    marginBottom: 10,
+                    fontSize: 14,
+                    marginTop: 5,
                     color: "#ED1F4C",
-                    fontWeight: "bold",
                   }}
                 >
                   BLOOD HEROS
@@ -260,12 +264,12 @@ const Blood = ({ navigation }) => {
                     flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: 30,
                   }}
                 >
                   <ActivityIndicator size="large" color="#040E29" />
                 </View>
               )}
+
               <View>
                 {allBloodData &&
                   allBloodData.map((dt) => (

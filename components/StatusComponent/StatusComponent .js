@@ -359,7 +359,7 @@ const StatusComponent = ({
                     <View style={{ marginLeft: 10 }}>
                       <VerifyIcon
                         name="verified-user"
-                        size={18}
+                        size={16}
                         color="#040E29"
                         style={
                           {
@@ -614,9 +614,9 @@ const StatusComponent = ({
           <View>
             <IonIcon
               style={{
-                fontSize: 22,
+                fontSize: 20,
                 color: "#040E29",
-                marginLeft: 6,
+                marginLeft: 10,
               }}
               name={"arrow-redo-outline"}
             />
