@@ -188,13 +188,17 @@ const ViewTeacherBatch = ({ navigation, route }) => {
   }, [route]);
 
   useEffect(() => {
+    waitTime();
+  }, [student]);
+
+  const waitTime = async () => {
     delete route.params.data.batchdetails;
 
-    route.params.data = {
+    route.params.data = await {
       ...route.params.data,
       batchdetails: student,
     };
-  }, [student]);
+  };
 
   return (
     <View>
