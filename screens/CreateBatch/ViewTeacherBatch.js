@@ -292,7 +292,7 @@ const ViewTeacherBatch = ({ navigation, route }) => {
             >
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ fontWeight: "bold", fontSize: 17 }}>
-                  Subject :
+                  Subject:
                 </Text>
                 <Text style={{ fontSize: 17 }}>
                   {" "}

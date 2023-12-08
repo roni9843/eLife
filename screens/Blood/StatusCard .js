@@ -121,6 +121,8 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
             <View
               style={{
                 flexDirection: "row",
+                alignContent: "center",
+                alignItems: "center",
               }}
             >
               <Text
@@ -152,7 +154,6 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
             alignItems: "flex-end",
             justifyContent: "flex-end",
             flex: 1,
-            marginTop: 10,
           }}
         >
           <View
@@ -185,14 +186,23 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
       </View>
 
       <View>
-        {donateCount > 0 && (
-          <Text style={styles.lastDonateDate}>
-            Last Donate: {lastDonateDate}
-          </Text>
-        )}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          {/* <Text style={styles.donateCount}>Blood Group: {bloodGrp}</Text> */}
+          {donateCount > 0 ? (
+            <Text style={styles.lastDonateDate}>
+              Last Donate: {lastDonateDate}
+            </Text>
+          ) : (
+            <Text style={styles.lastDonateDate}>Last Donate: ---</Text>
+          )}
 
-        <Text style={styles.donateCount}>Total Donations: {donateCount}</Text>
-        <Text style={styles.donateCount}>Blood Group: {bloodGrp}</Text>
+          <Text style={styles.donateCount}>Total Donations: {donateCount}</Text>
+        </View>
       </View>
 
       <View style={{ marginTop: 1 }}>
@@ -202,7 +212,7 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
               flexDirection: "row",
             }}
           >
-            <Text>
+            <Text style={{ fontSize: RFValue(13) }}>
               {village && `${village},`} {union && `${union},`}{" "}
               {thana && `${thana},`} {district && `${district}`}
             </Text>
@@ -217,11 +227,7 @@ Address  : village: ${village}, union: ${union},thana: ${thana}, district: ${dis
           onPress={onShare}
           style={{
             flexDirection: "row",
-            textAlign: "center",
-            justifyContent: "center",
             paddingTop: 5,
-            alignContent: "center",
-            alignItems: "center",
             alignSelf: "flex-end",
           }}
         >
@@ -278,9 +284,11 @@ const styles = StyleSheet.create({
   },
   lastDonateDate: {
     fontSize: RFValue(13),
+    color: "red", // "#040E29",
   },
   donateCount: {
     fontSize: RFValue(13),
+    color: "red", // "#040E29",
   },
 
   waterDrop: {

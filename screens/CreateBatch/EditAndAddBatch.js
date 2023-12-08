@@ -429,7 +429,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
           </View>
           <View style={{ marginTop: 10 }}>
             <Text style={{ padding: 5, fontWeight: "bold" }}>
-              Category : {category}
+              Category: {category}
             </Text>
             <View
               style={{
@@ -475,7 +475,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
           </View>
           <View style={{ marginTop: 10 }}>
             <Text style={{ padding: 5, fontWeight: "bold" }}>
-              Class : {batchClass}
+              Class: {batchClass}
             </Text>
             <View
               style={{
@@ -580,7 +580,7 @@ const EditAndAddBatch = ({ navigation, route }) => {
             <Text style={{ color: "red" }}>{inputErrors.union}</Text>
           </View>
 
-          <View style={{ marginTop: 10 }}>
+          <View>
             <Text style={{ padding: 5, fontWeight: "bold" }}>Thana:</Text>
             <TextInput
               style={{

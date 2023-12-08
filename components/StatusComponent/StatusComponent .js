@@ -348,7 +348,6 @@ const StatusComponent = ({
                 <View
                   style={{
                     flexDirection: "row",
-                    // justifyContent: "center",
                     alignContent: "center",
                     alignItems: "center",
                   }}

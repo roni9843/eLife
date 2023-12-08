@@ -30,25 +30,12 @@ const ViewTuitionBatchDetails = ({ route }) => {
         >
           {route.params.courseData.teacherDetails.profilePic &&
           route.params.courseData.teacherDetails.profilePic !== null ? (
-            <View
-              style={{
-                fontWeight: "bold",
-                color: "white",
-
-                backgroundColor: "#040E29",
-                borderRadius: 100,
-                margin: 0,
-                padding: 0,
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
+            <View>
               <Image
                 style={{
-                  width: Dimensions.get("window").width * 0.4,
-                  height: Dimensions.get("window").width * 0.4,
-                  borderRadius: 10,
+                  width: 55, // Dimensions.get("window").width * 0.4,
+                  height: 55, // Dimensions.get("window").width * 0.4,
+                  borderRadius: 100,
                 }}
                 source={{
                   // uri: image,
@@ -61,29 +48,19 @@ const ViewTuitionBatchDetails = ({ route }) => {
           ) : (
             <View
               style={{
-                // backgroundColor: "green",
-                borderRadius: 50,
-                borderWidth: 2,
-                borderColor: "#040E29",
+                borderRadius: 100,
                 padding: 4,
                 backgroundColor: "#040E29",
-                width: Dimensions.get("window").width * 0.2,
-                height: Dimensions.get("window").width * 0.2,
-                borderRadius: 25, // Make it round
-
+                width: 55, // Dimensions.get("window").width * 0.2,
+                height: 55, // Dimensions.get("window").width * 0.2,
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
               <ProfileIcon
                 name="user"
-                size={Dimensions.get("window").width * 0.15}
+                size={Dimensions.get("window").width * 0.1}
                 color="white"
-                style={
-                  {
-                    // backgroundColor: "green",
-                  }
-                }
               />
             </View>
           )}
@@ -134,7 +111,7 @@ const ViewTuitionBatchDetails = ({ route }) => {
 
       {/* Render teacher details */}
       <View style={styles.teacherContainer}>
-        <Text style={styles.teacherTitle}>Teacher Details</Text>
+        <Text style={styles.teacherTitle}>Instructor Details</Text>
         <Text style={styles.teacherDetails}>
           Name: {route.params.courseData.teacherDetails.name}
         </Text>
@@ -185,23 +162,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#333",
     backgroundColor: "#f8f8f8",
-    padding: 15,
-    borderRadius: 10,
+    padding: 10,
+    borderRadius: 5,
   },
   teacherContainer: {
     borderTopWidth: 1,
-    paddingTop: 15,
-    paddingBottom: 105,
+    borderColor: "gray",
+    paddingTop: 5,
+    paddingBottom: 100,
   },
   teacherTitle: {
     fontSize: Dimensions.get("window").width * 0.05, // Responsive font size
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 5,
     color: "#333",
   },
   teacherDetails: {
     fontSize: Dimensions.get("window").width * 0.04, // Responsive font size
-    marginBottom: 5,
     color: "#555",
   },
 });

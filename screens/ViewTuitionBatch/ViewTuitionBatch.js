@@ -299,7 +299,9 @@ const ViewTuitionBatch = ({ navigation, route }) => {
       <ScrollView style={{ marginTop: StatusBar.currentHeight + 55 }}>
         <View style={{ padding: 10 }}>
           <View>
-            <Text style={{ padding: 5, fontWeight: "bold" }}>Subject:</Text>
+            <Text style={{ paddingBottom: 5, fontWeight: "bold" }}>
+              Subject:
+            </Text>
             <TextInput
               style={{
                 borderWidth: 1,
@@ -444,6 +446,9 @@ const ViewTuitionBatch = ({ navigation, route }) => {
           </View>
           {/* Display your filtered data */}
 
+          <View>
+            <Text style={{ fontWeight: "bold" }}>Learning Opportunities</Text>
+          </View>
           {allBatch !== null &&
             allBatch.map((item) => (
               <CourseCard item={item} navigation={navigation}></CourseCard>
