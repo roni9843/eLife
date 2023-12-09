@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
+  Button,
   FlatList,
   Image,
   Modal,
@@ -164,7 +165,7 @@ const LandingScreen = ({ props, navigation, route }) => {
   const addtestData = () => {
     // dispatch(testDataAdd(userInfo.allStatusPost));
 
-    console.log("this is logggg ", userInfo.postPaginationPage);
+    console.log("this is logggg 666 ", userInfo);
   };
 
   // ? get all post with there reaction and with there react api
@@ -583,6 +584,9 @@ const LandingScreen = ({ props, navigation, route }) => {
 
           <View style={{ paddingHorizontal: 5 }}>
             <HomePageTopButton navigation={navigation}></HomePageTopButton>
+          </View>
+          <View>
+            <Button title="click" onPress={() => addtestData()} />
           </View>
 
           {userInfo.allStatusPost === null && (
