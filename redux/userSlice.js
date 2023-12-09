@@ -83,14 +83,14 @@ export const usersSlice = createSlice({
     },
 
     replaceStatusPost: (state, action) => {
-      state.postPaginationPage = action.payload;
+      state.allStatusPost = action.payload;
     },
 
     addPostPaginationPage: (state, action) => {
       state.postPaginationPage = state.postPaginationPage + action.payload;
     },
     replacePaginationPage: (state, action) => {
-      state.postPaginationPage = 0;
+      state.postPaginationPage = action.payload;
     },
 
     logOut: (state, action) => {

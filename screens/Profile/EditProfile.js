@@ -345,11 +345,22 @@ const EditProfile = ({ navigation }) => {
 
             //    const newPost = await statusRefetch();
 
-            const getAllPost = await getAllStatusPostWithPagination(payload);
+            const payloadForStatus = {
+              page: 0,
+            };
+
+            const getAllPost = await getAllStatusPostWithPagination(
+              payloadForStatus
+            );
 
             if (getAllPost.data?.message === "successful") {
               dispatch(replaceStatusPost(getAllPost.data?.allPosts));
-              dispatch(replacePaginationPage(0));
+              dispatch(replacePaginationPage(getAllPost.data?.allPosts.length));
+
+              console.log(
+                "this is all status 888 -> ",
+                getAllPost.data?.allPosts
+              );
             }
 
             // console.log("this is update post ", newPost.data.posts);
