@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
-  Button,
   FlatList,
   Image,
   Modal,
@@ -584,9 +583,6 @@ const LandingScreen = ({ props, navigation, route }) => {
 
           <View style={{ paddingHorizontal: 5 }}>
             <HomePageTopButton navigation={navigation}></HomePageTopButton>
-          </View>
-          <View>
-            <Button title="click" onPress={() => addtestData()} />
           </View>
 
           {userInfo.allStatusPost === null && (
